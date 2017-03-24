@@ -7,7 +7,8 @@ import java.awt.*;
  */
 public class View {
             JFrame mainFrame;
-            Menu maiMenu;
+            Menu mainMenu;
+            Toolbar mainToolBar;
 //        JMenuBar menuBar;
 //        JMenu menuFile;
 //        JMenu menuEdit;
@@ -17,7 +18,8 @@ public class View {
 
             initFrame();
             initMenu();
-            addMenuToFrame();
+            initToolBar();
+            addToFrame();
 
 
 
@@ -41,12 +43,16 @@ public class View {
             menuBar.add(menuEdit);
             menuBar.add(menuHelp);
         }*/
-        private void addMenuToFrame(){
-            mainFrame.setJMenuBar(maiMenu.menuBar);
+        private void addToFrame(){
+            mainFrame.setJMenuBar(mainMenu.menuBar);
+            mainFrame.add(mainToolBar.toolBarPanel, BorderLayout.WEST);
         }
         private void initMenu(){
-            maiMenu = new Menu();
+            mainMenu = new Menu();
         }
+    private void initToolBar(){
+        mainToolBar = new Toolbar();
+    }
     public static void main(String[] args) {
 
         javax.swing.SwingUtilities.invokeLater(new Runnable(){

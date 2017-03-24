@@ -26,8 +26,12 @@ public class Menu {
     JMenuItem hotKeysMenuItem;
     JMenuItem aboutMenuItem;
 
+    Font menuFont;
+
     public Menu(){
 
+        menuFont = new Font("Helvetica", Font.PLAIN, 13);
+        UIManager.put("Menu.font", menuFont);
         createMenu();
         initMenuItems();
         addMenuItems();
@@ -43,6 +47,8 @@ public class Menu {
         menuEdit = new JMenu("Правка");
         menuHelp = new JMenu("Помощь");
 
+        menuFile.setFont(menuFont);
+
         menuBar.add(menuFile);
         menuBar.add(menuEdit);
         menuBar.add(menuHelp);
@@ -50,23 +56,34 @@ public class Menu {
     private void initMenuItems (){
         openMenuItem = new JMenuItem("Открыть...");
         openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        openMenuItem.setFont(menuFont);
 
         saveMenuItem = new JMenuItem("Сохранить");
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        saveMenuItem.setFont(menuFont);
 
         createMenuItem = new JMenuItem("Новый файл");
         createMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        createMenuItem.setFont(menuFont);
 
         closeMenuItem = new JMenuItem("Закрыть");
         closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        closeMenuItem.setFont(menuFont);
 
         addRecordMenuItem = new JMenuItem("Добавить запись");
+        addRecordMenuItem.setFont(menuFont);
+
         delMenuItem = new JMenuItem("Удалить записи");
+        delMenuItem.setFont(menuFont);
 
         findMenuItem = new JMenuItem("Поиск...");
+        findMenuItem.setFont(menuFont);
 
         hotKeysMenuItem = new JMenuItem("Горячие клавиши");
+        hotKeysMenuItem.setFont(menuFont);
+
         aboutMenuItem = new JMenuItem("О программе...");
+        aboutMenuItem.setFont(menuFont);
     }
     private void addMenuItems(){
 
