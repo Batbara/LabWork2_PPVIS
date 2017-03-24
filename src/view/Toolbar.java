@@ -37,6 +37,7 @@ public class Toolbar{
         button = new JButton(image);
         button.setBorder(null);
         button.setMargin(new Insets(0, 0, 0, 0));
+        //button.setBackground(null);
 
         button.setToolTipText(tipText);
         return button;
