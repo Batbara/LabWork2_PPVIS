@@ -8,7 +8,7 @@ public class TableRecord {
     private StringBuffer parentName;
     private StringBuffer workingAddress;
     private StringBuffer jobPosition;
-    private double workingYears;
+    private Double workingYears;
 
     public TableRecord(StringBuffer stName, StringBuffer prntName, StringBuffer workAdd, StringBuffer job, double wYears) {
         studentName = new StringBuffer(stName);
