@@ -2,7 +2,7 @@ package view;
 import view.menu.*;
 import javax.swing.*;
 import java.awt.*;
-
+import view.dialogs.*;
 /**
  * Created by Batbara on 21.03.2017.
  */
@@ -14,13 +14,14 @@ public class View {
 //        JMenu menuFile;
 //        JMenu menuEdit;
 //        JMenu menuHelp;
-
+    AddRecordDialog addRecordDialog;
     public View() {
 
         initFrame();
         initMenu();
 //        initToolBar();
         addToFrame();
+        //initDialogs();
 
 
     }
@@ -35,23 +36,16 @@ public class View {
         mainFrame.setVisible(true);
     }
 
-    /*private void createMenu() {
-        menuBar= new JMenuBar();
-        menuFile = new JMenu("Файл");
-        menuEdit = new JMenu("Правка");
-        menuHelp = new JMenu("Помощь");
-
-        menuBar.add(menuFile);
-        menuBar.add(menuEdit);
-        menuBar.add(menuHelp);
-    }*/
+    public void initDialogs(){
+        addRecordDialog = new AddRecordDialog(mainFrame);
+    }
     private void addToFrame() {
         mainFrame.setJMenuBar(mainMenu.menuBar);
 //        mainFrame.add(mainToolBar.toolBarPanel, BorderLayout.WEST);
     }
 
     private void initMenu() {
-        mainMenu = new MainMenu();
+        mainMenu = new MainMenu(mainFrame);
     }
 
     private void initToolBar() {
