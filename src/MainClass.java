@@ -1,7 +1,7 @@
 /**
  * Created by student on 31.03.2017.
  */
-import view.*;
+import view.View;
 import javax.swing.*;
 public class MainClass {
     public static void main(String[] args) {

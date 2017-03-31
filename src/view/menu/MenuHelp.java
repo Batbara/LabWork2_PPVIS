@@ -13,16 +13,16 @@ public class MenuHelp extends JMenu{
 
     Font menuFont;
 
-    public MenuHelp(String title){
+    public MenuHelp(String title, JFrame mainFrame){
         super(title);
         initMenuItems();
         addMenuItems();
     }
     private void initMenuItems(){
-        hotKeysMenuItem = new JMenuItem("Горячие клавиши");
+        hotKeysMenuItem = new JMenuItem("Р“РѕСЂСЏС‡РёРµ РєР»Р°РІРёС€Рё");
         hotKeysMenuItem.setFont(menuFont);
 
-        aboutMenuItem = new JMenuItem("О программе...");
+        aboutMenuItem = new JMenuItem("Рћ РїСЂРѕРіСЂР°РјРјРµ...");
         aboutMenuItem.setFont(menuFont);
     }
     private void addMenuItems(){

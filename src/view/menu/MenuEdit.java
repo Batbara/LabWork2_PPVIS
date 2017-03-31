@@ -16,34 +16,36 @@ public class MenuEdit extends JMenu {
     JMenuItem delMenuItem;
     JMenuItem findMenuItem;
 
-    AddRecordDialog addRecordDialog;
+    //AddRecordDialog addRecordDialog;
     Font menuFont;
 
     public MenuEdit(String title, JFrame owner){
         super(title);
         initMenuItems();
         addMenuItems();
-        initDialogs(owner);
-        addRecordMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addRecordDialog.setVisible(true);
-            }
-        });
+        //initDialogs(owner);
+//        addRecordMenuItem.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                addRecordDialog.setVisible(true);
+//            }
+//        });
     }
     private void initMenuItems(){
-        addRecordMenuItem = new JMenuItem("Добавить запись");
+
+        addRecordMenuItem = new JMenuItem("Р”РѕР±Р°РІРёС‚СЊ Р·Р°РїРёСЃСЊ");
         addRecordMenuItem.setFont(menuFont);
 
-        delMenuItem = new JMenuItem("Удалить записи");
+        delMenuItem = new JMenuItem("РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃРё");
         delMenuItem.setFont(menuFont);
 
-        findMenuItem = new JMenuItem("Поиск...");
+        findMenuItem = new JMenuItem("РџРѕРёСЃРє...");
         findMenuItem.setFont(menuFont);
+
     }
-    private void initDialogs(JFrame owner){
-        addRecordDialog=new AddRecordDialog(owner);
-    }
+//    private void initDialogs(JFrame owner){
+//        addRecordDialog=new AddRecordDialog(owner);
+//    }
     private void addMenuItems(){
         this.add(addRecordMenuItem);
         this.add(findMenuItem);

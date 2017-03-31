@@ -26,7 +26,7 @@ public class AddRecordDialog extends JDialog{
     private JButton cancelButton;
 
     public AddRecordDialog(JFrame ownerFrame){
-        super(ownerFrame,  "Добавить запись...");
+        super(ownerFrame,  "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ...");
         initDialog(ownerFrame);
         initTextFields();
         addToDialogFrame();
@@ -59,11 +59,11 @@ public class AddRecordDialog extends JDialog{
         workingYearsField = new JTextField(FIELD_SIZE);
     }
     public void initButtons () {
-        okButton = new JButton("Добавить");
-        cancelButton = new JButton("Отмена");
+        okButton = new JButton("Р”РѕР±Р°РІРёС‚СЊ");
+        cancelButton = new JButton("РћС‚РјРµРЅР°");
     }
     public void addToDialogFrame() {
-        this.add(new JLabel("ФИО студента"));
+        this.add(new JLabel("Р¤РРћ СЃС‚СѓРґРµРЅС‚Р°"));
         this.add(studentNameField);
     }
 }
