@@ -1,4 +1,4 @@
-package view;
+package view.Menu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 /**
  * Created by Batbara on 21.03.2017.
  */
-public class Menu {
+public class MainMenu {
     JMenuBar menuBar;
     JMenu menuFile;
     JMenu menuEdit;
@@ -28,7 +28,7 @@ public class Menu {
 
     Font menuFont;
 
-    public Menu(){
+    public MainMenu(){
 
         menuFont = new Font("Helvetica", Font.PLAIN, 13);
         UIManager.put("Menu.font", menuFont);
