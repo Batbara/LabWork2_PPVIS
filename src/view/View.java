@@ -1,5 +1,5 @@
 package view;
-
+import view.menu.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class View {
     public JFrame mainFrame;
-    Menu mainMenu;
+    MainMenu mainMenu;
     Toolbar mainToolBar;
 //        JMenuBar menuBar;
 //        JMenu menuFile;
@@ -51,7 +51,7 @@ public class View {
     }
 
     private void initMenu() {
-        mainMenu = new Menu();
+        mainMenu = new MainMenu();
     }
 
     private void initToolBar() {
