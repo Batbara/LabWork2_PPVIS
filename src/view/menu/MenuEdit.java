@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by student on 31.03.2017.
@@ -16,7 +17,7 @@ public class MenuEdit extends JMenu {
     JMenuItem delMenuItem;
     JMenuItem findMenuItem;
 
-    //AddRecordDialog addRecordDialog;
+    AddRecordDialog addRecordDialog;
     Font menuFont;
 
     public MenuEdit(String title, JFrame owner){
@@ -26,17 +27,21 @@ public class MenuEdit extends JMenu {
 
         initMenuItems();
         addMenuItems();
-        //initDialogs(owner);
-//        addRecordMenuItem.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                addRecordDialog.setVisible(true);
-//            }
-//        });
+        initDialogs(owner);
+
+        addRecordMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addRecordDialog.centerOnScreen();
+                addRecordDialog.setVisible(true);
+            }
+        });
+
     }
     private void initMenuItems(){
 
         addRecordMenuItem = new JMenuItem("Добавить запись");
+        addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         addRecordMenuItem.setFont(menuFont);
 
         delMenuItem = new JMenuItem("Удалить записи");
@@ -46,12 +51,13 @@ public class MenuEdit extends JMenu {
         findMenuItem.setFont(menuFont);
 
     }
-//    private void initDialogs(JFrame owner){
-//        addRecordDialog=new AddRecordDialog(owner);
-//    }
+    private void initDialogs(JFrame owner){
+        addRecordDialog=new AddRecordDialog(owner);
+    }
     private void addMenuItems(){
         this.add(addRecordMenuItem);
         this.add(findMenuItem);
         this.add(delMenuItem);
     }
+
 }

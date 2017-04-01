@@ -1,8 +1,12 @@
 package view;
 import view.menu.*;
+import view.toolbar.*;
 import javax.swing.*;
 import java.awt.*;
+
 import view.dialogs.*;
+import view.toolbar.Toolbar;
+
 /**
  * Created by Batbara on 21.03.2017.
  */
@@ -10,19 +14,17 @@ public class View {
     public JFrame mainFrame;
     MainMenu mainMenu;
     Toolbar mainToolBar;
-//        JMenuBar menuBar;
-//        JMenu menuFile;
-//        JMenu menuEdit;
-//        JMenu menuHelp;
+
     AddRecordDialog addRecordDialog;
     public View() {
-
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initFrame();
         initMenu();
         initToolBar();
         addToFrame();
-        //initDialogs();
 
+
+        //initDialogs();
 
     }
 
@@ -30,9 +32,10 @@ public class View {
         mainFrame = new JFrame("Лабораторная работа №2");
         mainFrame.setLayout(new FlowLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(new Dimension(550, 700));
+        mainFrame.setSize(new Dimension(650, 500));
         mainFrame.setMaximumSize(new Dimension(550, 700));
 
+        mainFrame.setResizable(false);
         mainFrame.setVisible(true);
     }
 
@@ -49,7 +52,7 @@ public class View {
     }
 
     private void initToolBar() {
-        mainToolBar = new Toolbar();
+        mainToolBar = new Toolbar(mainFrame);
     }
 
 
