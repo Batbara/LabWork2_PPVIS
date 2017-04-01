@@ -15,6 +15,10 @@ public class MenuHelp extends JMenu{
 
     public MenuHelp(String title, JFrame mainFrame){
         super(title);
+
+        menuFont = new Font("Helvetica", Font.PLAIN, 13);
+        UIManager.put("menu.font", menuFont);
+
         initMenuItems();
         addMenuItems();
     }

@@ -21,6 +21,9 @@ public class MenuEdit extends JMenu {
 
     public MenuEdit(String title, JFrame owner){
         super(title);
+        menuFont = new Font("Helvetica", Font.PLAIN, 13);
+        UIManager.put("menu.font", menuFont);
+
         initMenuItems();
         addMenuItems();
         //initDialogs(owner);

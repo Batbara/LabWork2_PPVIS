@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
  * Created by Batbara on 21.03.2017.
  */
 public class MainMenu {
-    JMenuBar menuBar;
+    public JMenuBar menuBar;
     MenuFile menuFile;
     MenuEdit menuEdit;
     MenuHelp menuHelp;
@@ -35,6 +35,8 @@ public class MainMenu {
         menuHelp = new MenuHelp("Помощь",owner);
 
         menuFile.setFont(menuFont);
+        menuEdit.setFont(menuFont);
+        menuHelp.setFont(menuFont);
 
     }
     private void addToMenuBar(){

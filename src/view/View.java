@@ -19,7 +19,7 @@ public class View {
 
         initFrame();
         initMenu();
-//        initToolBar();
+        initToolBar();
         addToFrame();
         //initDialogs();
 
@@ -41,7 +41,7 @@ public class View {
     }
     private void addToFrame() {
         mainFrame.setJMenuBar(mainMenu.menuBar);
-//        mainFrame.add(mainToolBar.toolBarPanel, BorderLayout.WEST);
+       mainFrame.add(mainToolBar.toolBarPanel, BorderLayout.WEST);
     }
 
     private void initMenu() {
