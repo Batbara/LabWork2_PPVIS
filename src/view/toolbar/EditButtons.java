@@ -1,5 +1,6 @@
 package view.toolbar;
 
+import controller.TableController;
 import view.dialogs.AddRecordDialog;
 
 import javax.swing.*;
@@ -18,14 +19,14 @@ public class EditButtons {
 
     AddRecordDialog addRecordDialog;
 
-    public EditButtons(JFrame ownerFrame){
+    public EditButtons(JFrame ownerFrame, TableController tableController){
         addRecord = initButton("plus", "plushover", "pluspressed","Добавить");
         deleteRecord = initButton("minus", "minushover", "minuspressed",
                 "Удалить");
         findRecord = initButton("search", "searchhover", "searchpressed",
                 "Найти");
 
-        addRecordDialog = new AddRecordDialog(ownerFrame);
+        addRecordDialog = new AddRecordDialog(ownerFrame, tableController);
         callAddDialogFromButton();
 
     }

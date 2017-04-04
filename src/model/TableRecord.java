@@ -4,45 +4,45 @@ package model;
  * Created by Batbara on 25.03.2017.
  */
 public class TableRecord {
-    private StringBuffer studentName;
-    private StringBuffer parentName;
-    private StringBuffer workingAddress;
-    private StringBuffer jobPosition;
+    private String studentName;
+    private String parentName;
+    private String workingAddress;
+    private String jobPosition;
     private Double workingYears;
 
-    public TableRecord(StringBuffer stName, StringBuffer prntName, StringBuffer workAdd, StringBuffer job, double wYears) {
-        studentName = new StringBuffer(stName);
-        parentName = new StringBuffer(prntName);
-        workingAddress = new StringBuffer(workAdd);
-        jobPosition = new StringBuffer(job);
+    public TableRecord(String stName, String prntName, String workAdd, String job, double wYears) {
+        studentName = new String(stName);
+        parentName = new String(prntName);
+        workingAddress = new String(workAdd);
+        jobPosition = new String(job);
         workingYears = wYears;
     }
     public  TableRecord (){
     }
-    public StringBuffer getStudentName(){
+    public String getStudentName(){
         return studentName;
     }
-    public void setStudentName(StringBuffer studentNameToSet){
+    public void setStudentName(String studentNameToSet){
         studentName = studentNameToSet;
     }
 
-    public StringBuffer getParentName(){
+    public String getParentName(){
         return parentName;
     }
-    public void setParentName(StringBuffer parentNameToSet){
+    public void setParentName(String parentNameToSet){
         parentName = parentNameToSet;
     }
-    public StringBuffer getWorkingAddress(){
+    public String getWorkingAddress(){
         return workingAddress;
     }
-    public void setWorkingAddress(StringBuffer workingAddressToSet){
+    public void setWorkingAddress(String workingAddressToSet){
          workingAddress = workingAddressToSet;
     }
 
-    public StringBuffer getJobPosition(){
+    public String getJobPosition(){
         return jobPosition;
     }
-    public void setJobPosition(StringBuffer jobPositionToSet){
+    public void setJobPosition(String jobPositionToSet){
         jobPosition = jobPositionToSet;
     }
     public double getWorkingYears(){

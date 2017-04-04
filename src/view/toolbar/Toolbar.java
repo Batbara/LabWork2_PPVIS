@@ -1,4 +1,6 @@
 package view.toolbar;
+import controller.TableController;
+
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.event.*;
@@ -16,10 +18,10 @@ public class Toolbar{
     EditButtons editButtons;
 
 
-    public Toolbar (JFrame ownerFrame){
+    public Toolbar (JFrame ownerFrame, TableController tableController){
 
         initToolBarPanel(ownerFrame);
-        initButtons(ownerFrame);
+        initButtons(ownerFrame, tableController);
         addToPanel();
     }
 
@@ -38,8 +40,8 @@ public class Toolbar{
         toolBarPanel.setOpaque(false);
 
     }
-    private void initButtons(JFrame owner){
-        editButtons = new EditButtons(owner);
+    private void initButtons(JFrame owner, TableController tableController){
+        editButtons = new EditButtons(owner, tableController);
         fileButtons = new FileButtons();
     }
     private void addToPanel(){

@@ -1,4 +1,6 @@
 package view;
+import controller.TableController;
+import model.MainTableModel;
 import view.menu.*;
 import view.toolbar.*;
 import javax.swing.*;
@@ -11,9 +13,14 @@ import view.toolbar.Toolbar;
  * Created by Batbara on 21.03.2017.
  */
 public class View {
+    
     public JFrame mainFrame;
     MainMenu mainMenu;
     Toolbar mainToolBar;
+    
+    MainTableModel mainTableModel;
+    TableView mainTableView;
+    TableController tableController;
 
     AddRecordDialog addRecordDialog;
     public View() {
@@ -21,7 +28,12 @@ public class View {
         initFrame();
         initMenu();
         initToolBar();
+        initMainTableView();
+
         addToFrame();
+        mainTableModel = new MainTableModel();
+
+        tableController = new TableController(mainTableModel, mainTableView);
 
 
         //initDialogs();
@@ -30,30 +42,38 @@ public class View {
 
     private void initFrame() {
         mainFrame = new JFrame("Лабораторная работа №2");
-        mainFrame.setLayout(new FlowLayout());
+        mainFrame.setLayout(new BorderLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(new Dimension(650, 500));
-        mainFrame.setMaximumSize(new Dimension(550, 700));
+        mainFrame.setSize(new Dimension(900, 500));
+        mainFrame.setMaximumSize(new Dimension(850, 700));
+
+       // mainFrame.getContentPane().setBackground(Color.BLUE);
 
         mainFrame.setResizable(false);
         mainFrame.setVisible(true);
     }
 
     public void initDialogs(){
-        addRecordDialog = new AddRecordDialog(mainFrame);
+        addRecordDialog = new AddRecordDialog(mainFrame, tableController);
     }
     private void addToFrame() {
         mainFrame.setJMenuBar(mainMenu.menuBar);
-       mainFrame.add(mainToolBar.toolBarPanel, BorderLayout.WEST);
+       mainFrame.getContentPane().add(mainToolBar.toolBarPanel, BorderLayout.NORTH);
+
+       mainFrame.add(mainTableView.holdingTable, BorderLayout.CENTER);
     }
 
     private void initMenu() {
-        mainMenu = new MainMenu(mainFrame);
+        mainMenu = new MainMenu(mainFrame, tableController);
     }
 
     private void initToolBar() {
-        mainToolBar = new Toolbar(mainFrame);
+        mainToolBar = new Toolbar(mainFrame, tableController);
     }
 
+    private void initMainTableView(){
+        mainTableView = new TableView(mainTableModel);
+
+    }
 
 }

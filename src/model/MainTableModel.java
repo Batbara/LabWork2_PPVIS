@@ -1,4 +1,6 @@
 package model;
+import controller.TableController;
+
 import javax.swing.table.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -10,18 +12,21 @@ import java.util.List;
  */
 public class MainTableModel extends AbstractTableModel {
 
-    private List<TableRecord> dataRecord = new ArrayList<TableRecord>();
+    private List<TableRecord> dataRecord;
 
+    private List<TableModelListener> listeners;
 
-    /*public Class<?> getColumnClass(int columnIndex){
-        switch (columnIndex){
-            case 4:
-                return double.class;
-            default:
-                return StringBuffer.class;
-        }
-    }*/
-    private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
+    public MainTableModel(){
+        dataRecord = new ArrayList<TableRecord>();
+        listeners = new ArrayList<TableModelListener>();
+    }
+    public Class<?> getColumnClass(int columnIndex){
+
+        return getValueAt(0,columnIndex).getClass();
+    }
+    public List<TableModelListener> getListeners(){
+        return listeners;
+    }
 
     public void addTableModelListener(TableModelListener listener) {
         listeners.add(listener);
@@ -76,7 +81,7 @@ public class MainTableModel extends AbstractTableModel {
     public void setValueAt(Object cellToAdd, int rowIndex, int columnIndex) {
         TableRecord recordAtIndex = dataRecord.get(rowIndex);
 
-        StringBuffer stringToAdd = (StringBuffer) cellToAdd;
+        String stringToAdd = (String) cellToAdd;
         Double yearsToAdd = (Double) cellToAdd;
         switch (columnIndex) {
             case 0:
@@ -105,10 +110,10 @@ public class MainTableModel extends AbstractTableModel {
         dataRecord.add(rowIndex, newRow);
         fireTableRowsInserted(rowIndex,rowIndex);
     }
-     public void addRow(){
-         TableRecord newRow = new TableRecord();
+     public void add(TableRecord row){
+         TableRecord newRow = row;
          dataRecord.add(newRow);
-         fireTableRowsInserted(dataRecord.size(), dataRecord.size());
+         fireTableRowsInserted(dataRecord.size()-1, dataRecord.size()-1);
      }
     public void deleteRow (int rowIndex) {
         dataRecord.remove(rowIndex);

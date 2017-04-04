@@ -1,5 +1,7 @@
 package view.dialogs;
 
+import controller.TableController;
+import model.TableRecord;
 import view.View;
 
 import javax.swing.*;
@@ -22,9 +24,11 @@ public class AddRecordDialog extends JDialog{
 
     private JButton okButton;
     private JButton cancelButton;
+    private TableController tableToAdjust;
 
-    public AddRecordDialog(JFrame ownerFrame){
+    public AddRecordDialog(JFrame ownerFrame, TableController tableController){
         super(ownerFrame,  "Добавить запись", Dialog.ModalityType.DOCUMENT_MODAL);
+        tableToAdjust = tableController;
 
         initDialog(ownerFrame);
         initTextFields();
@@ -53,6 +57,8 @@ public class AddRecordDialog extends JDialog{
                 studentNameField.requestFocus();
             }
         });
+
+        setOkButtonListener();
     }
     public void initDialog(JFrame owner){
         final int DIALOG_WIDTH = 320;
@@ -112,5 +118,20 @@ public class AddRecordDialog extends JDialog{
         int y = (screenSize.height / 2) - (height / 2);
 
         this.setLocation(x, y);
+    }
+    public void setOkButtonListener(){
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                 String studentName = studentNameField.getText();
+                 String parentName = parentNameField.getText();
+                 String workingAddress = workingAddressField.getText();
+                 String jobPosition = jobPositionField.getText();
+                 Double workingYears = Double.parseDouble(workingYearsField.getText());
+                TableRecord rowToAdd = new TableRecord(studentName, parentName, workingAddress,
+                        jobPosition, workingYears);
+                tableToAdjust.addRow(rowToAdd);
+            }
+        });
     }
 }

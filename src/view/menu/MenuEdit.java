@@ -1,6 +1,8 @@
 package view.menu;
 
-import view.dialogs.AddRecordDialog;
+import controller.TableController;
+import view.dialogs.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,16 +20,18 @@ public class MenuEdit extends JMenu {
     JMenuItem findMenuItem;
 
     AddRecordDialog addRecordDialog;
+    //DelRecordDialog delRecordDialog;
+
     Font menuFont;
 
-    public MenuEdit(String title, JFrame owner){
+    public MenuEdit(String title, JFrame owner, TableController tableController){
         super(title);
         menuFont = new Font("Helvetica", Font.PLAIN, 13);
         UIManager.put("menu.font", menuFont);
 
         initMenuItems();
         addMenuItems();
-        initDialogs(owner);
+        initDialogs(owner, tableController);
 
         addRecordMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -37,6 +41,18 @@ public class MenuEdit extends JMenu {
             }
         });
 
+        /*delMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                delRecordDialog.centerOnScreen();
+                delRecordDialog.setVisible(true);
+                delRecordDialog.setVisibleTextFieldItems(false);
+                delRecordDialog.noneSelected();
+                //System.out.println("i am here");
+
+            }
+        });*/
+
     }
     private void initMenuItems(){
 
@@ -45,14 +61,16 @@ public class MenuEdit extends JMenu {
         addRecordMenuItem.setFont(menuFont);
 
         delMenuItem = new JMenuItem("Удалить записи");
+        addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         delMenuItem.setFont(menuFont);
 
         findMenuItem = new JMenuItem("Поиск...");
         findMenuItem.setFont(menuFont);
 
     }
-    private void initDialogs(JFrame owner){
-        addRecordDialog=new AddRecordDialog(owner);
+    private void initDialogs(JFrame owner, TableController tableController){
+        addRecordDialog=new AddRecordDialog(owner, tableController);
+       // delRecordDialog = new DelRecordDialog(owner);
     }
     private void addMenuItems(){
         this.add(addRecordMenuItem);
