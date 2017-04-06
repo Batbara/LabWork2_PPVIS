@@ -1,9 +1,8 @@
 package controller;
-import model.MainTableModel;
-import model.TableRecord;
+import view.MainTableModel;
+import view.TableRecord;
 import view.TableView;
 
-import javax.swing.event.*;
 import javax.swing.event.TableModelListener;
 
 /**
@@ -34,5 +33,8 @@ public class TableController {
         TableRecord newRow = new TableRecord(studentName, parentName, workingAddress,
                 jobPosition, workingYears);
 
+    }
+
+    public void addStudentData(TableRecord rowToAdd) {
     }
 }

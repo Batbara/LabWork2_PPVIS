@@ -1,9 +1,7 @@
-package model;
-import controller.TableController;
+package view;
 
 import javax.swing.table.*;
 import javax.swing.event.*;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 

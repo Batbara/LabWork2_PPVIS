@@ -1,8 +1,7 @@
 package view;
 import controller.TableController;
-import model.MainTableModel;
 import view.menu.*;
-import view.toolbar.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -28,13 +27,14 @@ public class View {
         initFrame();
         initMenu();
         initToolBar();
-        initMainTableView();
 
-        addToFrame();
         mainTableModel = new MainTableModel();
+
+        initMainTableView();
 
         tableController = new TableController(mainTableModel, mainTableView);
 
+        addToFrame();
 
         //initDialogs();
 

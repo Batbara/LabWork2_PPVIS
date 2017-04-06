@@ -1,11 +1,9 @@
 package view.dialogs;
 
 import controller.TableController;
-import model.TableRecord;
-import view.View;
+import view.TableRecord;
 
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,11 +22,11 @@ public class AddRecordDialog extends JDialog{
 
     private JButton okButton;
     private JButton cancelButton;
-    private TableController tableToAdjust;
+    private TableController dialogController;
 
     public AddRecordDialog(JFrame ownerFrame, TableController tableController){
         super(ownerFrame,  "Добавить запись", Dialog.ModalityType.DOCUMENT_MODAL);
-        tableToAdjust = tableController;
+        dialogController = tableController;
 
         initDialog(ownerFrame);
         initTextFields();
@@ -130,7 +128,7 @@ public class AddRecordDialog extends JDialog{
                  Double workingYears = Double.parseDouble(workingYearsField.getText());
                 TableRecord rowToAdd = new TableRecord(studentName, parentName, workingAddress,
                         jobPosition, workingYears);
-                tableToAdjust.addRow(rowToAdd);
+                dialogController.addStudentData(rowToAdd);
             }
         });
     }

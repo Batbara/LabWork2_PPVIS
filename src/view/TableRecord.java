@@ -1,4 +1,4 @@
-package model;
+package view;
 
 /**
  * Created by Batbara on 25.03.2017.

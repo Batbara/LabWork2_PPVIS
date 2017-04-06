@@ -1,8 +1,4 @@
 package view;
-import controller.MainTableModelListener;
-import model.MainTableModel;
-import model.TableRecord;
-import model.MainTableModel;
 
 import javax.swing.*;
 import javax.swing.table.*;
