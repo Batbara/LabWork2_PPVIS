@@ -42,5 +42,10 @@ public class PersonName{
     public String getPersonFatherName(){
         return personFatherName;
     }
+    public String getShortName(){
+        String shortName;
+        shortName = getPersonSurname()+" "+getPersonName().charAt(0)+". "+getPersonFatherName().charAt(0)+".";
+        return shortName;
+    }
 
 }
