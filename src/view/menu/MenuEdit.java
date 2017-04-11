@@ -1,6 +1,6 @@
 package view.menu;
 
-import controller.TableController;
+import controller.DataController;
 import view.dialogs.*;
 
 
@@ -24,7 +24,7 @@ public class MenuEdit extends JMenu {
 
     Font menuFont;
 
-    public MenuEdit(String title, JFrame owner, TableController tableController){
+    public MenuEdit(String title, JFrame owner, DataController tableController){
         super(title);
         menuFont = new Font("Helvetica", Font.PLAIN, 13);
         UIManager.put("menu.font", menuFont);
@@ -68,7 +68,7 @@ public class MenuEdit extends JMenu {
         findMenuItem.setFont(menuFont);
 
     }
-    private void initDialogs(JFrame owner, TableController tableController){
+    private void initDialogs(JFrame owner, DataController tableController){
         addRecordDialog=new AddRecordDialog(owner, tableController);
        // delRecordDialog = new DelRecordDialog(owner);
     }

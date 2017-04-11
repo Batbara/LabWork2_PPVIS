@@ -1,12 +1,12 @@
 package view;
-import controller.TableController;
+import controller.DataController;
+import model.StudentDataBase;
 import view.menu.*;
 
 import javax.swing.*;
 import java.awt.*;
 
 import view.dialogs.*;
-import view.toolbar.Toolbar;
 
 /**
  * Created by Batbara on 21.03.2017.
@@ -17,9 +17,10 @@ public class View {
     MainMenu mainMenu;
     Toolbar mainToolBar;
     
-    MainTableModel mainTableModel;
+   // MainTableModel mainTableModel;
+    StudentDataBase studentDataBase;
     TableView mainTableView;
-    TableController tableController;
+    DataController tableController;
 
     AddRecordDialog addRecordDialog;
     public View() {
@@ -28,11 +29,9 @@ public class View {
         initMenu();
         initToolBar();
 
-        mainTableModel = new MainTableModel();
-
         initMainTableView();
 
-        tableController = new TableController(mainTableModel, mainTableView);
+        tableController = new DataController(studentDataBase, mainTableView);
 
         addToFrame();
 
@@ -72,7 +71,7 @@ public class View {
     }
 
     private void initMainTableView(){
-        mainTableView = new TableView(mainTableModel);
+        mainTableView = new TableView();
 
     }
 

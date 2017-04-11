@@ -1,11 +1,8 @@
-package view.toolbar;
-import controller.TableController;
+package view;
+import controller.DataController;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.event.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeListener;
 
 /**
  * Created by Batbara on 24.03.2017.
@@ -18,7 +15,7 @@ public class Toolbar{
     EditButtons editButtons;
 
 
-    public Toolbar (JFrame ownerFrame, TableController tableController){
+    public Toolbar (JFrame ownerFrame, DataController tableController){
 
         initToolBarPanel(ownerFrame);
         initButtons(ownerFrame, tableController);
@@ -40,7 +37,7 @@ public class Toolbar{
         toolBarPanel.setOpaque(false);
 
     }
-    private void initButtons(JFrame owner, TableController tableController){
+    private void initButtons(JFrame owner, DataController tableController){
         editButtons = new EditButtons(owner, tableController);
         fileButtons = new FileButtons();
     }

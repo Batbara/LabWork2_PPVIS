@@ -1,34 +1,23 @@
-package view.toolbar;
-
-import controller.TableController;
-import view.dialogs.AddRecordDialog;
+package view;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
- * Created by Batbara on 01.04.2017.
+ * Created by Batbara on 02.04.2017.
  */
-public class EditButtons {
-   public JButton addRecord;
-   public JButton deleteRecord;
-   public JButton findRecord;
+public class FileButtons {
+    public JButton newFile;
+    public JButton openFile;
+    public JButton saveFile;
 
-    AddRecordDialog addRecordDialog;
-
-    public EditButtons(JFrame ownerFrame, TableController tableController){
-        addRecord = initButton("plus", "plushover", "pluspressed","Добавить");
-        deleteRecord = initButton("minus", "minushover", "minuspressed",
-                "Удалить");
-        findRecord = initButton("search", "searchhover", "searchpressed",
-                "Найти");
-
-        addRecordDialog = new AddRecordDialog(ownerFrame, tableController);
-        callAddDialogFromButton();
-
+    public FileButtons(){
+        newFile=initButton("newfile", "newfilehover", "newfilepressed",
+                "Создать");
+        openFile=initButton("open","openhover", "openpressed","Открыть");
+        saveFile = initButton("save", "savehover", "savepressed",
+                "Сохранить");
     }
     private JButton initButton (String fileName, String hoverFileName, String pressedFileName,
                                 String tipText){
@@ -65,14 +54,5 @@ public class EditButtons {
         });
 
         return button;
-    }
-    public void callAddDialogFromButton (){
-        addRecord.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addRecordDialog.centerOnScreen();
-                addRecordDialog.setVisible(true);
-            }
-        });
     }
 }

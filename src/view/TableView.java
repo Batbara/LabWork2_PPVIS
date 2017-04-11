@@ -11,10 +11,10 @@ public class TableView{
     JTable mainTable;
     JScrollPane tableScroll;
     public JPanel holdingTable;
-    public MainTableModel mainTableModel;
+    MainTableModel mainTableModel;
 
-    public TableView(MainTableModel model){
-        mainTableModel = model;
+    public TableView(){
+        mainTableModel = new MainTableModel();
         initTable();
         setUpHeader();
         setUpTableColor();
