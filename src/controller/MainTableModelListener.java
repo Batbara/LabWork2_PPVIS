@@ -9,8 +9,8 @@ import javax.swing.event.TableModelListener;
  */
 public class MainTableModelListener implements TableModelListener {
     JTable table;
-    TableController tableController;
-    public MainTableModelListener (JTable inputTable, TableController controller){
+    DataController tableController;
+    public MainTableModelListener (JTable inputTable, DataController controller){
         this.table = inputTable;
         this.tableController = controller;
         this.tableController.addListener(this);

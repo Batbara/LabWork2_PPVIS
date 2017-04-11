@@ -1,4 +1,7 @@
 package controller;
+import javafx.scene.control.Tab;
+import model.Student;
+import model.StudentDataBase;
 import view.MainTableModel;
 import view.TableRecord;
 import view.TableView;
@@ -8,12 +11,13 @@ import javax.swing.event.TableModelListener;
 /**
  * Created by Batbara on 03.04.2017.
  */
-public class TableController {
+public class DataController {
     MainTableModel tableModel;
     TableView tableView;
+    StudentDataBase studentDataBase;
 
-    public TableController(MainTableModel model, TableView view) {
-        this.tableModel=model;
+    public DataController(StudentDataBase model, TableView view) {
+        this.studentDataBase =model;
         this.tableView=view;
     }
 
@@ -24,9 +28,11 @@ public class TableController {
         tableModel.removeTableModelListener(listener);
     }
 
-    public void addRow(TableRecord row) {
-        tableModel.add(row);
-
+    public void addStudentData(Student newStudent) {
+        studentDataBase.addStudent(newStudent);
+    }
+    public void removeStudentData (Student studentToRemove){
+        studentDataBase.removeStudent(studentToRemove);
     }
     public void update( String studentName, String parentName, String workingAddress,
              String jobPosition, Double workingYears){
@@ -34,7 +40,9 @@ public class TableController {
                 jobPosition, workingYears);
 
     }
-
-    public void addStudentData(TableRecord rowToAdd) {
+    public void addRowToTable(TableRecord row){
+        tableModel.add(row);
     }
+
+
 }
