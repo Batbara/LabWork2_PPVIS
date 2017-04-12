@@ -20,7 +20,7 @@ public class MenuEdit extends JMenu {
     JMenuItem findMenuItem;
 
     AddRecordDialog addRecordDialog;
-    //DelRecordDialog delRecordDialog;
+    DelRecordDialog delRecordDialog;
 
     Font menuFont;
 
@@ -68,9 +68,9 @@ public class MenuEdit extends JMenu {
         findMenuItem.setFont(menuFont);
 
     }
-    private void initDialogs(JFrame owner, DataController tableController){
-        addRecordDialog=new AddRecordDialog(owner, tableController);
-       // delRecordDialog = new DelRecordDialog(owner);
+    private void initDialogs(JFrame owner, DataController dataController){
+        addRecordDialog=new AddRecordDialog(owner, dataController);
+        delRecordDialog = new DelRecordDialog(owner, dataController);
     }
     private void addMenuItems(){
         this.add(addRecordMenuItem);

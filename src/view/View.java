@@ -4,6 +4,7 @@ import model.StudentDataBase;
 import view.menu.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 import view.dialogs.*;
@@ -20,19 +21,18 @@ public class View {
    // MainTableModel mainTableModel;
     StudentDataBase studentDataBase;
     TableView mainTableView;
-    DataController tableController;
+    DataController dataController;
 
     AddRecordDialog addRecordDialog;
     public View() {
+        setUIFont (new javax.swing.plaf.FontUIResource("Helvetica",Font.PLAIN,12));
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initFrame();
+        initMainTableView();
+        studentDataBase = new StudentDataBase();
+        dataController = new DataController(studentDataBase, mainTableView);
         initMenu();
         initToolBar();
-
-        initMainTableView();
-
-        tableController = new DataController(studentDataBase, mainTableView);
-
         addToFrame();
 
         //initDialogs();
@@ -53,7 +53,7 @@ public class View {
     }
 
     public void initDialogs(){
-        addRecordDialog = new AddRecordDialog(mainFrame, tableController);
+        addRecordDialog = new AddRecordDialog(mainFrame, dataController);
     }
     private void addToFrame() {
         mainFrame.setJMenuBar(mainMenu.menuBar);
@@ -63,16 +63,24 @@ public class View {
     }
 
     private void initMenu() {
-        mainMenu = new MainMenu(mainFrame, tableController);
+        mainMenu = new MainMenu(mainFrame, dataController);
     }
 
     private void initToolBar() {
-        mainToolBar = new Toolbar(mainFrame, tableController);
+        mainToolBar = new Toolbar(mainFrame, dataController);
     }
 
     private void initMainTableView(){
         mainTableView = new TableView();
 
     }
-
+    public static void setUIFont (javax.swing.plaf.FontUIResource f){
+        java.util.Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get (key);
+            if (value != null && value instanceof javax.swing.plaf.FontUIResource)
+                UIManager.put (key, f);
+        }
+    }
 }

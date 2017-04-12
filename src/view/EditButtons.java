@@ -2,6 +2,7 @@ package view;
 
 import controller.DataController;
 import view.dialogs.AddRecordDialog;
+import view.dialogs.DelRecordDialog;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -18,15 +19,17 @@ public class EditButtons {
    public JButton findRecord;
 
     AddRecordDialog addRecordDialog;
+    DelRecordDialog delRecordDialog;
 
-    public EditButtons(JFrame ownerFrame, DataController tableController){
+    public EditButtons(JFrame ownerFrame, DataController dataController){
         addRecord = initButton("plus", "plushover", "pluspressed","Добавить");
         deleteRecord = initButton("minus", "minushover", "minuspressed",
                 "Удалить");
         findRecord = initButton("search", "searchhover", "searchpressed",
                 "Найти");
 
-        addRecordDialog = new AddRecordDialog(ownerFrame, tableController);
+        addRecordDialog = new AddRecordDialog(ownerFrame, dataController);
+        delRecordDialog = new DelRecordDialog(ownerFrame, dataController);
         callAddDialogFromButton();
 
     }
@@ -72,6 +75,13 @@ public class EditButtons {
             public void actionPerformed(ActionEvent e) {
                 addRecordDialog.centerOnScreen();
                 addRecordDialog.setVisible(true);
+            }
+        });
+        deleteRecord.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                delRecordDialog.centerOnScreen();
+                delRecordDialog.setVisible(true);
             }
         });
     }

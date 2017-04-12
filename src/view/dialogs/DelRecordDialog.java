@@ -1,5 +1,7 @@
 package view.dialogs;
 
+import controller.DataController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,19 +25,18 @@ public class DelRecordDialog extends JDialog{
     JLabel firstLabel;
     JLabel secondLabel;
 
-    Font mainFont;
+    DataController dataController;
 
-    public DelRecordDialog(JFrame ownerFrame){
+    public DelRecordDialog(JFrame ownerFrame, DataController dataController){
         super(ownerFrame, "Удалить записи",Dialog.ModalityType.DOCUMENT_MODAL);
-        mainFont =  new Font("Helvetica", Font.PLAIN, 13);
         groupRadioButtons = new ButtonGroup();
+        this.dataController = dataController;
         initDialog();
         initTextFieldItems();
         initRadioButtons();
         addToGroup();
 
         JLabel titleLabel = new JLabel("Выберете удаление записей по:");
-        titleLabel.setFont(mainFont);
         addToDialogFrame(titleLabel);
         addButtons();
 
@@ -48,16 +49,13 @@ public class DelRecordDialog extends JDialog{
     }
     private void initRadioButtons(){
         studentNameOption = new JRadioButton("ФИО студента");
-        studentNameOption.setFont(mainFont);
 
         parentNameOrAddressOption = new JRadioButton("ФИО родителя или месту работы");
-        parentNameOrAddressOption.setFont(mainFont);
 
         parentExpOrYearsOption = new JRadioButton("Стажу или месту работы");
-        parentExpOrYearsOption.setFont(mainFont);
 
         studentNameOrAddressOption = new JRadioButton("ФИО студента или месту работы");
-        studentNameOrAddressOption.setFont(mainFont);
+
     }
     private void addToGroup(){
         groupRadioButtons.add(studentNameOption);

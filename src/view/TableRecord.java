@@ -1,23 +1,32 @@
 package view;
-
+import model.Student;
+import java.util.Vector;
 /**
  * Created by Batbara on 25.03.2017.
  */
 public class TableRecord {
+    private Vector <String> tableRecord;
     private String studentName;
     private String parentName;
     private String workingAddress;
     private String jobPosition;
-    private Double workingYears;
+    private String workingYears;
 
-    public TableRecord(String stName, String prntName, String workAdd, String job, double wYears) {
-        studentName = new String(stName);
-        parentName = new String(prntName);
-        workingAddress = new String(workAdd);
-        jobPosition = new String(job);
-        workingYears = wYears;
+
+    public TableRecord (Student student){
+        this.studentName = student.getStudentName();
+        this.parentName = student.getParentName();
+        this.workingAddress = student.getParentWorkAddress();
+        this.jobPosition = student.getParentJobPosition();
+        this.workingYears = student.getWorkExperience();
+        tableRecord = new Vector<>();
+        tableRecord.add(studentName);
+        tableRecord.add(parentName);
+        tableRecord.add(workingAddress);
+        tableRecord.add(jobPosition);
+        tableRecord.add(workingYears);
     }
-    public  TableRecord (){
+   public  TableRecord (){
     }
     public String getStudentName(){
         return studentName;
@@ -45,11 +54,14 @@ public class TableRecord {
     public void setJobPosition(String jobPositionToSet){
         jobPosition = jobPositionToSet;
     }
-    public double getWorkingYears(){
+    public String getWorkingYears(){
         return workingYears;
     }
-    public void setWorkingYears(double workingYearsToSet){
+    public void setWorkingYears(String workingYearsToSet){
         workingYears = workingYearsToSet;
+    }
+    public Vector<String> getRecordData(){
+        return tableRecord;
     }
 
 }
