@@ -1,47 +1,45 @@
 package controller;
-import javafx.scene.control.Tab;
 import model.Student;
 import model.StudentDataBase;
-import view.MainTableModel;
 import view.TableRecord;
 import view.TableView;
-
-import javax.swing.event.TableModelListener;
+import java.util.Observer;
+import java.util.Observable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Created by Batbara on 03.04.2017.
  */
-public class DataController {
-    MainTableModel tableModel;
+public class DataController implements Observer{
     TableView tableView;
     StudentDataBase studentDataBase;
 
     public DataController(StudentDataBase model, TableView view) {
-        this.studentDataBase =model;
+        this.studentDataBase = model;
         this.tableView=view;
+        this.studentDataBase.addObserver(this);
     }
 
-    public void addListener(TableModelListener listener){
-        tableModel.addTableModelListener(listener);
-    }
-    public void removeListener(TableModelListener listener) {
-        tableModel.removeTableModelListener(listener);
-    }
 
     public void addStudentData(Student newStudent) {
         studentDataBase.addStudent(newStudent);
+
     }
     public void removeStudentData (Student studentToRemove){
         studentDataBase.removeStudent(studentToRemove);
     }
-    public void update( String studentName, String parentName, String workingAddress,
-             String jobPosition, Double workingYears){
-        TableRecord newRow = new TableRecord(studentName, parentName, workingAddress,
-                jobPosition, workingYears);
 
+    public void update(Observable observable, Object data){
+        if(observable instanceof StudentDataBase){
+            StudentDataBase dataBase = (StudentDataBase)observable;
+            Student addedStudent = (Student)data;
+            TableRecord newRow = new TableRecord(addedStudent);
+            addRowToTable(newRow);
+        }
     }
-    public void addRowToTable(TableRecord row){
-        tableModel.add(row);
+    public void addRowToTable(TableRecord record){
+        DefaultTableModel defaultTableModel = (DefaultTableModel)tableView.getModel();
+        defaultTableModel.addRow(record.getRecordData());
     }
 
 
