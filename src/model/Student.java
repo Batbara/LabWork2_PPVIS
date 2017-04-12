@@ -28,7 +28,20 @@ public class Student {
         ParentWorkAddress workAddress = new ParentWorkAddress(workAdd);
         this.parentWorkAddress = workAddress;
     }
-    public Student(){
+    public String getStudentName (){
+        return studentName.getShortName();
+    }
+    public String getParentName(){
+        return parentName.getShortName();
+    }
+    public String getParentWorkAddress(){
+        return parentWorkAddress.getWorkAddress();
+    }
+    public String getParentJobPosition(){
+        return parentJobPosition.getParentJobPosition();
+    }
+    public String getWorkExperience(){
+        return workExperience.getWorkExperience();
     }
 
 }

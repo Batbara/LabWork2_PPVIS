@@ -12,6 +12,9 @@ public class ParentJobPosition {
     public ParentJobPosition(String jobName){
         this.positionName=jobName;
     }
+    public String getParentJobPosition(){
+        return positionName;
+    }
     public void setJobPosition(String jobName){
         this.positionName=jobName;
     }

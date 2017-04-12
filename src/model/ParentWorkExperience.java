@@ -11,11 +11,18 @@ public class ParentWorkExperience {
         this.workingYears=0;
         this.workingMonths=0;
     }
-    public ParentWorkExperience(Integer years, Integer months){
-        this.workingYears=years;
-        this.workingMonths = months;
+    public ParentWorkExperience(String years, String months){
+        int workingYears = Integer.parseInt(years);
+        int workingMonths = Integer.parseInt(months);
+        if (workingMonths >= 12) {
+             workingYears = workingYears + workingMonths % 12;
+             workingMonths /= 12;
+        }
+        this.workingYears=workingYears;
+        this.workingMonths = workingMonths;
     }
-    public ParentWorkExperience(Double workExperience){
-        //workExperience.
+    public String getWorkExperience(){
+        return Integer.toString(workingYears)+"."+Integer.toString(workingMonths);
     }
+
 }

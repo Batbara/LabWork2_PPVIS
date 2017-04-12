@@ -8,7 +8,7 @@ public class PersonName{
     private String personSurname;
     private String personFatherName;
 
-    public PersonName(String name, String surname, String fatherName){
+    public PersonName(String surname, String name, String fatherName){
         personName = name;
         personSurname = surname;
         personFatherName = fatherName;

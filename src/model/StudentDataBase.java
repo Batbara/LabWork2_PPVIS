@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
+
 
 /**
  * Created by Batbara on 08.04.2017.
@@ -17,19 +17,20 @@ public class StudentDataBase extends Observable {
 
     public void addStudent(Student newStudent){
         students.add(newStudent);
+        rowAddedToModel(newStudent);
     }
 
     public void removeStudent(Student studentToRemove){
-        for (Iterator<Student> iterator =students.listIterator(); iterator.hasNext();){
+        for (Iterator<Student> iterator = students.listIterator(); iterator.hasNext();){
             Student student = iterator.next();
             if (studentToRemove==student){
                 iterator.remove();
             }
         }
     }
-    public void modelChanged(){
+    public void rowAddedToModel(Student student){
         setChanged();
-        notifyObservers();
+        notifyObservers(student);
     }
 
 }

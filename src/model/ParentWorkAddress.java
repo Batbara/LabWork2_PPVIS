@@ -13,10 +13,14 @@ public class ParentWorkAddress {
         this.streetOfWork="";
         this.buildingNumberOfWork=null;
     }
-    public ParentWorkAddress(String city, String street, Integer buildingNumber){
+    public ParentWorkAddress(String city, String street, String buildingNumber){
         this.cityOfWork=city;
         this.streetOfWork=street;
-        this.buildingNumberOfWork=buildingNumber;
+        this.buildingNumberOfWork=Integer.parseInt(buildingNumber);
+    }
+    public String getWorkAddress(){
+        String workAddress = "г. "+cityOfWork+", " + streetOfWork +" д. " + Integer.toString(buildingNumberOfWork);
+        return workAddress;
     }
     public ParentWorkAddress(String rawData){
 
