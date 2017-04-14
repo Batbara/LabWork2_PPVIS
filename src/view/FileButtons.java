@@ -1,5 +1,8 @@
 package view;
 
+import controller.DataController;
+import view.listeners.SaveFileListener;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -12,12 +15,15 @@ public class FileButtons {
     public JButton openFile;
     public JButton saveFile;
 
-    public FileButtons(){
+    public FileButtons(DataController dataController){
         newFile=initButton("newfile", "newfilehover", "newfilepressed",
                 "Создать");
         openFile=initButton("open","openhover", "openpressed","Открыть");
         saveFile = initButton("save", "savehover", "savepressed",
                 "Сохранить");
+
+        SaveFileListener saveFileListener = new SaveFileListener(dataController);
+        saveFile.addActionListener(saveFileListener);
     }
     private JButton initButton (String fileName, String hoverFileName, String pressedFileName,
                                 String tipText){

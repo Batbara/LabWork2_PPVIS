@@ -1,6 +1,10 @@
 package view.menu;
 
 
+import controller.DataController;
+import view.listeners.OpenFileListener;
+import view.listeners.SaveFileListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,43 +20,32 @@ public class MenuFile extends JMenu {
     JMenuItem createMenuItem;
     JMenuItem closeMenuItem;
 
-    //AddRecordDialog addRecordDialog;
-    Font menuFont;
-
-    public MenuFile(String title, JFrame owner){
+    public MenuFile(String title, JFrame owner, DataController dataController){
         super(title);
-
-        menuFont = new Font("Helvetica", Font.PLAIN, 13);
-        UIManager.put("menu.font", menuFont);
 
         initMenuItems();
         addMenuItems();
-        //initDialogs(owner);
-//        addRecordMenuItem.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                addRecordDialog.setVisible(true);
-//            }
-//        });
+
+        OpenFileListener openFileListener = new OpenFileListener();
+        openMenuItem.addActionListener(openFileListener);
+
+        SaveFileListener saveFileListener = new SaveFileListener(dataController);
+        saveMenuItem.addActionListener(saveFileListener);
     }
     private void initMenuItems(){
 
         openMenuItem = new JMenuItem("Открыть...");
         openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        openMenuItem.setFont(menuFont);
+
 
         saveMenuItem = new JMenuItem("Сохранить");
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        saveMenuItem.setFont(menuFont);
 
         createMenuItem = new JMenuItem("Новый файл");
         createMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        createMenuItem.setFont(menuFont);
 
         closeMenuItem = new JMenuItem("Закрыть");
         closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
-        closeMenuItem.setFont(menuFont);
-
     }
    // private void initDialogs(JFrame owner){
 //        addRecordDialog=new AddRecordDialog(owner);

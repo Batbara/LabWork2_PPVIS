@@ -2,7 +2,7 @@ package view;
 
 import controller.DataController;
 import view.dialogs.AddRecordDialog;
-import view.dialogs.DelRecordDialog;
+import view.dialogs.DeleteRecordDialog;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -19,7 +19,7 @@ public class EditButtons {
    public JButton findRecord;
 
     AddRecordDialog addRecordDialog;
-    DelRecordDialog delRecordDialog;
+    DeleteRecordDialog delRecordDialog;
 
     public EditButtons(JFrame ownerFrame, DataController dataController){
         addRecord = initButton("plus", "plushover", "pluspressed","Добавить");
@@ -29,7 +29,7 @@ public class EditButtons {
                 "Найти");
 
         addRecordDialog = new AddRecordDialog(ownerFrame, dataController);
-        delRecordDialog = new DelRecordDialog(ownerFrame, dataController);
+        delRecordDialog = new DeleteRecordDialog("Удалить записи", "Выберете критерий удаления", ownerFrame);
         callAddDialogFromButton();
 
     }
@@ -82,6 +82,9 @@ public class EditButtons {
             public void actionPerformed(ActionEvent e) {
                 delRecordDialog.centerOnScreen();
                 delRecordDialog.setVisible(true);
+                delRecordDialog.clearAllTextFields();
+                delRecordDialog.noneSelected();
+                delRecordDialog.setPanelsVisibility(false);
             }
         });
     }

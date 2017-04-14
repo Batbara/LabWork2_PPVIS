@@ -26,6 +26,7 @@ public class View {
     AddRecordDialog addRecordDialog;
     public View() {
         setUIFont (new javax.swing.plaf.FontUIResource("Helvetica",Font.PLAIN,12));
+
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initFrame();
         initMainTableView();
@@ -73,6 +74,9 @@ public class View {
     private void initMainTableView(){
         mainTableView = new TableView();
 
+    }
+    public DataController getDataController(){
+        return dataController;
     }
     public static void setUIFont (javax.swing.plaf.FontUIResource f){
         java.util.Enumeration keys = UIManager.getDefaults().keys();

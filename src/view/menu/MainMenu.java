@@ -28,10 +28,10 @@ public class MainMenu {
         addToMenuBar();
     }
 
-    private void createMenu(JFrame owner, DataController tableController) {
+    private void createMenu(JFrame owner, DataController dataController) {
         menuBar= new JMenuBar();
-        menuFile = new MenuFile("Файл",owner);
-        menuEdit = new MenuEdit("Правка", owner, tableController);
+        menuFile = new MenuFile("Файл",owner, dataController);
+        menuEdit = new MenuEdit("Правка", owner, dataController);
         menuHelp = new MenuHelp("Помощь",owner);
 
         menuFile.setFont(menuFont);

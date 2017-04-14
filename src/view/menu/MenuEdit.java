@@ -20,7 +20,7 @@ public class MenuEdit extends JMenu {
     JMenuItem findMenuItem;
 
     AddRecordDialog addRecordDialog;
-    DelRecordDialog delRecordDialog;
+    DeleteRecordDialog deleteRecordDialog;
 
     Font menuFont;
 
@@ -44,10 +44,10 @@ public class MenuEdit extends JMenu {
         /*delMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                delRecordDialog.centerOnScreen();
-                delRecordDialog.setVisible(true);
-                delRecordDialog.setVisibleTextFieldItems(false);
-                delRecordDialog.noneSelected();
+                deleteRecordDialog.centerOnScreen();
+                deleteRecordDialog.setVisible(true);
+                deleteRecordDialog.setVisibleTextFieldItems(false);
+                deleteRecordDialog.noneSelected();
                 //System.out.println("i am here");
 
             }
@@ -70,7 +70,7 @@ public class MenuEdit extends JMenu {
     }
     private void initDialogs(JFrame owner, DataController dataController){
         addRecordDialog=new AddRecordDialog(owner, dataController);
-        delRecordDialog = new DelRecordDialog(owner, dataController);
+        deleteRecordDialog = new DeleteRecordDialog("Удалить записи", "Выберете критерий удаления", owner);
     }
     private void addMenuItems(){
         this.add(addRecordMenuItem);

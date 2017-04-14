@@ -37,9 +37,9 @@ public class Toolbar{
         toolBarPanel.setOpaque(false);
 
     }
-    private void initButtons(JFrame owner, DataController tableController){
-        editButtons = new EditButtons(owner, tableController);
-        fileButtons = new FileButtons();
+    private void initButtons(JFrame owner, DataController dataController){
+        editButtons = new EditButtons(owner, dataController);
+        fileButtons = new FileButtons(dataController);
     }
     private void addToPanel(){
         toolBarPanel.add(fileButtons.newFile);

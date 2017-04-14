@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
+import javax.swing.BorderFactory;
 import java.awt.*;
 
 /**
@@ -25,8 +26,9 @@ public class TableView extends JTable{
 
         holdingTable = new JPanel();
         holdingTable.setLayout(new BorderLayout());
-        holdingTable.setPreferredSize(new Dimension(850, 300));
         holdingTable.add(tableScroll);
+//        tableScroll.setBorder(BorderFactory.createLineBorder(Color.yellow));
+//        holdingTable.setBorder(BorderFactory.createLineBorder(Color.green));
 
         //this.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
        /* this.getModel().addTableModelListener(new TableModelListener() {

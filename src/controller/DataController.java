@@ -5,6 +5,7 @@ import view.TableRecord;
 import view.TableView;
 import java.util.Observer;
 import java.util.Observable;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,6 +41,9 @@ public class DataController implements Observer{
     public void addRowToTable(TableRecord record){
         DefaultTableModel defaultTableModel = (DefaultTableModel)tableView.getModel();
         defaultTableModel.addRow(record.getRecordData());
+    }
+    public List<Student> getDataBase(){
+        return studentDataBase.getStudents();
     }
 
 
