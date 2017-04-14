@@ -25,6 +25,7 @@ public class AddRecordDialog extends JDialog{
     public AddRecordDialog(JFrame ownerFrame, DataController dataController){
         super(ownerFrame,  "Добавить запись", Dialog.ModalityType.DOCUMENT_MODAL);
         this.dataController = dataController;
+        this.
 
         initDialog();
         initTextFields();
@@ -51,6 +52,7 @@ public class AddRecordDialog extends JDialog{
         this.setMaximumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
+        this.setResizable(false);
         centerOnScreen();
     }
     private void initTextFields(){
