@@ -17,7 +17,7 @@ public class StudentDataBase extends Observable {
 
     public void addStudent(Student newStudent){
         students.add(newStudent);
-        rowAddedToModel(newStudent);
+        studentAdded(newStudent);
     }
 
     public void removeStudent(Student studentToRemove){
@@ -28,9 +28,12 @@ public class StudentDataBase extends Observable {
             }
         }
     }
-    public void rowAddedToModel(Student student){
+    public void studentAdded(Student student){
         setChanged();
         notifyObservers(student);
+    }
+    public List <Student> getStudents(){
+        return students;
     }
 
 }

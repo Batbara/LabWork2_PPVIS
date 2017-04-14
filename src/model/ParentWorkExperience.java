@@ -25,4 +25,11 @@ public class ParentWorkExperience {
         return Integer.toString(workingYears)+"."+Integer.toString(workingMonths);
     }
 
+    public Integer getWorkingYears() {
+        return workingYears;
+    }
+
+    public Integer getWorkingMonths() {
+        return workingMonths;
+    }
 }

@@ -18,30 +18,38 @@ public class Student {
         this.parentJobPosition = jobPosition;
         this.workExperience = workExperience;
     }
-    public Student(String stName, String prntName, String workAdd, String job, double wYears){
-        PersonName studentName= new PersonName(stName);
-        this.studentName = studentName;
 
-        PersonName parentName = new PersonName(prntName);
-        this.parentName = parentName;
-
-        ParentWorkAddress workAddress = new ParentWorkAddress(workAdd);
-        this.parentWorkAddress = workAddress;
-    }
-    public String getStudentName (){
+    public String getStudentNameString(){
         return studentName.getShortName();
     }
-    public String getParentName(){
+    public String getParentNameString(){
         return parentName.getShortName();
     }
-    public String getParentWorkAddress(){
+    public String getParentWorkAddressString(){
         return parentWorkAddress.getWorkAddress();
     }
-    public String getParentJobPosition(){
+    public String getParentJobPositionString(){
         return parentJobPosition.getParentJobPosition();
     }
-    public String getWorkExperience(){
+    public String getWorkExperienceString(){
         return workExperience.getWorkExperience();
     }
+
+    public PersonName getStudentName(){
+        return studentName;
+    }
+    public PersonName getParentName(){
+        return parentName;
+    }
+    public ParentWorkAddress getParentWorkAddress(){
+        return parentWorkAddress;
+    }
+    public ParentJobPosition getParentJobPosition(){
+        return parentJobPosition;
+    }
+    public ParentWorkExperience getWorkExperience(){
+        return workExperience;
+    }
+
 
 }
