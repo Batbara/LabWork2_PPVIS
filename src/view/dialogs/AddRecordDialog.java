@@ -7,17 +7,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by student on 31.03.2017.
  */
 public class AddRecordDialog extends JDialog{
 
-    private JTextField []studentNameField;
-    private JTextField []parentNameField;
-    private JTextField []workingAddressField;
-    private JTextField []workExperienceField;
+    //
+    private Map<String, JTextField> studentFields;
 
+    private Student studentToAdd;
     private JButton okButton;
     private JButton cancelButton;
     private DataController dataController;
@@ -25,7 +26,7 @@ public class AddRecordDialog extends JDialog{
     public AddRecordDialog(JFrame ownerFrame, DataController dataController){
         super(ownerFrame,  "Добавить запись", Dialog.ModalityType.DOCUMENT_MODAL);
         this.dataController = dataController;
-        this.
+        studentToAdd = new Student();
 
         initDialog();
         initTextFields();
@@ -34,10 +35,9 @@ public class AddRecordDialog extends JDialog{
         fillWindowWithTextFieldPanels();
         fillWindowWithButtons();
 
-
         this.addWindowListener( new WindowAdapter() {
             public void windowOpened( WindowEvent e ){
-                studentNameField[0].requestFocus();
+                studentFields.get("Фамилия1").requestFocus();
             }
         });
 
@@ -57,40 +57,37 @@ public class AddRecordDialog extends JDialog{
     }
     private void initTextFields(){
 
-        studentNameField = new JTextField[3];
-        parentNameField = new JTextField[3];
-        workingAddressField = new JTextField[3];
-        workExperienceField = new JTextField[3];
-        
-        for(int iterator=0; iterator<studentNameField.length; iterator++) {
-            studentNameField[iterator] = new JTextField(10);
+        studentFields = new LinkedHashMap<>();
+        String []fieldKeys = {"Фамилия1", "Имя1", "Отчество1", "Фамилия", "Имя", "Отчество", "Город", "Улица", "Номер дома",
+                "Должность", "Годы работы", "Месяцы работы"};
+        for (int iterator =0; iterator<fieldKeys.length; iterator++) {
+            studentFields.put(fieldKeys[iterator], new JTextField(10));
         }
 
-        for(int iterator=0; iterator<parentNameField.length; iterator++) {
-            parentNameField[iterator] = new JTextField(10);
-        }
-
-        for(int iterator=0; iterator<workingAddressField.length; iterator++)
-            workingAddressField[iterator] = new JTextField(10);
-
-        for(int iterator=0; iterator<workExperienceField.length; iterator++)
-            workExperienceField[iterator] = new JTextField(10);;
     }
     private void initButtons () {
         okButton = new JButton("Добавить");
         cancelButton = new JButton("Отмена");
     }
-    private JPanel makePanelContainer(String panelTitle, JTextField []dataFields, String [] textLabels){
+    private JPanel makePanelContainer(String panelTitle, Set<String> fieldKeys){
         JPanel panelContainer = new JPanel();
         panelContainer.setBorder(BorderFactory.createTitledBorder
                 (BorderFactory.createLineBorder(Color.lightGray), panelTitle));
-        int numOfFields = dataFields.length;
+        int numOfFields = fieldKeys.size();
 
         panelContainer.setLayout(new GridLayout(numOfFields, 2));
-        for (int iterator = 0; iterator<numOfFields; iterator++){
-            JLabel textLabel = new JLabel(textLabels[iterator]);
+        for (String key: fieldKeys){
+            JLabel textLabel;
+            if(key.equals("Фамилия1") || key.equals("Имя1") || key.equals("Отчество1")){
+                int stringLength = key.length();
+                String changedKey = key.substring(0,stringLength-1);
+                textLabel = new JLabel(changedKey);
+            }
+            else {
+                textLabel = new JLabel(key);
+            }
             panelContainer.add(textLabel);
-            panelContainer.add(dataFields[iterator]);
+            panelContainer.add(studentFields.get(key));
         }
         return panelContainer;
     }
@@ -99,18 +96,11 @@ public class AddRecordDialog extends JDialog{
         this.add(componentToAdd);
     }
     private void clearTextFields(){
-        for(int iterator=0; iterator<studentNameField.length; iterator++)
-         studentNameField[iterator].setText(null);
+        Set<String> fieldKeys = studentFields.keySet();
+        for (String key: fieldKeys){
+            studentFields.get(key).setText(null);
+        }
 
-        for(int iterator=0; iterator<parentNameField.length; iterator++)
-         parentNameField[iterator].setText(null);
-
-        for(int iterator=0; iterator<workingAddressField.length; iterator++)
-         workingAddressField[iterator].setText(null);
-
-
-        for(int iterator=0; iterator<workExperienceField.length; iterator++)
-         workExperienceField[iterator].setText(null);
     }
     public void centerOnScreen() {
         final int width = this.getWidth();
@@ -122,14 +112,31 @@ public class AddRecordDialog extends JDialog{
         this.setLocation(x, y);
     }
     private void fillWindowWithTextFieldPanels(){
-        String []nameLabels = {"Фамилия", "Имя", "Отчество"};
-        String []addressLabels = {"Город", "Улица", "Номер дома"};
-        String []workExperienceLabels = {"Должность", "Годы работы", "Месяцы работы"};
 
-        JPanel studentNamePanel = makePanelContainer("ФИО студента", studentNameField, nameLabels );
-        JPanel parentNamePanel = makePanelContainer("ФИО родителя", parentNameField, nameLabels);
-        JPanel addressPanel = makePanelContainer("Адрес работы", workingAddressField, addressLabels);
-        JPanel workExperiencePanel = makePanelContainer("Должность и стаж", workExperienceField, workExperienceLabels );
+        Set<String> studentNameKeys = new LinkedHashSet<>();
+        studentNameKeys.add("Фамилия1");
+        studentNameKeys.add("Имя1");
+        studentNameKeys.add("Отчество1");
+
+        Set<String> nameKeys = new LinkedHashSet<>();
+        nameKeys.add("Фамилия");
+        nameKeys.add("Имя");
+        nameKeys.add("Отчество");
+
+        Set<String> addressKeys = new LinkedHashSet<>();
+        addressKeys.add("Город");
+        addressKeys.add("Улица");
+        addressKeys.add("Номер дома");
+
+        Set<String> workExpKeys = new LinkedHashSet<>();
+        workExpKeys.add("Должность");
+        workExpKeys.add("Годы работы");
+        workExpKeys.add("Месяцы работы");
+
+        JPanel studentNamePanel = makePanelContainer("ФИО студента", studentNameKeys);
+        JPanel parentNamePanel = makePanelContainer("ФИО родителя", nameKeys);
+        JPanel addressPanel = makePanelContainer("Адрес работы", addressKeys);
+        JPanel workExperiencePanel = makePanelContainer("Должность и стаж", workExpKeys );
 
         addToDialogFrame(studentNamePanel);
         addToDialogFrame(parentNamePanel);
@@ -143,37 +150,37 @@ public class AddRecordDialog extends JDialog{
 
         addToDialogFrame(buttonsPanel);
     }
-    public String[] getTextFromField (JTextField []dataFields){
-        int numberOfFields = dataFields.length;
-        String []textFromFields = new String[numberOfFields];
-        for(int iterator=0; iterator<numberOfFields; iterator++){
-            textFromFields[iterator] = dataFields[iterator].getText();
-        }
-        return textFromFields;
+    public String getTextFromField (String fieldKey){
+        return studentFields.get(fieldKey).getText();
     }
     private void setButtonListeners(){
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String []studentNameData = getTextFromField(studentNameField);
-                PersonName studentName = new PersonName(studentNameData[0], studentNameData[1], studentNameData[2]);
 
-                String []parentNameData = getTextFromField(parentNameField);
-                PersonName parentName = new PersonName(parentNameData[0], parentNameData[1], parentNameData[2]);
+                studentToAdd.setStudentSurname(getTextFromField("Фамилия1"));
+                studentToAdd.setStudentName(getTextFromField("Имя1"));
+                studentToAdd.setStudentFatherName(getTextFromField("Отчество1"));
 
-                String []workingAddressData = getTextFromField(workingAddressField);
-                ParentWorkAddress workAddress = new ParentWorkAddress(workingAddressData[0], workingAddressData[1],
-                        workingAddressData[2]);
-
-                String []workExperienceData = getTextFromField(workExperienceField);
-                ParentJobPosition jobPosition = new ParentJobPosition(workExperienceData[0]);
-
-                ParentWorkExperience workingExperience = new ParentWorkExperience(workExperienceData[1],
-                        workExperienceData[2]);
+                Parent parentToAdd = studentToAdd.getStudentParent();
+                parentToAdd.setParentSurname(getTextFromField("Фамилия"));
+                parentToAdd.setParentName(getTextFromField("Имя"));
+                parentToAdd.setParentFatherName(getTextFromField("Отчество"));
 
 
-                Student newStudent = new Student(studentName, parentName, workAddress, jobPosition,workingExperience);
-                dataController.addStudentData(newStudent);
+                Worker parentWorker = parentToAdd.getWorkerData();
+
+                parentWorker.setCityOfWork(getTextFromField("Город"));
+                parentWorker.setStreetOfWork(getTextFromField("Улица"));
+                parentWorker.setBuildingNumberOfWork(Integer.parseInt(getTextFromField("Номер дома")));
+                parentWorker.setJobPosition(getTextFromField("Должность"));
+                parentWorker.setWorkingYears(Integer.parseInt(getTextFromField("Годы работы")));
+                parentWorker.setWorkingMonths(Integer.parseInt(getTextFromField("Месяцы работы")));
+
+                parentToAdd.setWorkerData(parentWorker);
+                studentToAdd.setStudentParent(parentToAdd);
+
+                dataController.addStudentData(studentToAdd);
 
                 clearTextFields();
                 setVisible(false);

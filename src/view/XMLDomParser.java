@@ -3,7 +3,9 @@ package view;
 import java.util.List;
 
 import controller.DataController;
+import model.Parent;
 import model.Student;
+import model.Worker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.io.File;
@@ -17,9 +19,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+
 /**
  * Created by Batbara on 14.04.2017.
  */
@@ -60,61 +60,67 @@ public class XMLDomParser {
             document.appendChild(studentDataBase);
 
             for (Student student : dataBase){
+                Parent studentParent = student.getStudentParent();
+                Worker parentWorker = studentParent.getWorkerData();
                 Element studentNode = document.createElement(XMLConst.STUDENT);
                 studentDataBase.appendChild(studentNode);
 
-                Element surname = document.createElement(XMLConst.SURNAME);
-                surname.setTextContent(student.getStudentName().getPersonSurname());
-                studentNode.appendChild(surname);
+                Element studentSurname = document.createElement(XMLConst.SURNAME);
+                studentSurname.setTextContent(student.getStudentSurname());
+                studentNode.appendChild(studentSurname);
 
                 Element name = document.createElement(XMLConst.NAME);
-                name.setTextContent(student.getStudentName().getPersonName());
+                name.setTextContent(student.getStudentName());
                 studentNode.appendChild(name);
 
                 Element fatherName = document.createElement(XMLConst.FATHER_NAME);
-                fatherName.setTextContent(student.getStudentName().getPersonFatherName());
+                fatherName.setTextContent(student.getStudentFatherName());
                 studentNode.appendChild(fatherName);
 
                 Element parent = document.createElement(XMLConst.PARENT);
                 studentNode.appendChild(parent);
 
-                surname.setTextContent(student.getParentName().getPersonSurname());
-                parent.appendChild(surname);
+                Element parentSurname = document.createElement(XMLConst.SURNAME);
+                parentSurname.setTextContent(studentParent.getParentSurname());
+                parent.appendChild(parentSurname);
 
-                name.setTextContent(student.getParentName().getPersonName());
-                parent.appendChild(name);
+                Element parentName = document.createElement(XMLConst.NAME);
+                parentName.setTextContent(studentParent.getParentName());
+                parent.appendChild(parentName);
 
-                fatherName.setTextContent(student.getParentName().getPersonFatherName());
-                parent.appendChild(fatherName);
+                Element parentFatherName = document.createElement(XMLConst.FATHER_NAME);
+                parentFatherName.setTextContent(studentParent.getParentFatherName());
+                parent.appendChild(parentFatherName);
+
 
                 Element job = document.createElement(XMLConst.JOB_POSITION);
-                job.setTextContent(student.getParentJobPosition().getParentJobPosition());
+                job.setTextContent(parentWorker.getJobPosition());
                 parent.appendChild(job);
 
                 Element address = document.createElement(XMLConst.WORK_ADDRESS);
                 parent.appendChild(address);
 
                 Element city = document.createElement(XMLConst.CITY);
-                city.setTextContent(student.getParentWorkAddress().getCityOfWork());
+                city.setTextContent(parentWorker.getCityOfWork());
                 address.appendChild(city);
 
                 Element street = document.createElement(XMLConst.STREET);
-                street.setTextContent(student.getParentWorkAddress().getStreetOfWork());
+                street.setTextContent(parentWorker.getStreetOfWork());
                 address.appendChild(street);
 
                 Element buildingNumber = document.createElement(XMLConst.BUILDING_NUMBER);
-                buildingNumber.setTextContent(student.getParentWorkAddress().getBuildingNumberOfWork().toString());
+                buildingNumber.setTextContent(parentWorker.getBuildingNumberOfWork().toString());
                 address.appendChild(buildingNumber);
 
                 Element experience = document.createElement(XMLConst.WORK_EXPERIENCE);
                 parent.appendChild(experience);
 
                 Element years = document.createElement(XMLConst.WORK_YEARS);
-                years.setTextContent(student.getWorkExperience().getWorkingYears().toString());
+                years.setTextContent(parentWorker.getWorkingYears().toString());
                 experience.appendChild(years);
 
                 Element months = document.createElement(XMLConst.WORK_MONTHS);
-                months.setTextContent(student.getWorkExperience().getWorkingMonths().toString());
+                months.setTextContent(parentWorker.getWorkingMonths().toString());
                 experience.appendChild(months);
                 return document;
             }

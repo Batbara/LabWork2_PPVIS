@@ -4,9 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 
 /**
  * Created by Batbara on 13.04.2017.
@@ -14,7 +12,7 @@ import java.util.Hashtable;
 public class SearchAndDeleteView extends JDialog {
     ButtonGroup groupRadioButtons;
 
-    Hashtable<String, JRadioButton> optionButtons;
+    Map<String, JRadioButton> optionButtons;
     Hashtable<String, JPanel> optionPanels;
 
     private JTextField []studentNameField;
@@ -214,9 +212,8 @@ public class SearchAndDeleteView extends JDialog {
     }
 
     private void addOptionListeners(){
-        Enumeration<String> buttonKeys = optionButtons.keys();
-        for (Enumeration<String> element = buttonKeys; element.hasMoreElements();) {
-            String keyValue = element.nextElement();
+        Set<String> buttonKeys = optionButtons.keySet();
+        for (String keyValue: buttonKeys){
             JRadioButton button = optionButtons.get(keyValue);
             button.addActionListener(new ActionListener() {
                 @Override

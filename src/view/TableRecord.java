@@ -1,5 +1,7 @@
 package view;
 import model.Student;
+import model.Worker;
+
 import java.util.Vector;
 /**
  * Created by Batbara on 25.03.2017.
@@ -11,12 +13,14 @@ public class TableRecord {
 
     public TableRecord (Student student){
         tableRecord = new Vector<>();
+        Worker parentWorker = student.getStudentParent().getWorkerData();
 
-        String studentName = student.getStudentNameString();
-        String parentName = student.getParentNameString();
-        String workingAddress = student.getParentWorkAddressString();
-        String jobPosition = student.getParentJobPositionString();
-        String workingYears = student.getWorkExperienceString();
+        String studentName = student.getFullName();
+        String parentName = student.getStudentParent().getFullName();
+
+        String workingAddress = parentWorker.getFullAddress();
+        String jobPosition = parentWorker.getJobPosition();
+        String workingYears = parentWorker.getWorkingExperience();
 
         tableRecord.add(studentName);
         tableRecord.add(parentName);
