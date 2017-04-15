@@ -6,6 +6,9 @@ package view;
 public class XMLConst {
     static final String STUDENT_DATA_BASE = "studentDataBase";
     static final String STUDENT = "student";
+//    static final String STUDENT_SURNAME = "studentSurname";
+//    static final String STUDENT_NAME = "studenname";
+//    static final String FATHER_NAME = "fatherName";
     static final String SURNAME = "surname";
     static final String NAME = "name";
     static final String FATHER_NAME = "fatherName";

@@ -26,7 +26,7 @@ public class MenuFile extends JMenu {
         initMenuItems();
         addMenuItems();
 
-        OpenFileListener openFileListener = new OpenFileListener();
+        OpenFileListener openFileListener = new OpenFileListener(dataController);
         openMenuItem.addActionListener(openFileListener);
 
         SaveFileListener saveFileListener = new SaveFileListener(dataController);

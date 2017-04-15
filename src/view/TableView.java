@@ -43,7 +43,7 @@ public class TableView extends JTable{
         String []tableHeaders ={"ФИО студента:", "ФИО родителя:", "Адрес работы родителя:",
                 "Должность родителя:", "Стаж работы родителя:"};
 
-        DefaultTableModel tableModel = new DefaultTableModel(tableHeaders,5) {
+        DefaultTableModel tableModel = new DefaultTableModel(tableHeaders,0) {
             @Override
             public boolean isCellEditable(int row, int column){
                 return false;

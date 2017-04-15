@@ -28,6 +28,22 @@ public class StudentDataBase extends Observable {
             }
         }
     }
+    public void reinitDataBase(List<Student> studentsList){
+        //students = studentsList;
+        removeAllStudents();
+        for(Student student: studentsList){
+            addStudent(student);
+        }
+    }
+    public void removeAllStudents(){
+        students.clear();
+        allStudentsRemoved();
+    }
+    public void allStudentsRemoved(){
+        setChanged();
+        notifyObservers();
+    }
+
     public void studentAdded(Student student){
         setChanged();
         notifyObservers(student);

@@ -30,7 +30,7 @@ public class EditButtons {
 
         addRecordDialog = new AddRecordDialog(ownerFrame, dataController);
         delRecordDialog = new DeleteRecordDialog("Удалить записи", "Выберете критерий удаления", ownerFrame);
-        callAddDialogFromButton();
+        callAddDialogFromButton(dataController);
 
     }
     private JButton initButton (String fileName, String hoverFileName, String pressedFileName,
@@ -69,7 +69,7 @@ public class EditButtons {
 
         return button;
     }
-    public void callAddDialogFromButton (){
+    public void callAddDialogFromButton (DataController dataController){
         addRecord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,5 +87,11 @@ public class EditButtons {
                 delRecordDialog.setPanelsVisibility(false);
             }
         });
+//        deleteRecord.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                dataController.clearDataBase();
+//            }
+//        });
     }
 }

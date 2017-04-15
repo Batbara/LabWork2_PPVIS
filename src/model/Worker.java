@@ -17,16 +17,16 @@ public class Worker {
     public Worker(){
         cityOfWork="";
         streetOfWork="";
-        buildingNumberOfWork=null;
-        workingMonths=null;
-        workingYears=null;
+        buildingNumberOfWork=0;
+        workingMonths=0;
+        workingYears=0;
     }
 
     public String getFullAddress(){
         return "г. "+cityOfWork+", " + streetOfWork +" д. " + Integer.toString(buildingNumberOfWork);
     }
     public String getWorkingExperience(){
-        return Integer.toString(workingYears)+"."+Integer.toString(workingMonths);
+        return "Годы: "+Integer.toString(workingYears)+" Месяцы: "+Integer.toString(workingMonths);
     }
     public String getCityOfWork() {
         return cityOfWork;

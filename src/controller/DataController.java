@@ -32,11 +32,29 @@ public class DataController implements Observer{
 
     public void update(Observable observable, Object data){
         if(observable instanceof StudentDataBase){
-            StudentDataBase dataBase = (StudentDataBase)observable;
-            Student addedStudent = (Student)data;
-            TableRecord newRow = new TableRecord(addedStudent);
-            addRowToTable(newRow);
+            if(data instanceof Student) {
+               // StudentDataBase dataBase = (StudentDataBase) observable;
+                Student addedStudent = (Student) data;
+                TableRecord newRow = new TableRecord(addedStudent);
+                addRowToTable(newRow);
+            }
+            else
+            clearAllRows();
         }
+    }
+    public void clearDataBase(){
+        studentDataBase.removeAllStudents();
+    }
+    public void loadDataBase(List<Student> base){
+        studentDataBase.reinitDataBase(base);
+    }
+    public void clearAllRows(){
+        DefaultTableModel model = (DefaultTableModel)tableView.getModel();
+        int tableRows = model.getRowCount();
+        for(int iterator = tableRows - 1; iterator >=0; iterator--) {
+            model.removeRow(iterator);
+        }
+
     }
     public void addRowToTable(TableRecord record){
         DefaultTableModel defaultTableModel = (DefaultTableModel)tableView.getModel();

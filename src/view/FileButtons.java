@@ -1,6 +1,7 @@
 package view;
 
 import controller.DataController;
+import view.listeners.OpenFileListener;
 import view.listeners.SaveFileListener;
 
 import javax.swing.*;
@@ -24,6 +25,11 @@ public class FileButtons {
 
         SaveFileListener saveFileListener = new SaveFileListener(dataController);
         saveFile.addActionListener(saveFileListener);
+
+        OpenFileListener openFileListener = new OpenFileListener(dataController);
+        openFile.addActionListener(openFileListener);
+
+
     }
     private JButton initButton (String fileName, String hoverFileName, String pressedFileName,
                                 String tipText){

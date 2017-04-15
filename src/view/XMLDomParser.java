@@ -122,8 +122,9 @@ public class XMLDomParser {
                 Element months = document.createElement(XMLConst.WORK_MONTHS);
                 months.setTextContent(parentWorker.getWorkingMonths().toString());
                 experience.appendChild(months);
-                return document;
+
             }
+            return document;
         }
         catch (ParserConfigurationException ex) {
             Logger.getLogger(XMLDomParser.class.getName())
