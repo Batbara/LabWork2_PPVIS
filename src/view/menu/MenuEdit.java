@@ -22,12 +22,9 @@ public class MenuEdit extends JMenu {
     AddRecordDialog addRecordDialog;
     DeleteRecordDialog deleteRecordDialog;
 
-    Font menuFont;
 
     public MenuEdit(String title, JFrame owner, DataController tableController){
         super(title);
-        menuFont = new Font("Helvetica", Font.PLAIN, 13);
-        UIManager.put("menu.font", menuFont);
 
         initMenuItems();
         addMenuItems();
@@ -58,14 +55,11 @@ public class MenuEdit extends JMenu {
 
         addRecordMenuItem = new JMenuItem("Добавить запись");
         addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        addRecordMenuItem.setFont(menuFont);
 
         delMenuItem = new JMenuItem("Удалить записи");
         addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        delMenuItem.setFont(menuFont);
 
         findMenuItem = new JMenuItem("Поиск...");
-        findMenuItem.setFont(menuFont);
 
     }
     private void initDialogs(JFrame owner, DataController dataController){

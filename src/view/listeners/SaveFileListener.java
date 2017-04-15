@@ -1,9 +1,11 @@
 package view.listeners;
 
 import controller.DataController;
+import view.ExtensionFileFilter;
 import view.XMLDomParser;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,6 +17,8 @@ public class SaveFileListener implements ActionListener {
     DataController dataController;
     public SaveFileListener(DataController dataController) {
         fileChooser = new JFileChooser();
+        FileFilter filter = new ExtensionFileFilter("Student Data Base (*.sdb)", "SDB");
+        fileChooser.setFileFilter(filter);
         this.dataController = dataController;
     }
     @Override

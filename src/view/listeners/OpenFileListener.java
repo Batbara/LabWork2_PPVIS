@@ -8,22 +8,19 @@ import javax.xml.parsers.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
 import java.io.IOException;
 import java.util.List;
 
 import model.Student;
-import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
+import view.*;
 import view.XMLSaxParser;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 // SAX
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
@@ -34,6 +31,8 @@ public class OpenFileListener implements ActionListener{
     private DataController dataController;
     public OpenFileListener(DataController dataController) {
         fileChooser = new JFileChooser();
+        FileFilter filter = new ExtensionFileFilter("Student Data Base (*.sdb)", "SDB");
+        fileChooser.setFileFilter(filter);
         this.dataController = dataController;
     }
     @Override

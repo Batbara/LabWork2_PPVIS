@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class Toolbar{
 
-     public JToolBar toolBarPanel;
+     private JToolBar toolBarPanel;
 
     FileButtons fileButtons;
     EditButtons editButtons;
@@ -61,4 +61,7 @@ public class Toolbar{
         toolBarPanel.setMaximumSize(new Dimension(ownerFrameWidth,50));
     }
 
+    public JToolBar getToolBarPanel() {
+        return toolBarPanel;
+    }
 }

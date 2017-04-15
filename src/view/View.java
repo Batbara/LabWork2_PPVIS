@@ -4,39 +4,27 @@ import model.StudentDataBase;
 import view.menu.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-
-import view.dialogs.*;
 
 /**
  * Created by Batbara on 21.03.2017.
  */
 public class View {
     
-    public JFrame mainFrame;
-    MainMenu mainMenu;
-    Toolbar mainToolBar;
-    
-   // MainTableModel mainTableModel;
-    StudentDataBase studentDataBase;
-    TableView mainTableView;
-    DataController dataController;
+    private JFrame mainFrame;
+    private DataController dataController;
 
-    AddRecordDialog addRecordDialog;
     public View() {
         setUIFont (new javax.swing.plaf.FontUIResource("Helvetica",Font.PLAIN,12));
 
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+       // final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initFrame();
-        initMainTableView();
-        studentDataBase = new StudentDataBase();
-        dataController = new DataController(studentDataBase, mainTableView);
-        initMenu();
-        initToolBar();
-        addToFrame();
 
-        //initDialogs();
+        StudentDataBase studentDataBase = new StudentDataBase();
+        TableView mainTableView = new TableView();
+        dataController = new DataController(studentDataBase, mainTableView);
+
+        addControlItemsToFrame();
 
     }
 
@@ -44,7 +32,7 @@ public class View {
         mainFrame = new JFrame("Лабораторная работа №2");
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(new Dimension(900, 500));
+        mainFrame.setSize(new Dimension(1050, 500));
         mainFrame.setMaximumSize(new Dimension(850, 700));
 
        // mainFrame.getContentPane().setBackground(Color.BLUE);
@@ -53,32 +41,25 @@ public class View {
         mainFrame.setVisible(true);
     }
 
-    public void initDialogs(){
-        addRecordDialog = new AddRecordDialog(mainFrame, dataController);
-    }
-    private void addToFrame() {
-        mainFrame.setJMenuBar(mainMenu.menuBar);
-       mainFrame.getContentPane().add(mainToolBar.toolBarPanel, BorderLayout.NORTH);
+    private void addControlItemsToFrame() {
+        mainFrame.setJMenuBar(createMenu().getMenuBar());
+        mainFrame.getContentPane().add(setJToolBar(), BorderLayout.NORTH);
 
-       mainFrame.add(mainTableView.holdingTable, BorderLayout.CENTER);
+        TableView mainTableView = dataController.getTableView();
+        mainFrame.add(mainTableView.getHoldingTable(), BorderLayout.CENTER);
     }
 
-    private void initMenu() {
-        mainMenu = new MainMenu(mainFrame, dataController);
+    private MainMenu createMenu() {
+        return new MainMenu(mainFrame, dataController);
     }
-
-    private void initToolBar() {
-        mainToolBar = new Toolbar(mainFrame, dataController);
-    }
-
-    private void initMainTableView(){
-        mainTableView = new TableView();
-
+    private JToolBar setJToolBar(){
+        Toolbar mainToolBar = new Toolbar(mainFrame, dataController);
+        return mainToolBar.getToolBarPanel();
     }
     public DataController getDataController(){
         return dataController;
     }
-    public static void setUIFont (javax.swing.plaf.FontUIResource f){
+    private static void setUIFont (javax.swing.plaf.FontUIResource f){
         java.util.Enumeration keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();

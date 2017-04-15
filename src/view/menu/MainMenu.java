@@ -13,17 +13,13 @@ import java.awt.*;
  * Created by Batbara on 21.03.2017.
  */
 public class MainMenu {
-    public JMenuBar menuBar;
+    private JMenuBar menuBar;
     MenuFile menuFile;
     MenuEdit menuEdit;
     MenuHelp menuHelp;
 
-    Font menuFont;
-
     public MainMenu(JFrame mainFrame, DataController tableController){
 
-        menuFont = new Font("Helvetica", Font.PLAIN, 13);
-        UIManager.put("menu.font", menuFont);
         createMenu(mainFrame, tableController);
         addToMenuBar();
     }
@@ -34,9 +30,7 @@ public class MainMenu {
         menuEdit = new MenuEdit("Правка", owner, dataController);
         menuHelp = new MenuHelp("Помощь",owner);
 
-        menuFile.setFont(menuFont);
-        menuEdit.setFont(menuFont);
-        menuHelp.setFont(menuFont);
+
 
     }
     private void addToMenuBar(){
@@ -46,4 +40,7 @@ public class MainMenu {
         menuBar.add(menuHelp);
     }
 
+    public JMenuBar getMenuBar() {
+        return menuBar;
+    }
 }

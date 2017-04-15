@@ -5,6 +5,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import javax.swing.BorderFactory;
+import javax.swing.text.ParagraphView;
 import java.awt.*;
 
 /**
@@ -12,9 +13,9 @@ import java.awt.*;
  */
 public class TableView extends JTable{
     
-    JScrollPane tableScroll;
-    public JPanel holdingTable;
-    //MainTableModel mainTableModel;
+    private JScrollPane tableScroll;
+    private JPanel holdingTable;
+
 
     public TableView(){
         super();
@@ -55,15 +56,27 @@ public class TableView extends JTable{
             this.getColumnModel().getColumn(iterator).setHeaderValue(tableHeaders[iterator]);
         }
         this.setRowSelectionAllowed(false);
+        this.setFont(new Font("Helvetica", Font.PLAIN, 14));
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        this.setDefaultRenderer(String.class, centerRenderer);
+
+        this.setRowHeight(30);
     }
     private void setUpHeader(){
         JTableHeader tableHeader = this.getTableHeader();
         tableHeader.setBackground(new Color(173,216,230));
+        tableHeader.setFont(new Font("Helvetica", Font.BOLD, 13) );
         tableHeader.setReorderingAllowed(false);
         tableHeader.setResizingAllowed(true);
     }
     private void setUpTableColor(){
         this.setBackground(new Color(240,248,255));
         //this.setGridColor(new Color(25,25,112));
+    }
+
+    public JPanel getHoldingTable() {
+        return holdingTable;
     }
 }

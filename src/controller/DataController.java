@@ -12,8 +12,8 @@ import javax.swing.table.DefaultTableModel;
  * Created by Batbara on 03.04.2017.
  */
 public class DataController implements Observer{
-    TableView tableView;
-    StudentDataBase studentDataBase;
+    private TableView tableView;
+    private StudentDataBase studentDataBase;
 
     public DataController(StudentDataBase model, TableView view) {
         this.studentDataBase = model;
@@ -64,5 +64,7 @@ public class DataController implements Observer{
         return studentDataBase.getStudents();
     }
 
-
+    public TableView getTableView() {
+        return tableView;
+    }
 }
