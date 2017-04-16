@@ -1,5 +1,7 @@
 package view;
 
+import model.Parent;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -79,4 +81,5 @@ public class TableView extends JTable{
     public JPanel getHoldingTable() {
         return holdingTable;
     }
+
 }
