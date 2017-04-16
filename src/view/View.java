@@ -21,10 +21,15 @@ public class View {
         initFrame();
 
         StudentDataBase studentDataBase = new StudentDataBase();
-        TableView mainTableView = new TableView();
-        dataController = new DataController(studentDataBase, mainTableView);
+
+        Paging mainPagedView = new Paging();
+        dataController = new DataController(studentDataBase, mainPagedView);
 
         addControlItemsToFrame();
+
+
+        JPanel buttonsPanel = mainPagedView.makeControlButtonsPanel();
+        mainFrame.add(buttonsPanel, BorderLayout.PAGE_END);
 
     }
 
@@ -32,7 +37,7 @@ public class View {
         mainFrame = new JFrame("Лабораторная работа №2");
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(new Dimension(1050, 500));
+        mainFrame.setSize(new Dimension(1050, 476));
         mainFrame.setMaximumSize(new Dimension(850, 700));
 
        // mainFrame.getContentPane().setBackground(Color.BLUE);
@@ -45,7 +50,7 @@ public class View {
         mainFrame.setJMenuBar(createMenu().getMenuBar());
         mainFrame.getContentPane().add(setJToolBar(), BorderLayout.NORTH);
 
-        TableView mainTableView = dataController.getTableView();
+        TableView mainTableView = dataController.getPagedView();
         mainFrame.add(mainTableView.getHoldingTable(), BorderLayout.CENTER);
     }
 

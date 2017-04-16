@@ -1,6 +1,7 @@
 package controller;
 import model.Student;
 import model.StudentDataBase;
+import view.Paging;
 import view.TableRecord;
 import view.TableView;
 import java.util.Observer;
@@ -12,12 +13,12 @@ import javax.swing.table.DefaultTableModel;
  * Created by Batbara on 03.04.2017.
  */
 public class DataController implements Observer{
-    private TableView tableView;
+    private Paging pagedView;
     private StudentDataBase studentDataBase;
 
-    public DataController(StudentDataBase model, TableView view) {
+    public DataController(StudentDataBase model, Paging view) {
         this.studentDataBase = model;
-        this.tableView=view;
+        this.pagedView =view;
         this.studentDataBase.addObserver(this);
     }
 
@@ -49,22 +50,28 @@ public class DataController implements Observer{
         studentDataBase.reinitDataBase(base);
     }
     public void clearAllRows(){
-        DefaultTableModel model = (DefaultTableModel)tableView.getModel();
-        int tableRows = model.getRowCount();
-        for(int iterator = tableRows - 1; iterator >=0; iterator--) {
-            model.removeRow(iterator);
-        }
-
+//        DefaultTableModel model = (DefaultTableModel) pagedView.getModel();
+//        int tableRows = model.getRowCount();
+//        for(int iterator = tableRows - 1; iterator >=0; iterator--) {
+//            model.removeRow(iterator);
+//        }
+        //pagedView.repaintTablePages();
+        pagedView.clearAllRows();
+    }
+    public int getNumberOfStudents(){
+        return getDataBase().size();
     }
     public void addRowToTable(TableRecord record){
-        DefaultTableModel defaultTableModel = (DefaultTableModel)tableView.getModel();
-        defaultTableModel.addRow(record.getRecordData());
+        pagedView.addRowToTable(record.getRecordData());
+//        DefaultTableModel defaultTableModel = (DefaultTableModel) pagedView.getModel();
+//        defaultTableModel.addRow(record.getRecordData());
+//        pagedView.repaintTablePages();
     }
     public List<Student> getDataBase(){
         return studentDataBase.getStudents();
     }
 
-    public TableView getTableView() {
-        return tableView;
+    public TableView getPagedView() {
+        return pagedView;
     }
 }

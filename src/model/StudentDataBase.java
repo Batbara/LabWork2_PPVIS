@@ -48,6 +48,7 @@ public class StudentDataBase extends Observable {
         setChanged();
         notifyObservers(student);
     }
+
     public List <Student> getStudents(){
         return students;
     }
