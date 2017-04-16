@@ -2,6 +2,8 @@ package view.dialogs;
 
 import controller.DataController;
 import model.*;
+import view.Paging;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +19,6 @@ public class AddRecordDialog extends JDialog{
 
     //
     private Map<String, JTextField> studentFields;
-
     private Student studentToAdd;
     private JButton okButton;
     private JButton cancelButton;
@@ -153,11 +154,49 @@ public class AddRecordDialog extends JDialog{
     public String getTextFromField (String fieldKey){
         return studentFields.get(fieldKey).getText();
     }
+    private boolean isSafeToAdd(){
+        List<String> dataResult = new ArrayList<>();
+        dataResult.add(getTextFromField("Фамилия1"));
+        dataResult.add(getTextFromField("Имя1"));
+        dataResult.add(getTextFromField("Отчество1"));
+        dataResult.add(getTextFromField("Фамилия"));
+        dataResult.add(getTextFromField("Имя"));
+        dataResult.add(getTextFromField("Отчество"));
+        dataResult.add(getTextFromField("Город"));
+        dataResult.add(getTextFromField("Улица"));
+        dataResult.add(getTextFromField("Номер дома"));
+        dataResult.add(getTextFromField("Должность"));
+        dataResult.add(getTextFromField("Годы работы"));
+        dataResult.add(getTextFromField("Месяцы работы"));
+
+        for(String field : dataResult){
+            if (field.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Заполните все поля!");
+                return false;
+            }
+        }
+        try {
+            if( (Integer.parseInt(getTextFromField("Номер дома")) <0) ||
+                    (Integer.parseInt(getTextFromField("Годы работы")) <0) ||
+                    (Integer.parseInt(getTextFromField("Месяцы работы")) <0)
+                    ){
+                JOptionPane.showMessageDialog(this, "Введите корректные данные!");
+                return false;
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Введите корректные данные!");
+            return false;
+        }
+        return true;
+    }
     private void setButtonListeners(){
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(!isSafeToAdd()){
+                   return;
+                }
                 studentToAdd.setStudentSurname(getTextFromField("Фамилия1"));
                 studentToAdd.setStudentName(getTextFromField("Имя1"));
                 studentToAdd.setStudentFatherName(getTextFromField("Отчество1"));
@@ -181,6 +220,10 @@ public class AddRecordDialog extends JDialog{
                 studentToAdd.setStudentParent(parentToAdd);
 
                 dataController.addStudentData(studentToAdd);
+
+                Paging tableView = dataController.getPagedView();
+                tableView.setCurrentPage(tableView.getNumberOfPages()-1);
+                tableView.showCurrentPage();
 
                 clearTextFields();
                 setVisible(false);

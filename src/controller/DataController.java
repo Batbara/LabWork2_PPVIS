@@ -34,7 +34,6 @@ public class DataController implements Observer{
     public void update(Observable observable, Object data){
         if(observable instanceof StudentDataBase){
             if(data instanceof Student) {
-               // StudentDataBase dataBase = (StudentDataBase) observable;
                 Student addedStudent = (Student) data;
                 TableRecord newRow = new TableRecord(addedStudent);
                 addRowToTable(newRow);
@@ -50,12 +49,6 @@ public class DataController implements Observer{
         studentDataBase.reinitDataBase(base);
     }
     public void clearAllRows(){
-//        DefaultTableModel model = (DefaultTableModel) pagedView.getModel();
-//        int tableRows = model.getRowCount();
-//        for(int iterator = tableRows - 1; iterator >=0; iterator--) {
-//            model.removeRow(iterator);
-//        }
-        //pagedView.repaintTablePages();
         pagedView.clearAllRows();
     }
     public int getNumberOfStudents(){
@@ -63,15 +56,12 @@ public class DataController implements Observer{
     }
     public void addRowToTable(TableRecord record){
         pagedView.addRowToTable(record.getRecordData());
-//        DefaultTableModel defaultTableModel = (DefaultTableModel) pagedView.getModel();
-//        defaultTableModel.addRow(record.getRecordData());
-//        pagedView.repaintTablePages();
     }
     public List<Student> getDataBase(){
         return studentDataBase.getStudents();
     }
 
-    public TableView getPagedView() {
+    public Paging getPagedView() {
         return pagedView;
     }
 }

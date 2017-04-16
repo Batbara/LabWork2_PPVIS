@@ -1,12 +1,15 @@
 package view;
 
 import controller.DataController;
+import view.listeners.NewFileListener;
 import view.listeners.OpenFileListener;
 import view.listeners.SaveFileListener;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Batbara on 02.04.2017.
@@ -15,8 +18,10 @@ public class FileButtons {
     public JButton newFile;
     public JButton openFile;
     public JButton saveFile;
+    private DataController dataController;
 
     public FileButtons(DataController dataController){
+        this.dataController = dataController;
         newFile=initButton("newfile", "newfilehover", "newfilepressed",
                 "Создать");
         openFile=initButton("open","openhover", "openpressed","Открыть");
@@ -28,6 +33,9 @@ public class FileButtons {
 
         OpenFileListener openFileListener = new OpenFileListener(dataController);
         openFile.addActionListener(openFileListener);
+
+        NewFileListener newFileListener = new NewFileListener(dataController);
+        newFile.addActionListener (newFileListener);
 
 
     }

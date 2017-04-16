@@ -2,6 +2,7 @@ package view.menu;
 
 
 import controller.DataController;
+import view.listeners.NewFileListener;
 import view.listeners.OpenFileListener;
 import view.listeners.SaveFileListener;
 
@@ -31,6 +32,9 @@ public class MenuFile extends JMenu {
 
         SaveFileListener saveFileListener = new SaveFileListener(dataController);
         saveMenuItem.addActionListener(saveFileListener);
+
+        NewFileListener newFileListener = new NewFileListener(dataController);
+        createMenuItem.addActionListener(newFileListener);
     }
     private void initMenuItems(){
 
