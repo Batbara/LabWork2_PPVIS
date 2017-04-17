@@ -19,7 +19,7 @@ import java.util.Vector;
  */
 public class Paging extends TableView{
 
-    final int RECORDS_ON_PAGE = 10;
+    int RECORDS_ON_PAGE = 10;
     private JButton nextPageButton;
     private JButton prevPageButton;
     private JButton lastPageButton;
@@ -266,5 +266,9 @@ public class Paging extends TableView{
     }
     public int getNumberOfPages(){
         return rowsInPages.size();
+    }
+
+    public void setRECORDS_ON_PAGE(int RECORDS_ON_PAGE) {
+        this.RECORDS_ON_PAGE = RECORDS_ON_PAGE;
     }
 }

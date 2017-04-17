@@ -51,7 +51,7 @@ public class Toolbar{
 
         toolBarPanel.add(editButtons.addRecord);
         toolBarPanel.add(editButtons.deleteRecord);
-        toolBarPanel.add(editButtons.findRecord);
+        toolBarPanel.add(editButtons.searchRecord);
     }
 
     private void setWindowedSize(int ownerFrameWidth){

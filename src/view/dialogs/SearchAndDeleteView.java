@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Batbara on 13.04.2017.
@@ -12,44 +13,49 @@ import java.util.*;
 public class SearchAndDeleteView extends JDialog {
     ButtonGroup groupRadioButtons;
 
-    Map<String, JRadioButton> optionButtons;
-    Hashtable<String, JPanel> optionPanels;
+    private Map<String, JRadioButton> optionButtons;
+    private Map<String, JPanel> optionPanels;
 
-    private JTextField []studentNameField;
-    private JTextField []parentNameField;
-    private JTextField []workingAddressField;
-    private JTextField []workExperienceField;
+    private Map <String, JTextField> studentNameField;
+    private Map <String, JTextField> parentNameField;
+    private Map <String, JTextField> workingAddressField;
+    private Map <String, JTextField> workExperienceField;
 
-    JButton okButton;
-    JButton cancelButton;
+    private JButton okButton;
+    private JButton cancelButton;
+    private JPanel buttonsPanel;
 
-    public SearchAndDeleteView(String dialogTitle, String captionTitle, JFrame ownerFrame){
+    private String status;
+
+    public SearchAndDeleteView(String dialogTitle, JFrame ownerFrame){
         super(ownerFrame, dialogTitle, Dialog.ModalityType.DOCUMENT_MODAL);
 
+        status = "";
         initDialogWindow();
         initOptionButtons();
         initTextFields();
         initControlButtons();
 
         addButtonsToGroup();
-        addButtonsToDialogWindow(captionTitle);
+        addButtonsToDialogWindow();
 
         createOptionPanels();
         addPanelsToFrame();
         fillWindowWithButtons();
-        addOptionListeners();
+        firePressedButtonEvent();
         addControlButtonsListeners();
 
     }
     private void initDialogWindow(){
         final int DIALOG_WIDTH = 1020;
-        final int DIALOG_HEIGHT = 255;
+        final int DIALOG_HEIGHT = 195;
 
         this.setSize(new Dimension(DIALOG_WIDTH,DIALOG_HEIGHT));
         this.setPreferredSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
         this.setMaximumSize(new Dimension(DIALOG_WIDTH, DIALOG_HEIGHT));
 
-        this.setLayout(new FlowLayout());
+       // this.setLayout(new FlowLayout());
+        this.setLayout(new BorderLayout());
         this.pack();
         this.setResizable(false);
         centerOnScreen();
@@ -65,27 +71,30 @@ public class SearchAndDeleteView extends JDialog {
     }
     private void initTextFields(){
 
-        studentNameField = new JTextField[3];
-        parentNameField = new JTextField[3];
-        workingAddressField = new JTextField[3];
-        workExperienceField = new JTextField[4];
+        studentNameField = new LinkedHashMap<>();
+        parentNameField = new LinkedHashMap<>();
+        workingAddressField = new LinkedHashMap<>();
+        workExperienceField = new LinkedHashMap<>();
 
-        for(int iterator=0; iterator<studentNameField.length; iterator++) {
-            studentNameField[iterator] = new JTextField(10);
+        String []nameKeys = {"Фамилия", "Имя", "Отчество"};
+        String []addressKeys = {"Город", "Улица", "Номер дома"};
+        String []experienceKeys = {"fromYears", "fromMonths", "toYears", "toMonths"};
+
+        for(int iterator=0; iterator<nameKeys.length; iterator++) {
+            studentNameField.put(nameKeys[iterator], new JTextField(10));
         }
-
-        for(int iterator=0; iterator<parentNameField.length; iterator++) {
-            parentNameField[iterator] = new JTextField(10);
+        for(int iterator=0; iterator<nameKeys.length; iterator++) {
+            parentNameField.put(nameKeys[iterator], new JTextField(10));
         }
-
-        for(int iterator=0; iterator<workingAddressField.length; iterator++)
-            workingAddressField[iterator] = new JTextField(10);
-
-        for(int iterator=0; iterator<workExperienceField.length; iterator++)
-            workExperienceField[iterator] = new JTextField(5);
+        for(int iterator=0; iterator<addressKeys.length; iterator++) {
+            workingAddressField.put(addressKeys[iterator], new JTextField(10));
+        }
+        for(int iterator=0; iterator<experienceKeys.length; iterator++) {
+            workExperienceField.put(experienceKeys[iterator], new JTextField(5));
+        }
     }
     private void initOptionButtons(){
-        optionButtons = new Hashtable<>();
+        optionButtons = new LinkedHashMap<>();
 
         JRadioButton studentNameOption = new JRadioButton("ФИО студента");
         JRadioButton parentNameOrAddressOption = new JRadioButton("ФИО или место работы родителя");
@@ -98,19 +107,18 @@ public class SearchAndDeleteView extends JDialog {
         optionButtons.put("studentNameOrAddressOption", studentNameOrAddressOption);
     }
     private void initControlButtons () {
-        okButton = new JButton("Добавить");
+        okButton = new JButton("ОК");
         cancelButton = new JButton("Отмена");
     }
     private void createOptionPanels(){
-        optionPanels = new Hashtable<>();
+        optionPanels = new LinkedHashMap<>();
 
-        String []nameLabels = {"Фамилия", "Имя", "Отчество"};
-        String []addressLabels = {"Город", "Улица", "Номер дома"};
 
-        JPanel studentNamePanel = makePanelContainer("ФИО студента", studentNameField, nameLabels );
-        JPanel parentNamePanel = makePanelContainer("ФИО родителя", parentNameField, nameLabels);
-        JPanel addressPanel = makePanelContainer("Адрес работы", workingAddressField, addressLabels);
-        JPanel workExperiencePanel = makePanelContainer("Cтаж", workExperienceField);
+        JPanel studentNamePanel = makePanelContainer("ФИО студента", studentNameField);
+        JPanel parentNamePanel = makePanelContainer("ФИО родителя", parentNameField);
+        JPanel addressPanel = makePanelContainer("Адрес работы", workingAddressField);
+        JPanel workExperiencePanel = makeExperiencePanel();
+
 
         optionPanels.put("studentNamePanel", studentNamePanel);
         optionPanels.put("parentNamePanel", parentNamePanel);
@@ -125,58 +133,48 @@ public class SearchAndDeleteView extends JDialog {
             groupRadioButtons.add(element);
         }
     }
-    private void addButtonsToDialogWindow(String labelTitle){
-        JLabel captionLabel = new JLabel(labelTitle);
-
-        //JPanel buttonsPanel =  new JPanel(new GridLayout(1,4));
+    private void addButtonsToDialogWindow(){
         JPanel buttonsPanel =  new JPanel(new FlowLayout());
         Collection<JRadioButton> buttons = optionButtons.values();
         for (JRadioButton element : buttons){
             buttonsPanel.add(element);
         }
-        addToDialogFrame(captionLabel);
-        addToDialogFrame(buttonsPanel);
+        this.add(buttonsPanel, BorderLayout.NORTH);
     }
-    public String[] getTextFromField (JTextField []dataFields){
-        int numberOfFields = dataFields.length;
-        String []textFromFields = new String[numberOfFields];
-        for(int iterator=0; iterator<numberOfFields; iterator++){
-            textFromFields[iterator] = dataFields[iterator].getText();
-        }
-        return textFromFields;
-    }
+
     private void addPanelsToFrame (){
         Collection<JPanel> panels = optionPanels.values();
+        JPanel holder = new JPanel(new FlowLayout());
         for (JPanel element : panels){
-            addToDialogFrame(element);
+            holder.add(element);
         }
+        this.add(holder);
         setPanelsVisibility(false);
     }
     private void fillWindowWithButtons(){
-        JPanel buttonsPanel = new JPanel(new FlowLayout());
+        buttonsPanel = new JPanel(new FlowLayout());
         buttonsPanel.add(okButton);
         buttonsPanel.add(cancelButton);
-
-        addToDialogFrame(buttonsPanel);
+        buttonsPanel.setVisible(false);
+        this.add(buttonsPanel, BorderLayout.PAGE_END);
     }
     private void determinePanelToShow(String buttonKey){
-        Enumeration<String> panelKeys = optionPanels.keys();
-        clearAllTextFields();
+        Set<String> panelKeys = optionPanels.keySet();
+        clearAllPanelsTextFields();
         switch (buttonKey){
             case "studentNameOption":
-                for (Enumeration<String> element = panelKeys; element.hasMoreElements();) {
-                    String keyValue = element.nextElement();
+                for (String keyValue : panelKeys) {
                     JPanel panel= optionPanels.get(keyValue);
                     panel.setVisible(false);
                     if(keyValue.equals("studentNamePanel")){
                         panel.setVisible(true);
                     }
+
                 }
                 break;
             case "parentNameOrAddressOption":
                 System.out.println("parent name or addr called");
-                for (Enumeration<String> element = panelKeys; element.hasMoreElements();) {
-                    String keyValue = element.nextElement();
+                for (String keyValue : panelKeys) {
                     JPanel panel= optionPanels.get(keyValue);
                     panel.setVisible(false);
                     if(keyValue.equals("parentNamePanel") || keyValue.equals("addressPanel")){
@@ -186,8 +184,7 @@ public class SearchAndDeleteView extends JDialog {
                 break;
             case "parentExpOrAddressOption":
                 System.out.println("parent exp or addr called");
-                for (Enumeration<String> element = panelKeys; element.hasMoreElements();) {
-                    String keyValue = element.nextElement();
+                for(String keyValue : panelKeys) {
                     JPanel panel= optionPanels.get(keyValue);
                     panel.setVisible(false);
                     if(keyValue.equals("addressPanel") || keyValue.equals("workExperiencePanel")){
@@ -197,9 +194,7 @@ public class SearchAndDeleteView extends JDialog {
                 break;
             case "studentNameOrAddressOption":
                 System.out.println("student name or addr called");
-                System.out.println("parent exp or addr called");
-                for (Enumeration<String> element = panelKeys; element.hasMoreElements();) {
-                    String keyValue = element.nextElement();
+                for (String keyValue : panelKeys) {
                     JPanel panel= optionPanels.get(keyValue);
                     panel.setVisible(false);
                     if(keyValue.equals("addressPanel") || keyValue.equals("studentNamePanel")){
@@ -211,14 +206,16 @@ public class SearchAndDeleteView extends JDialog {
 
     }
 
-    private void addOptionListeners(){
+    public void firePressedButtonEvent(){
         Set<String> buttonKeys = optionButtons.keySet();
+
         for (String keyValue: buttonKeys){
             JRadioButton button = optionButtons.get(keyValue);
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     determinePanelToShow(keyValue);
+                    buttonsPanel.setVisible(true);
                 }
             });
         }
@@ -227,74 +224,135 @@ public class SearchAndDeleteView extends JDialog {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String buttonKey="";
+                Set<String> allButtonsKeys = optionButtons.keySet();
+                JRadioButton selectedButton = new JRadioButton();
+                for (Enumeration<AbstractButton> buttons = groupRadioButtons.getElements(); buttons.hasMoreElements();) {
+                    AbstractButton button = buttons.nextElement();
+                    if (button.isSelected()) {
+                        selectedButton = (JRadioButton)button;
+                    }
+                }
+                for(String checkingButtonKey : allButtonsKeys) {
+                   if(Objects.equals(selectedButton, optionButtons.get(checkingButtonKey)))
+                       buttonKey = checkingButtonKey;
+                }
+                System.out.println("pressed button key is"+buttonKey);
 
+                switch (buttonKey){
+                    case "studentNameOption":
+                        status = "studentNameOption";
+                        break;
+                    case "parentNameOrAddressOption":
+                        status = "parentNameOrAddressOption";
+                        break;
+                    case "parentExpOrAddressOption":
+                        status = "parentExpOrAddressOption";
+                        break;
+                    case "studentNameOrAddressOption":
+                       status = "studentNameOrAddressOption";
+                        break;
+                }
             }
         });
 
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clearAllTextFields();
+                clearAllPanelsTextFields();
                 setVisible(false);
             }
         });
     }
-    private void clearTextFields(JTextField []textFields){
-        for(int iterator=0; iterator<textFields.length; iterator++)
-            textFields[iterator].setText(null);
-    }
+
     public void setPanelsVisibility(boolean flag){
         Collection<JPanel> panels = optionPanels.values();
         for (JPanel element : panels){
             element.setVisible(flag);
         }
     }
-    public void clearAllTextFields(){
-        for(int iterator=0; iterator<studentNameField.length; iterator++)
-            studentNameField[iterator].setText(null);
-        for(int iterator=0; iterator<parentNameField.length; iterator++)
-            parentNameField[iterator].setText(null);
-        for(int iterator=0; iterator<workingAddressField.length; iterator++)
-            workingAddressField[iterator].setText(null);
-        for(int iterator=0; iterator<workExperienceField.length; iterator++)
-            workExperienceField[iterator].setText(null);
+    private void clearPanelTextFields(Map<String, JTextField> textFields){
+        Set<String> fieldKeys = textFields.keySet();
+        for (String key : fieldKeys){
+            textFields.get(key).setText(null);
+        }
+    }
+    public void clearAllPanelsTextFields(){
+        clearPanelTextFields(studentNameField);
+        clearPanelTextFields(parentNameField);
+        clearPanelTextFields(workExperienceField);
+        clearPanelTextFields(workingAddressField);
     }
 
-    private JPanel makePanelContainer(String panelTitle, JTextField []dataFields, String [] textLabels){
+    private JPanel makePanelContainer(String panelTitle, Map<String, JTextField> dataFields){
         JPanel panelContainer = new JPanel();
+        Set<String> fieldKeys = dataFields.keySet();
         panelContainer.setBorder(BorderFactory.createTitledBorder
                 (BorderFactory.createLineBorder(Color.lightGray), panelTitle));
-        int numOfFields = dataFields.length;
+        int numOfFields = fieldKeys.size();
 
         panelContainer.setLayout(new GridLayout(numOfFields, 2));
-        for (int iterator = 0; iterator<numOfFields; iterator++){
-            JLabel textLabel = new JLabel(textLabels[iterator]);
-            panelContainer.add(textLabel);
-            panelContainer.add(dataFields[iterator]);
+        for (String key : fieldKeys){
+            JLabel keyLabel = new JLabel(key);
+            panelContainer.add(keyLabel);
+            panelContainer.add(dataFields.get(key));
         }
         return panelContainer;
     }
-    private JPanel makePanelContainer(String panelTitle, JTextField []dataFields) {
+
+    private JPanel makeExperiencePanel(){
         JPanel panelContainer = new JPanel();
+        String panelTitle = "Стаж";
         panelContainer.setBorder(BorderFactory.createTitledBorder
                 (BorderFactory.createLineBorder(Color.lightGray), panelTitle));
 
         panelContainer.setLayout(new GridLayout(2, 3));
         panelContainer.add(new JLabel("От"));
-        panelContainer.add(dataFields[0]);
-        panelContainer.add(dataFields[1]);
+        panelContainer.add(workExperienceField.get("fromYears"));
+        panelContainer.add(workExperienceField.get("fromMonths"));
         panelContainer.add(new JLabel("До"));
-        panelContainer.add(dataFields[2]);
-        panelContainer.add(dataFields[3]);
-
+        panelContainer.add(workExperienceField.get("toYears"));
+        panelContainer.add(workExperienceField.get("toMonths"));
         return panelContainer;
     }
-    public void noneSelected(){
-
+    public void hideComponents(){
         groupRadioButtons.clearSelection();
-
+        buttonsPanel.setVisible(false);
     }
-    private void addToDialogFrame(Component componentToAdd){
-        this.add(componentToAdd);
+
+    public Map<String, JTextField> getStudentNameField() {
+        return studentNameField;
+    }
+
+    public Map<String, JTextField> getParentNameField() {
+        return parentNameField;
+    }
+
+    public Map<String, JTextField> getWorkingAddressField() {
+        return workingAddressField;
+    }
+
+    public Map<String, JTextField> getWorkExperienceField() {
+        return workExperienceField;
+    }
+
+    public JButton getOkButton() {
+        return okButton;
+    }
+
+    public ButtonGroup getGroupRadioButtons() {
+        return groupRadioButtons;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Map<String, JRadioButton> getOptionButtons() {
+        return optionButtons;
+    }
+
+    public JButton getCancelButton() {
+        return cancelButton;
     }
 }

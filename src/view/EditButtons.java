@@ -3,6 +3,8 @@ package view;
 import controller.DataController;
 import view.dialogs.AddRecordDialog;
 import view.dialogs.DeleteRecordDialog;
+import view.dialogs.SearchAndDeleteView;
+import view.dialogs.SearchRecordDialog;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -16,20 +18,22 @@ import java.awt.event.ActionListener;
 public class EditButtons {
    public JButton addRecord;
    public JButton deleteRecord;
-   public JButton findRecord;
+   public JButton searchRecord;
 
     AddRecordDialog addRecordDialog;
     DeleteRecordDialog delRecordDialog;
+    SearchRecordDialog searchRecordDialog;
 
     public EditButtons(JFrame ownerFrame, DataController dataController){
         addRecord = initButton("plus", "plushover", "pluspressed","Добавить");
         deleteRecord = initButton("minus", "minushover", "minuspressed",
                 "Удалить");
-        findRecord = initButton("search", "searchhover", "searchpressed",
+        searchRecord = initButton("search", "searchhover", "searchpressed",
                 "Найти");
 
         addRecordDialog = new AddRecordDialog(ownerFrame, dataController);
-        delRecordDialog = new DeleteRecordDialog("Удалить записи", "Выберете критерий удаления", ownerFrame);
+        delRecordDialog = new DeleteRecordDialog("Удалить записи", ownerFrame);
+        searchRecordDialog = new SearchRecordDialog("Поиск записей", ownerFrame, dataController);
         callAddDialogFromButton(dataController);
 
     }
@@ -82,16 +86,22 @@ public class EditButtons {
             public void actionPerformed(ActionEvent e) {
                 delRecordDialog.centerOnScreen();
                 delRecordDialog.setVisible(true);
-                delRecordDialog.clearAllTextFields();
-                delRecordDialog.noneSelected();
+                delRecordDialog.clearAllPanelsTextFields();
+                delRecordDialog.hideComponents();
                 delRecordDialog.setPanelsVisibility(false);
             }
         });
-//        deleteRecord.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                dataController.clearDataBase();
-//            }
-//        });
+        searchRecord.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SearchAndDeleteView view = searchRecordDialog.getView();
+                view.centerOnScreen();
+                view.setVisible(true);
+                view.clearAllPanelsTextFields();
+                view.hideComponents();
+                view.setPanelsVisibility(false);
+            }
+        });
+
     }
 }
