@@ -1,9 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
+import java.util.function.Predicate;
 
 
 /**
@@ -21,10 +19,21 @@ public class StudentDataBase extends Observable {
     }
 
     public void removeStudent(Student studentToRemove){
+//        Predicate<Student> studentPredicate = (Student student) -> Objects.equals(student, studentToRemove);
+//                students.removeIf(studentPredicate);
+//        studentRemoved(true);
+        int index = 0;
+
+        Map<String, Student> removingStudent = new HashMap<>();
         for (Iterator<Student> iterator = students.listIterator(); iterator.hasNext();){
             Student student = iterator.next();
             if (studentToRemove==student){
+
+                removingStudent.put("remove", student);
+
                 iterator.remove();
+                studentRemoved(removingStudent);
+                return;
             }
         }
     }
@@ -42,6 +51,10 @@ public class StudentDataBase extends Observable {
     public void allStudentsRemoved(){
         setChanged();
         notifyObservers();
+    }
+    public void studentRemoved(Map<String, Student> student){
+        setChanged();
+        notifyObservers(student);
     }
 
     public void studentAdded(Student student){

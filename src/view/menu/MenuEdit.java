@@ -64,7 +64,7 @@ public class MenuEdit extends JMenu {
     }
     private void initDialogs(JFrame owner, DataController dataController){
         addRecordDialog=new AddRecordDialog(owner, dataController);
-        deleteRecordDialog = new DeleteRecordDialog("Удалить записи",  owner);
+        deleteRecordDialog = new DeleteRecordDialog("Удалить записи",  owner, dataController);
     }
     private void addMenuItems(){
         this.add(addRecordMenuItem);

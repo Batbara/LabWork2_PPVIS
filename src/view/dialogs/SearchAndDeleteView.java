@@ -319,7 +319,66 @@ public class SearchAndDeleteView extends JDialog {
         groupRadioButtons.clearSelection();
         buttonsPanel.setVisible(false);
     }
+    public Map<String, String> studentNameSearchData(){
+        Set<String> studentNameKeys = studentNameField.keySet();
+        Map<String, String> dataToSearch = new HashMap<>();
+        for (String key : studentNameKeys){
+            dataToSearch.put(key, studentNameField.get(key).getText());
+        }
+        return dataToSearch;
+    }
+    public List< Map<String, String> > parentNameOrAddressSearchData(){
+        Set<String> parentNameKeys = parentNameField.keySet();
+        Set<String> addressKeys = workingAddressField.keySet();
+        //allKeys.addAll(addressKeys);
+        Map<String, String> nameDataToSearch = new HashMap<>();
+        Map<String, String> addressDataToSearch = new HashMap<>();
+        for (String key : parentNameKeys){
+            nameDataToSearch.put(key, parentNameField.get(key).getText());
+        }
+        for (String key : addressKeys){
+            addressDataToSearch.put(key, workingAddressField.get(key).getText());
+        }
+        List< Map<String, String> > dataToSearch = new ArrayList<>();
+        dataToSearch.add(nameDataToSearch);
+        dataToSearch.add(addressDataToSearch);
+        return dataToSearch;
+    }
+    public List< Map<String, String> > parentExpOrAddressSearchData(){
+        Set<String> parentExpKeys = workExperienceField.keySet();
+        Set<String> addressKeys = workingAddressField.keySet();
+        //allKeys.addAll(addressKeys);
+        Map<String, String> expDataToSearch = new HashMap<>();
+        Map<String, String> addressDataToSearch = new HashMap<>();
+        for (String key : parentExpKeys){
+            expDataToSearch.put(key, workExperienceField.get(key).getText());
+        }
+        for (String key : addressKeys){
+            addressDataToSearch.put(key, workingAddressField.get(key).getText());
+        }
+        List< Map<String, String> > dataToSearch = new ArrayList<>();
+        dataToSearch.add(expDataToSearch);
+        dataToSearch.add(addressDataToSearch);
+        return dataToSearch;
+    }
+    public List< Map<String, String> > studentNameOrAddressSearchData(){
+        Set<String> studentNameKeys = studentNameField.keySet();
 
+        Set<String> addressKeys = workingAddressField.keySet();
+        //allKeys.addAll(addressKeys);
+        Map<String, String> nameDataToSearch = new HashMap<>();
+        Map<String, String> addressDataToSearch = new HashMap<>();
+        for (String key : studentNameKeys){
+            nameDataToSearch.put(key, studentNameField.get(key).getText());
+        }
+        for (String key : addressKeys){
+            addressDataToSearch.put(key, workingAddressField.get(key).getText());
+        }
+        List< Map<String, String> > dataToSearch = new ArrayList<>();
+        dataToSearch.add(nameDataToSearch);
+        dataToSearch.add(addressDataToSearch);
+        return dataToSearch;
+    }
     public Map<String, JTextField> getStudentNameField() {
         return studentNameField;
     }

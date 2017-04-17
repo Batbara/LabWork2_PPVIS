@@ -61,7 +61,7 @@ public class SearchRecordDialog extends JDialog{
                         List<Student> result = new ArrayList<>();
 
 
-                            result = dataController.studentNameSearch(studentNameSearchData());
+                            result = dataController.studentNameSearch(view.studentNameSearchData());
                             if(result.isEmpty()) {
                                 JOptionPane.showMessageDialog(null, "Таких записей нет :(");
                                 return;
@@ -73,7 +73,7 @@ public class SearchRecordDialog extends JDialog{
 
                         break;
                     case "parentNameOrAddressOption":
-                        result = dataController.parentNameOrAddressSearch(parentNameOrAddressSearchData());
+                        result = dataController.parentNameOrAddressSearch(view.parentNameOrAddressSearchData());
                         if(result.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Таких записей нет :(");
                             return;
@@ -82,7 +82,7 @@ public class SearchRecordDialog extends JDialog{
                         createResultDialog(result).setVisible(true);
                         break;
                     case "parentExpOrAddressOption":
-                        result = dataController.parentExpOrAddressSearch(parentExpOrAddressSearchData());
+                        result = dataController.parentExpOrAddressSearch(view.parentExpOrAddressSearchData());
                         if(result.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Таких записей нет :(");
                             return;
@@ -91,7 +91,7 @@ public class SearchRecordDialog extends JDialog{
                         createResultDialog(result).setVisible(true);
                         break;
                     case "studentNameOrAddressOption":
-                        result = dataController.studentNameOrAddressSearch(studentNameOrAddressSearchData());
+                        result = dataController.studentNameOrAddressSearch(view.studentNameOrAddressSearchData());
                         if(result.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Таких записей нет :(");
                             return;
@@ -128,66 +128,7 @@ public class SearchRecordDialog extends JDialog{
         resultDialog.add(resultTable.makeControlButtonsPanel(), BorderLayout.PAGE_END);
         return resultDialog;
     }
-    public Map<String, String> studentNameSearchData(){
-        Set<String> studentNameKeys = studentNameField.keySet();
-        Map<String, String> dataToSearch = new HashMap<>();
-        for (String key : studentNameKeys){
-            dataToSearch.put(key, studentNameField.get(key).getText());
-        }
-        return dataToSearch;
-    }
-    public List< Map<String, String> > parentNameOrAddressSearchData(){
-        Set<String> parentNameKeys = parentNameField.keySet();
-        Set<String> addressKeys = workingAddressField.keySet();
-        //allKeys.addAll(addressKeys);
-        Map<String, String> nameDataToSearch = new HashMap<>();
-        Map<String, String> addressDataToSearch = new HashMap<>();
-        for (String key : parentNameKeys){
-            nameDataToSearch.put(key, parentNameField.get(key).getText());
-        }
-        for (String key : addressKeys){
-            addressDataToSearch.put(key, workingAddressField.get(key).getText());
-        }
-        List< Map<String, String> > dataToSearch = new ArrayList<>();
-        dataToSearch.add(nameDataToSearch);
-        dataToSearch.add(addressDataToSearch);
-        return dataToSearch;
-    }
-    public List< Map<String, String> > parentExpOrAddressSearchData(){
-        Set<String> parentExpKeys = workExperienceField.keySet();
-        Set<String> addressKeys = workingAddressField.keySet();
-        //allKeys.addAll(addressKeys);
-        Map<String, String> expDataToSearch = new HashMap<>();
-        Map<String, String> addressDataToSearch = new HashMap<>();
-        for (String key : parentExpKeys){
-            expDataToSearch.put(key, workExperienceField.get(key).getText());
-        }
-        for (String key : addressKeys){
-            addressDataToSearch.put(key, workingAddressField.get(key).getText());
-        }
-        List< Map<String, String> > dataToSearch = new ArrayList<>();
-        dataToSearch.add(expDataToSearch);
-        dataToSearch.add(addressDataToSearch);
-        return dataToSearch;
-    }
-    public List< Map<String, String> > studentNameOrAddressSearchData(){
-        Set<String> studentNameKeys = studentNameField.keySet();
-        
-        Set<String> addressKeys = workingAddressField.keySet();
-        //allKeys.addAll(addressKeys);
-        Map<String, String> nameDataToSearch = new HashMap<>();
-        Map<String, String> addressDataToSearch = new HashMap<>();
-        for (String key : studentNameKeys){
-            nameDataToSearch.put(key, studentNameField.get(key).getText());
-        }
-        for (String key : addressKeys){
-            addressDataToSearch.put(key, workingAddressField.get(key).getText());
-        }
-        List< Map<String, String> > dataToSearch = new ArrayList<>();
-        dataToSearch.add(nameDataToSearch);
-        dataToSearch.add(addressDataToSearch);
-        return dataToSearch;
-    }
+
 
     public SearchAndDeleteView getView() {
         return view;

@@ -9,10 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.AbstractList;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by Batbara on 15.04.2017.
@@ -28,7 +26,7 @@ public class Paging extends TableView{
     Boolean isNoIcon;
     int currentPage;
 
-    private Vector<Vector<Vector<String>>> rowsInPages;
+    private List<List<List<String>>> rowsInPages;
 
     public Paging(){
         super();
@@ -182,20 +180,61 @@ public class Paging extends TableView{
         int newPageIndex = lastPage;
         //for (int pages = 0; pages<numberOfPages; pages++){
 
-            Vector rowsAtPage = rowsInPages.get(lastPage);
+            List rowsAtPage = rowsInPages.get(lastPage);
             //was: RECORDS_ON_PAGE - 1
             if(rowsAtPage.size() == RECORDS_ON_PAGE) {
 
-                rowsInPages.add(new Vector<Vector<String>>());
+                rowsInPages.add(new Vector<>());
                 newPageIndex = rowsInPages.size()-1;
             }
                 rowsInPages.get(newPageIndex).add(rowToAdd);
         showCurrentPage();
     }
+    public void deleteRowFromTable(Vector<String> rowToDelete){
+
+        for(int pages =0; pages<rowsInPages.size()-1; pages++){
+            List<List<String>> rowsAtPage = rowsInPages.get(pages);
+            for(List<String> row : rowsAtPage)
+                if(Objects.equals(row, rowToDelete)){
+                    rowsAtPage.remove(row);
+                    shiftPages();
+                    showCurrentPage();
+                    return;
+                }
+        }
+    }
+
+    private void shiftPages(){
+        int capacity = rowsInPages.size()-1;
+        for(int pages =0; pages<capacity; pages++) {
+            List<List<String>> currentPage = rowsInPages.get(pages);
+
+            List<List<String>> nextPage = rowsInPages.get(pages + 1);
+            int numOfRowsAtPage = currentPage.size();
+            if(currentPage.isEmpty()){
+                rowsInPages.remove(currentPage);
+                capacity--;
+                continue;
+            }
+            if(nextPage.isEmpty()){
+                rowsInPages.remove(nextPage);
+                capacity--;
+                continue;
+            }
+            if (numOfRowsAtPage < RECORDS_ON_PAGE) {
+                List<String> bitToFill = nextPage.get(0);
+                currentPage.add(bitToFill);
+                nextPage.remove(bitToFill);
+            }
+        }
+    }
     public void showCurrentPage(){
         clearModel();
+        List<List<String>> lastPage = rowsInPages.get(rowsInPages.size()-1);
+        if(lastPage.isEmpty())
+            rowsInPages.remove(lastPage);
         DefaultTableModel model = (DefaultTableModel) this.getModel();
-        Vector rowsAtPage = rowsInPages.get(currentPage);
+        List rowsAtPage = rowsInPages.get(currentPage);
 
         for(int row =0; row<rowsAtPage.size(); row++){
             Object dataVector = rowsAtPage.get(row);

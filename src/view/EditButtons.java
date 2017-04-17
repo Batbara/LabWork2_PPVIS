@@ -20,9 +20,9 @@ public class EditButtons {
    public JButton deleteRecord;
    public JButton searchRecord;
 
-    AddRecordDialog addRecordDialog;
-    DeleteRecordDialog delRecordDialog;
-    SearchRecordDialog searchRecordDialog;
+    private AddRecordDialog addRecordDialog;
+    private DeleteRecordDialog deleteRecordDialog;
+    private SearchRecordDialog searchRecordDialog;
 
     public EditButtons(JFrame ownerFrame, DataController dataController){
         addRecord = initButton("plus", "plushover", "pluspressed","Добавить");
@@ -32,7 +32,7 @@ public class EditButtons {
                 "Найти");
 
         addRecordDialog = new AddRecordDialog(ownerFrame, dataController);
-        delRecordDialog = new DeleteRecordDialog("Удалить записи", ownerFrame);
+        deleteRecordDialog = new DeleteRecordDialog("Удалить записи", ownerFrame, dataController);
         searchRecordDialog = new SearchRecordDialog("Поиск записей", ownerFrame, dataController);
         callAddDialogFromButton(dataController);
 
@@ -84,11 +84,12 @@ public class EditButtons {
         deleteRecord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                delRecordDialog.centerOnScreen();
-                delRecordDialog.setVisible(true);
-                delRecordDialog.clearAllPanelsTextFields();
-                delRecordDialog.hideComponents();
-                delRecordDialog.setPanelsVisibility(false);
+                SearchAndDeleteView view = deleteRecordDialog.getView();
+                view.centerOnScreen();
+                view.setVisible(true);
+                view.clearAllPanelsTextFields();
+                view.hideComponents();
+                view.setPanelsVisibility(false);
             }
         });
         searchRecord.addActionListener(new ActionListener() {

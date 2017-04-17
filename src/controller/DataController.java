@@ -8,6 +8,7 @@ import view.TableRecord;
 import view.TableView;
 
 import java.util.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,9 +39,16 @@ public class DataController implements Observer{
                 Student addedStudent = (Student) data;
                 TableRecord newRow = new TableRecord(addedStudent);
                 addRowToTable(newRow);
+            }else
+
+            if(data instanceof HashMap){
+                List<Student> base = getDataBase();
+                Student studentToRemove = (Student)((HashMap) data).get("remove");
+                TableRecord deleteRow = new TableRecord(studentToRemove);
+                deleteRowFromTable(deleteRow);
             }
             else
-            clearAllRows();
+                clearAllRows();
         }
     }
     public void clearDataBase(){
@@ -58,12 +66,22 @@ public class DataController implements Observer{
     public void addRowToTable(TableRecord record){
         pagedView.addRowToTable(record.getRecordData());
     }
+    public void deleteRowFromTable(TableRecord record){
+        pagedView.deleteRowFromTable(record.getRecordData());
+    }
     public List<Student> getDataBase(){
         return studentDataBase.getStudents();
     }
 
     public Paging getPagedView() {
         return pagedView;
+    }
+    public int removeStudents(List<Student> studentsToRemove){
+        int numBeforeDeletion = getNumberOfStudents();
+        for (Student student : studentsToRemove){
+            removeStudentData(student);
+        }
+        return numBeforeDeletion - getNumberOfStudents();
     }
 
     public List<Student> studentNameSearch(Map<String, String> data){
@@ -89,14 +107,19 @@ public class DataController implements Observer{
                     if (parent.getParentFatherName().equals(parentNameData.get("Отчество")))
                         result.add(student);
         }
-
+        try {
             for (Student student : getDataBase()) {
                 Worker worker = student.getStudentParent().getWorkerData();
                 if (worker.getCityOfWork().equals(addressData.get("Город")))
                     if (worker.getStreetOfWork().equals(addressData.get("Улица")))
                         if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
-                            if(!result.contains(student))
-                             result.add(student);
+                            if (!result.contains(student))
+                                result.add(student);
+            }
+        }
+        catch (NumberFormatException e){
+
+            System.err.println("Caught NumberFormatException: "+e.getMessage());
         }
 
         return result;
@@ -105,22 +128,33 @@ public class DataController implements Observer{
         List<Student> result = new ArrayList<>();
         Map<String, String> parentExpData = data.get(0);
         Map<String, String> addressData = data.get(1);
-
-        for (Student student : getDataBase()) {
-            Worker worker = student.getStudentParent().getWorkerData();
-            if ( (worker.getWorkingYears() >= Integer.parseInt(parentExpData.get("fromYears")))
-                    && (worker.getWorkingMonths() >= Integer.parseInt(parentExpData.get("fromMonths"))))
-                if ( (worker.getWorkingYears() <= Integer.parseInt(parentExpData.get("toYears")))
-                        && (worker.getWorkingMonths() <= Integer.parseInt(parentExpData.get("toMonths"))))
-                    result.add(student);
+        try {
+            for (Student student : getDataBase()) {
+                Worker worker = student.getStudentParent().getWorkerData();
+                if ((worker.getWorkingYears() >= Integer.parseInt(parentExpData.get("fromYears")))
+                        && (worker.getWorkingMonths() >= Integer.parseInt(parentExpData.get("fromMonths"))))
+                    if ((worker.getWorkingYears() <= Integer.parseInt(parentExpData.get("toYears")))
+                            && (worker.getWorkingMonths() <= Integer.parseInt(parentExpData.get("toMonths"))))
+                        result.add(student);
+            }
         }
-        for (Student student : getDataBase()) {
-            Worker worker = student.getStudentParent().getWorkerData();
-            if (worker.getCityOfWork().equals(addressData.get("Город")))
-                if (worker.getStreetOfWork().equals(addressData.get("Улица")))
-                    if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
-                        if(!result.contains(student))
-                            result.add(student);
+        catch (NumberFormatException e){
+
+                System.err.println("Caught NumberFormatException: "+e.getMessage());
+        }
+        try {
+            for (Student student : getDataBase()) {
+                Worker worker = student.getStudentParent().getWorkerData();
+                if (worker.getCityOfWork().equals(addressData.get("Город")))
+                    if (worker.getStreetOfWork().equals(addressData.get("Улица")))
+                        if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
+                            if (!result.contains(student))
+                                result.add(student);
+            }
+        }
+        catch (NumberFormatException e){
+
+            System.err.println("Caught NumberFormatException: "+e.getMessage());
         }
 
         return result;
@@ -137,13 +171,19 @@ public class DataController implements Observer{
                         result.add(student);
         }
 
-        for (Student student : getDataBase()) {
-            Worker worker = student.getStudentParent().getWorkerData();
-            if (worker.getCityOfWork().equals(addressData.get("Город")))
-                if (worker.getStreetOfWork().equals(addressData.get("Улица")))
-                    if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
-                        if(!result.contains(student))
-                            result.add(student);
+        try {
+            for (Student student : getDataBase()) {
+                Worker worker = student.getStudentParent().getWorkerData();
+                if (worker.getCityOfWork().equals(addressData.get("Город")))
+                    if (worker.getStreetOfWork().equals(addressData.get("Улица")))
+                        if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
+                            if (!result.contains(student))
+                                result.add(student);
+            }
+        }
+        catch (NumberFormatException e){
+
+            System.err.println("Caught NumberFormatException: "+e.getMessage());
         }
 
         return result;
