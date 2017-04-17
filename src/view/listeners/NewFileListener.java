@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * Created by Batbara on 16.04.2017.
  */
 public class NewFileListener  implements ActionListener{
-    private DataController dataController;
+    private final DataController dataController;
     public NewFileListener(DataController dataController){
         this.dataController = dataController;
     }

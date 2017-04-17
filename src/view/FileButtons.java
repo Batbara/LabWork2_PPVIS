@@ -15,9 +15,9 @@ import java.awt.event.ActionListener;
  * Created by Batbara on 02.04.2017.
  */
 public class FileButtons {
-    public JButton newFile;
-    public JButton openFile;
-    public JButton saveFile;
+    private JButton newFile;
+    private JButton openFile;
+    private JButton saveFile;
     private DataController dataController;
 
     public FileButtons(DataController dataController){
@@ -74,5 +74,17 @@ public class FileButtons {
         });
 
         return button;
+    }
+
+    public JButton getNewFile() {
+        return newFile;
+    }
+
+    public JButton getOpenFile() {
+        return openFile;
+    }
+
+    public JButton getSaveFile() {
+        return saveFile;
     }
 }

@@ -3,7 +3,7 @@ package view;
 /**
  * Created by Batbara on 14.04.2017.
  */
-public class XMLConst {
+class XMLConst {
     static final String STUDENT_DATA_BASE = "studentDataBase";
     static final String STUDENT = "student";
 //    static final String STUDENT_SURNAME = "studentSurname";

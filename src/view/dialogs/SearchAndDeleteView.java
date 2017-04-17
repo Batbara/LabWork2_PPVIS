@@ -2,8 +2,6 @@ package view.dialogs;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
  * Created by Batbara on 13.04.2017.
  */
 public class SearchAndDeleteView extends JDialog {
-    ButtonGroup groupRadioButtons;
+    private ButtonGroup groupRadioButtons;
 
     private Map<String, JRadioButton> optionButtons;
     private Map<String, JPanel> optionPanels;
@@ -80,17 +78,17 @@ public class SearchAndDeleteView extends JDialog {
         String []addressKeys = {"Город", "Улица", "Номер дома"};
         String []experienceKeys = {"fromYears", "fromMonths", "toYears", "toMonths"};
 
-        for(int iterator=0; iterator<nameKeys.length; iterator++) {
-            studentNameField.put(nameKeys[iterator], new JTextField(10));
+        for (String nameKey1 : nameKeys) {
+            studentNameField.put(nameKey1, new JTextField(10));
         }
-        for(int iterator=0; iterator<nameKeys.length; iterator++) {
-            parentNameField.put(nameKeys[iterator], new JTextField(10));
+        for (String nameKey : nameKeys) {
+            parentNameField.put(nameKey, new JTextField(10));
         }
-        for(int iterator=0; iterator<addressKeys.length; iterator++) {
-            workingAddressField.put(addressKeys[iterator], new JTextField(10));
+        for (String addressKey : addressKeys) {
+            workingAddressField.put(addressKey, new JTextField(10));
         }
-        for(int iterator=0; iterator<experienceKeys.length; iterator++) {
-            workExperienceField.put(experienceKeys[iterator], new JTextField(5));
+        for (String experienceKey : experienceKeys) {
+            workExperienceField.put(experienceKey, new JTextField(5));
         }
     }
     private void initOptionButtons(){
@@ -149,7 +147,7 @@ public class SearchAndDeleteView extends JDialog {
             holder.add(element);
         }
         this.add(holder);
-        setPanelsVisibility(false);
+        setPanelsVisibility();
     }
     private void fillWindowWithButtons(){
         buttonsPanel = new JPanel(new FlowLayout());
@@ -206,69 +204,60 @@ public class SearchAndDeleteView extends JDialog {
 
     }
 
-    public void firePressedButtonEvent(){
+    private void firePressedButtonEvent(){
         Set<String> buttonKeys = optionButtons.keySet();
 
         for (String keyValue: buttonKeys){
             JRadioButton button = optionButtons.get(keyValue);
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    determinePanelToShow(keyValue);
-                    buttonsPanel.setVisible(true);
-                }
+            button.addActionListener(e -> {
+                determinePanelToShow(keyValue);
+                buttonsPanel.setVisible(true);
             });
         }
     }
     private void addControlButtonsListeners (){
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String buttonKey="";
-                Set<String> allButtonsKeys = optionButtons.keySet();
-                JRadioButton selectedButton = new JRadioButton();
-                for (Enumeration<AbstractButton> buttons = groupRadioButtons.getElements(); buttons.hasMoreElements();) {
-                    AbstractButton button = buttons.nextElement();
-                    if (button.isSelected()) {
-                        selectedButton = (JRadioButton)button;
-                    }
+        okButton.addActionListener(e -> {
+            String buttonKey="";
+            Set<String> allButtonsKeys = optionButtons.keySet();
+            JRadioButton selectedButton = new JRadioButton();
+            for (Enumeration<AbstractButton> buttons = groupRadioButtons.getElements(); buttons.hasMoreElements();) {
+                AbstractButton button = buttons.nextElement();
+                if (button.isSelected()) {
+                    selectedButton = (JRadioButton)button;
                 }
-                for(String checkingButtonKey : allButtonsKeys) {
-                   if(Objects.equals(selectedButton, optionButtons.get(checkingButtonKey)))
-                       buttonKey = checkingButtonKey;
-                }
-                System.out.println("pressed button key is"+buttonKey);
+            }
+            for(String checkingButtonKey : allButtonsKeys) {
+               if(Objects.equals(selectedButton, optionButtons.get(checkingButtonKey)))
+                   buttonKey = checkingButtonKey;
+            }
+            System.out.println("pressed button key is"+buttonKey);
 
-                switch (buttonKey){
-                    case "studentNameOption":
-                        status = "studentNameOption";
-                        break;
-                    case "parentNameOrAddressOption":
-                        status = "parentNameOrAddressOption";
-                        break;
-                    case "parentExpOrAddressOption":
-                        status = "parentExpOrAddressOption";
-                        break;
-                    case "studentNameOrAddressOption":
-                       status = "studentNameOrAddressOption";
-                        break;
-                }
+            switch (buttonKey){
+                case "studentNameOption":
+                    status = "studentNameOption";
+                    break;
+                case "parentNameOrAddressOption":
+                    status = "parentNameOrAddressOption";
+                    break;
+                case "parentExpOrAddressOption":
+                    status = "parentExpOrAddressOption";
+                    break;
+                case "studentNameOrAddressOption":
+                   status = "studentNameOrAddressOption";
+                    break;
             }
         });
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clearAllPanelsTextFields();
-                setVisible(false);
-            }
+        cancelButton.addActionListener(e -> {
+            clearAllPanelsTextFields();
+            setVisible(false);
         });
     }
 
-    public void setPanelsVisibility(boolean flag){
+    public void setPanelsVisibility(){
         Collection<JPanel> panels = optionPanels.values();
         for (JPanel element : panels){
-            element.setVisible(flag);
+            element.setVisible(false);
         }
     }
     private void clearPanelTextFields(Map<String, JTextField> textFields){
@@ -401,10 +390,6 @@ public class SearchAndDeleteView extends JDialog {
 
     public ButtonGroup getGroupRadioButtons() {
         return groupRadioButtons;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public Map<String, JRadioButton> getOptionButtons() {

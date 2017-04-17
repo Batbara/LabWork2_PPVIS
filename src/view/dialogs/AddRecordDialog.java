@@ -6,8 +6,6 @@ import view.Paging;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
@@ -19,10 +17,10 @@ public class AddRecordDialog extends JDialog{
 
     //
     private Map<String, JTextField> studentFields;
-    private Student studentToAdd;
+    private final Student studentToAdd;
     private JButton okButton;
     private JButton cancelButton;
-    private DataController dataController;
+    private final DataController dataController;
 
     public AddRecordDialog(JFrame ownerFrame, DataController dataController){
         super(ownerFrame,  "Добавить запись", Dialog.ModalityType.DOCUMENT_MODAL);
@@ -61,8 +59,8 @@ public class AddRecordDialog extends JDialog{
         studentFields = new LinkedHashMap<>();
         String []fieldKeys = {"Фамилия1", "Имя1", "Отчество1", "Фамилия", "Имя", "Отчество", "Город", "Улица", "Номер дома",
                 "Должность", "Годы работы", "Месяцы работы"};
-        for (int iterator =0; iterator<fieldKeys.length; iterator++) {
-            studentFields.put(fieldKeys[iterator], new JTextField(10));
+        for (String fieldKey : fieldKeys) {
+            studentFields.put(fieldKey, new JTextField(10));
         }
 
     }
@@ -151,7 +149,7 @@ public class AddRecordDialog extends JDialog{
 
         addToDialogFrame(buttonsPanel);
     }
-    public String getTextFromField (String fieldKey){
+    private String getTextFromField(String fieldKey){
         return studentFields.get(fieldKey).getText();
     }
     private boolean isSafeToAdd(){
@@ -191,51 +189,45 @@ public class AddRecordDialog extends JDialog{
         return true;
     }
     private void setButtonListeners(){
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!isSafeToAdd()){
-                   return;
-                }
-                studentToAdd.setStudentSurname(getTextFromField("Фамилия1"));
-                studentToAdd.setStudentName(getTextFromField("Имя1"));
-                studentToAdd.setStudentFatherName(getTextFromField("Отчество1"));
-
-                Parent parentToAdd = studentToAdd.getStudentParent();
-                parentToAdd.setParentSurname(getTextFromField("Фамилия"));
-                parentToAdd.setParentName(getTextFromField("Имя"));
-                parentToAdd.setParentFatherName(getTextFromField("Отчество"));
-
-
-                Worker parentWorker = parentToAdd.getWorkerData();
-
-                parentWorker.setCityOfWork(getTextFromField("Город"));
-                parentWorker.setStreetOfWork(getTextFromField("Улица"));
-                parentWorker.setBuildingNumberOfWork(Integer.parseInt(getTextFromField("Номер дома")));
-                parentWorker.setJobPosition(getTextFromField("Должность"));
-                parentWorker.setWorkingYears(Integer.parseInt(getTextFromField("Годы работы")));
-                parentWorker.setWorkingMonths(Integer.parseInt(getTextFromField("Месяцы работы")));
-
-                parentToAdd.setWorkerData(parentWorker);
-                studentToAdd.setStudentParent(parentToAdd);
-
-                dataController.addStudentData(studentToAdd);
-
-                Paging tableView = dataController.getPagedView();
-                tableView.setCurrentPage(tableView.getNumberOfPages()-1);
-                tableView.showCurrentPage();
-
-                clearTextFields();
-                setVisible(false);
+        okButton.addActionListener(e -> {
+            if(!isSafeToAdd()){
+               return;
             }
+            studentToAdd.setStudentSurname(getTextFromField("Фамилия1"));
+            studentToAdd.setStudentName(getTextFromField("Имя1"));
+            studentToAdd.setStudentFatherName(getTextFromField("Отчество1"));
+
+            Parent parentToAdd = studentToAdd.getStudentParent();
+            parentToAdd.setParentSurname(getTextFromField("Фамилия"));
+            parentToAdd.setParentName(getTextFromField("Имя"));
+            parentToAdd.setParentFatherName(getTextFromField("Отчество"));
+
+
+            Worker parentWorker = parentToAdd.getWorkerData();
+
+            parentWorker.setCityOfWork(getTextFromField("Город"));
+            parentWorker.setStreetOfWork(getTextFromField("Улица"));
+            parentWorker.setBuildingNumberOfWork(Integer.parseInt(getTextFromField("Номер дома")));
+            parentWorker.setJobPosition(getTextFromField("Должность"));
+            parentWorker.setWorkingYears(Integer.parseInt(getTextFromField("Годы работы")));
+            parentWorker.setWorkingMonths(Integer.parseInt(getTextFromField("Месяцы работы")));
+
+            parentToAdd.setWorkerData(parentWorker);
+            studentToAdd.setStudentParent(parentToAdd);
+
+            dataController.addStudentData(studentToAdd);
+
+            Paging tableView = dataController.getPagedView();
+            tableView.setCurrentPage(tableView.getNumberOfPages()-1);
+            tableView.showCurrentPage();
+
+            clearTextFields();
+            setVisible(false);
         });
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clearTextFields();
-                setVisible(false);
-            }
+        cancelButton.addActionListener(e -> {
+            clearTextFields();
+            setVisible(false);
         });
     }
 

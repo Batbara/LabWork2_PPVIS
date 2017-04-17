@@ -6,15 +6,15 @@ import java.awt.*;
 /**
  * Created by student on 31.03.2017.
  */
-public class MenuHelp extends JMenu{
+class MenuHelp extends JMenu{
 
-    JMenuItem hotKeysMenuItem;
-    JMenuItem aboutMenuItem;
+    private JMenuItem hotKeysMenuItem;
+    private JMenuItem aboutMenuItem;
 
-    Font menuFont;
+    private final Font menuFont;
 
-    public MenuHelp(String title, JFrame mainFrame){
-        super(title);
+    public MenuHelp(JFrame mainFrame){
+        super("Помощь");
 
         menuFont = new Font("Helvetica", Font.PLAIN, 13);
         UIManager.put("menu.font", menuFont);

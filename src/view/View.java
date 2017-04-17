@@ -12,7 +12,7 @@ import java.awt.*;
 public class View {
     
     private JFrame mainFrame;
-    private DataController dataController;
+    private final DataController dataController;
 
     public View() {
         setUIFont (new javax.swing.plaf.FontUIResource("Helvetica",Font.PLAIN,12));
@@ -36,7 +36,7 @@ public class View {
     private void initFrame() {
         mainFrame = new JFrame("Лабораторная работа №2");
         mainFrame.setLayout(new BorderLayout());
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setSize(new Dimension(1050, 476));
         mainFrame.setMaximumSize(new Dimension(850, 700));
 
@@ -61,9 +61,7 @@ public class View {
         Toolbar mainToolBar = new Toolbar(mainFrame, dataController);
         return mainToolBar.getToolBarPanel();
     }
-    public DataController getDataController(){
-        return dataController;
-    }
+
     private static void setUIFont (javax.swing.plaf.FontUIResource f){
         java.util.Enumeration keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {

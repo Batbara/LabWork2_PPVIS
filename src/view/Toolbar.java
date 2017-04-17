@@ -7,12 +7,12 @@ import java.awt.*;
 /**
  * Created by Batbara on 24.03.2017.
  */
-public class Toolbar{
+class Toolbar{
 
      private JToolBar toolBarPanel;
 
-    FileButtons fileButtons;
-    EditButtons editButtons;
+    private FileButtons fileButtons;
+    private EditButtons editButtons;
 
 
     public Toolbar (JFrame ownerFrame, DataController tableController){
@@ -42,16 +42,16 @@ public class Toolbar{
         fileButtons = new FileButtons(dataController);
     }
     private void addToPanel(){
-        toolBarPanel.add(fileButtons.newFile);
-        toolBarPanel.add(fileButtons.openFile);
-        toolBarPanel.add(fileButtons.saveFile);
+        toolBarPanel.add(fileButtons.getNewFile());
+        toolBarPanel.add(fileButtons.getOpenFile());
+        toolBarPanel.add(fileButtons.getSaveFile());
 
         toolBarPanel.addSeparator();
         toolBarPanel.addSeparator();
 
-        toolBarPanel.add(editButtons.addRecord);
-        toolBarPanel.add(editButtons.deleteRecord);
-        toolBarPanel.add(editButtons.searchRecord);
+        toolBarPanel.add(editButtons.getAddRecord());
+        toolBarPanel.add(editButtons.getDeleteRecord());
+        toolBarPanel.add(editButtons.getSearchRecord());
     }
 
     private void setWindowedSize(int ownerFrameWidth){

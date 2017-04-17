@@ -1,31 +1,24 @@
 package view;
 
-import model.Parent;
-
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
-import javax.swing.BorderFactory;
-import javax.swing.text.ParagraphView;
 import java.awt.*;
 
 /**
  * Created by Batbara on 25.03.2017.
  */
 public class TableView extends JTable{
-    
-    private JScrollPane tableScroll;
-    private JPanel holdingTable;
+
+    private final JPanel holdingTable;
 
 
-    public TableView(){
+    TableView(){
         super();
       //  this.setModel(mainTableModel);
         initTable();
         setUpHeader();
         setUpTableColor();
-        tableScroll = new JScrollPane(this);
+        JScrollPane tableScroll = new JScrollPane(this);
 
         holdingTable = new JPanel();
         holdingTable.setLayout(new BorderLayout());

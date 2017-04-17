@@ -7,22 +7,22 @@ import view.listeners.OpenFileListener;
 import view.listeners.SaveFileListener;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 /**
  * Created by Batbara on 31.03.2017.
  */
-public class MenuFile extends JMenu {
-    JMenuItem openMenuItem;
-    JMenuItem saveMenuItem;
-    JMenuItem createMenuItem;
-    JMenuItem closeMenuItem;
+class MenuFile extends JMenu {
+    private JMenuItem openMenuItem;
+    private JMenuItem saveMenuItem;
+    private JMenuItem createMenuItem;
+    private JMenuItem closeMenuItem;
 
-    public MenuFile(String title, JFrame owner, DataController dataController){
-        super(title);
+    public MenuFile(JFrame owner, DataController dataController){
+        super("Файл");
 
         initMenuItems();
         addMenuItems();
@@ -35,25 +35,39 @@ public class MenuFile extends JMenu {
 
         NewFileListener newFileListener = new NewFileListener(dataController);
         createMenuItem.addActionListener(newFileListener);
+
+        closeMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object[] options = {"Да, вполне",
+                    "Нет, я передумал",
+                        "Отмена"};
+                int reply = JOptionPane.showOptionDialog(owner,"Вы уверены, что хотите закрыть документ?",
+                        "Закрыть", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[2]);
+                if (reply == JOptionPane.YES_OPTION){
+                    dataController.clearDataBase();
+                    dataController.getPagedView().showCurrentPage();
+                }
+            }
+        });
     }
     private void initMenuItems(){
 
         openMenuItem = new JMenuItem("Открыть...");
-        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        openMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 
 
         saveMenuItem = new JMenuItem("Сохранить");
-        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 
         createMenuItem = new JMenuItem("Новый файл");
-        createMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        createMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 
         closeMenuItem = new JMenuItem("Закрыть");
-        closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        closeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
     }
-   // private void initDialogs(JFrame owner){
-//        addRecordDialog=new AddRecordDialog(owner);
-//    }
+
     private void addMenuItems(){
         this.add(createMenuItem);
         this.add(openMenuItem);

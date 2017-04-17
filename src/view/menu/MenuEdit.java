@@ -1,74 +1,56 @@
 package view.menu;
 
 import controller.DataController;
-import view.dialogs.*;
+import view.listeners.AddRecordListener;
+import view.listeners.DeleteRecordListener;
+import view.listeners.SearchRecordsListener;
 
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 /**
  * Created by student on 31.03.2017.
  */
-public class MenuEdit extends JMenu {
+class MenuEdit extends JMenu {
 
-    JMenuItem addRecordMenuItem;
-    JMenuItem delMenuItem;
-    JMenuItem findMenuItem;
+    private JMenuItem addRecordMenuItem;
+    private JMenuItem delMenuItem;
+    private JMenuItem searchMenuItem;
 
-    AddRecordDialog addRecordDialog;
-    DeleteRecordDialog deleteRecordDialog;
-
-
-    public MenuEdit(String title, JFrame owner, DataController tableController){
-        super(title);
+    public MenuEdit(JFrame ownerFrame, DataController dataController){
+        super("Правка");
 
         initMenuItems();
         addMenuItems();
-        initDialogs(owner, tableController);
 
-        addRecordMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addRecordDialog.centerOnScreen();
-                addRecordDialog.setVisible(true);
-            }
-        });
+        AddRecordListener addRecordListener = new AddRecordListener(ownerFrame, dataController);
+        addRecordMenuItem.addActionListener(addRecordListener);
 
-        /*delMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteRecordDialog.centerOnScreen();
-                deleteRecordDialog.setVisible(true);
-                deleteRecordDialog.setVisibleTextFieldItems(false);
-                deleteRecordDialog.noneSelected();
-                //System.out.println("i am here");
+        DeleteRecordListener deleteRecordListener = new DeleteRecordListener(ownerFrame, dataController);
+        delMenuItem.addActionListener(deleteRecordListener);
 
-            }
-        });*/
+        SearchRecordsListener searchRecordsListener = new SearchRecordsListener(ownerFrame, dataController);
+        searchMenuItem.addActionListener(searchRecordsListener);
 
     }
     private void initMenuItems(){
 
         addRecordMenuItem = new JMenuItem("Добавить запись");
-        addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 
         delMenuItem = new JMenuItem("Удалить записи");
-        addRecordMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        delMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
 
-        findMenuItem = new JMenuItem("Поиск...");
+        searchMenuItem = new JMenuItem("Поиск...");
+        searchMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
 
     }
-    private void initDialogs(JFrame owner, DataController dataController){
-        addRecordDialog=new AddRecordDialog(owner, dataController);
-        deleteRecordDialog = new DeleteRecordDialog("Удалить записи",  owner, dataController);
-    }
+
     private void addMenuItems(){
         this.add(addRecordMenuItem);
-        this.add(findMenuItem);
+        this.add(searchMenuItem);
         this.add(delMenuItem);
     }
 

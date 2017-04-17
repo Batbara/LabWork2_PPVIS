@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -24,8 +23,8 @@ import javax.xml.transform.stream.StreamResult;
  * Created by Batbara on 14.04.2017.
  */
 public class XMLDomParser {
-    String fileName;
-    DataController dataController;
+    private final String fileName;
+    private final DataController dataController;
     public XMLDomParser(DataController dataController, String fileName){
         this.dataController = dataController;
         this.fileName = fileName+".sdb";
@@ -40,12 +39,7 @@ public class XMLDomParser {
             transformer.transform(source, result);
 
             System.out.println("Документ сохранен в: "+fileToSave.getAbsolutePath());
-        }
-        catch ( TransformerConfigurationException ex) {
-            Logger.getLogger(XMLDomParser.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
-        catch (TransformerException ex) {
+        } catch (TransformerException ex) {
             Logger.getLogger(XMLDomParser.class.getName())
                     .log(Level.SEVERE, null, ex);
         }

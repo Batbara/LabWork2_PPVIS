@@ -7,11 +7,11 @@ import javax.swing.filechooser.FileFilter;
  * Created by Batbara on 15.04.2017.
  */
 public class ExtensionFileFilter extends FileFilter {
-    String description;
-    String extension;
-    public ExtensionFileFilter(String description, String extensions){
-        this.description = description;
-        this.extension = extensions.toLowerCase();
+    private final String description;
+    private final String extension;
+    public ExtensionFileFilter(){
+        this.description = "Student Data Base (*.sdb)";
+        this.extension = "SDB".toLowerCase();
     }
     public String getDescription() {
         return description;

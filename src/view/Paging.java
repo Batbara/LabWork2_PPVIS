@@ -1,14 +1,8 @@
 package view;
 
-import controller.DataController;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
@@ -17,16 +11,15 @@ import java.util.List;
  */
 public class Paging extends TableView{
 
-    int RECORDS_ON_PAGE = 10;
-    private JButton nextPageButton;
-    private JButton prevPageButton;
-    private JButton lastPageButton;
-    private JButton firstPageButton;
-    private JLabel pagingStatus;
-    Boolean isNoIcon;
-    int currentPage;
+    private int RECORDS_ON_PAGE = 10;
+    private final JButton nextPageButton;
+    private final JButton prevPageButton;
+    private final JButton lastPageButton;
+    private final JButton firstPageButton;
+    private final JLabel pagingStatus;
+    private int currentPage;
 
-    private List<List<List<String>>> rowsInPages;
+    private final List<List<List<String>>> rowsInPages;
 
     public Paging(){
         super();
@@ -46,11 +39,10 @@ public class Paging extends TableView{
         setButtonsListeners();
     }
     private JButton initButton (String noFileName, String tipText){
-        isNoIcon = true;
+        Boolean isNoIcon = true;
         String noImgLocation = "/img/"+noFileName+".png";
 
         ImageIcon noImage = new ImageIcon(this.getClass().getResource(noImgLocation));
-
 
         JButton button = new JButton();
 
@@ -67,88 +59,76 @@ public class Paging extends TableView{
         return new ImageIcon(this.getClass().getResource(iconLocation));
     }
     private void setButtonsState(){
-        nextPageButton.getModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                ButtonModel model = (ButtonModel) e.getSource();
-                int lastPage = rowsInPages.size() - 1;
+        nextPageButton.getModel().addChangeListener(e -> {
+            ButtonModel model = (ButtonModel) e.getSource();
+            int lastPage = rowsInPages.size() - 1;
 
-                if (currentPage == lastPage) {
-                    if (model.isRollover() || model.isPressed()) {
-                        nextPageButton.setIcon(getImageIcon("nextno"));
-                    }
-                    return;
+            if (currentPage == lastPage || rowsInPages.isEmpty()) {
+                if (model.isRollover() || model.isPressed()) {
+                    nextPageButton.setIcon(getImageIcon("nextno"));
                 }
-                if (model.isRollover()) {
-                    nextPageButton.setIcon(getImageIcon("nexthover"));
-                }
-                else
-                    nextPageButton.setIcon(getImageIcon("next"));
-                if (model.isPressed()) {
-                    nextPageButton.setIcon(getImageIcon("nextpressed"));
-                }
+                return;
+            }
+            if (model.isRollover()) {
+                nextPageButton.setIcon(getImageIcon("nexthover"));
+            }
+            else
+                nextPageButton.setIcon(getImageIcon("next"));
+            if (model.isPressed()) {
+                nextPageButton.setIcon(getImageIcon("nextpressed"));
             }
         });
-        lastPageButton.getModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                ButtonModel model = (ButtonModel) e.getSource();
-                int lastPage = rowsInPages.size() - 1;
+        lastPageButton.getModel().addChangeListener(e -> {
+            ButtonModel model = (ButtonModel) e.getSource();
+            int lastPage = rowsInPages.size() - 1;
 
-                if (currentPage == lastPage) {
-                    if (model.isRollover() || model.isPressed()) {
-                        lastPageButton.setIcon(getImageIcon("forwardno"));
-                    }
-                    return;
+            if (currentPage == lastPage || rowsInPages.isEmpty()) {
+                if (model.isRollover() || model.isPressed()) {
+                    lastPageButton.setIcon(getImageIcon("forwardno"));
                 }
-                if (model.isRollover()) {
-                        lastPageButton.setIcon(getImageIcon("forwardhover"));
-                }
-                else
-                    lastPageButton.setIcon(getImageIcon("forward"));
-                if (model.isPressed()) {
-                    lastPageButton.setIcon(getImageIcon("forwardpressed"));
-                }
+                return;
+            }
+            if (model.isRollover()) {
+                    lastPageButton.setIcon(getImageIcon("forwardhover"));
+            }
+            else
+                lastPageButton.setIcon(getImageIcon("forward"));
+            if (model.isPressed()) {
+                lastPageButton.setIcon(getImageIcon("forwardpressed"));
             }
         });
-        prevPageButton.getModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                ButtonModel model = (ButtonModel) e.getSource();
+        prevPageButton.getModel().addChangeListener(e -> {
+            ButtonModel model = (ButtonModel) e.getSource();
 
-                if (currentPage == 0) {
-                    if (model.isRollover() || model.isPressed()) {
-                        prevPageButton.setIcon(getImageIcon("prevno"));
-                    }
-                    return;
+            if (currentPage == 0 || rowsInPages.isEmpty()) {
+                if (model.isRollover() || model.isPressed()) {
+                    prevPageButton.setIcon(getImageIcon("prevno"));
                 }
-                if (model.isRollover()) {
-                    prevPageButton.setIcon(getImageIcon("prevhover"));
-                } else
-                    prevPageButton.setIcon(getImageIcon("prev"));
-                if (model.isPressed()) {
-                    prevPageButton.setIcon(getImageIcon("prevpressed"));
-                }
+                return;
+            }
+            if (model.isRollover()) {
+                prevPageButton.setIcon(getImageIcon("prevhover"));
+            } else
+                prevPageButton.setIcon(getImageIcon("prev"));
+            if (model.isPressed()) {
+                prevPageButton.setIcon(getImageIcon("prevpressed"));
             }
         });
-        firstPageButton.getModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                ButtonModel model = (ButtonModel) e.getSource();
+        firstPageButton.getModel().addChangeListener(e -> {
+            ButtonModel model = (ButtonModel) e.getSource();
 
-                if (currentPage == 0) {
-                    if (model.isRollover() || model.isPressed()) {
-                        firstPageButton.setIcon(getImageIcon("backwardno"));
-                    }
-                    return;
+            if (currentPage == 0 || rowsInPages.isEmpty()) {
+                if (model.isRollover() || model.isPressed()) {
+                    firstPageButton.setIcon(getImageIcon("backwardno"));
                 }
-                if (model.isRollover()) {
-                    firstPageButton.setIcon(getImageIcon("backwardhover"));
-                } else
-                    firstPageButton.setIcon(getImageIcon("backward"));
-                if (model.isPressed()) {
-                    firstPageButton.setIcon(getImageIcon("backwardpressed"));
-                }
+                return;
+            }
+            if (model.isRollover()) {
+                firstPageButton.setIcon(getImageIcon("backwardhover"));
+            } else
+                firstPageButton.setIcon(getImageIcon("backward"));
+            if (model.isPressed()) {
+                firstPageButton.setIcon(getImageIcon("backwardpressed"));
             }
         });
     }
@@ -164,7 +144,7 @@ public class Paging extends TableView{
     public void clearAllRows(){
         rowsInPages.clear();
         currentPage=0;
-        rowsInPages.add(0,new Vector<>(10));
+        //rowsInPages.add(0,new Vector<>(10));
         clearModel();
     }
     private void clearModel(){
@@ -175,7 +155,8 @@ public class Paging extends TableView{
         }
     }
     public void addRowToTable(Vector<String> rowToAdd){
-
+        if(rowsInPages.isEmpty())
+            rowsInPages.add(0,new Vector<>(10));
         int lastPage = rowsInPages.size()-1;
         int newPageIndex = lastPage;
         //for (int pages = 0; pages<numberOfPages; pages++){
@@ -230,15 +211,24 @@ public class Paging extends TableView{
     }
     public void showCurrentPage(){
         clearModel();
+        if(rowsInPages.isEmpty()){
+            pagingStatus.setText("1 из 1");
+            nextPageButton.setIcon(getImageIcon("nextno"));
+            lastPageButton.setIcon(getImageIcon("forwardno"));
+            prevPageButton.setIcon(getImageIcon("prevno"));
+            firstPageButton.setIcon(getImageIcon("backwardno"));
+            setButtonsState();
+            return;
+        }
         List<List<String>> lastPage = rowsInPages.get(rowsInPages.size()-1);
         if(lastPage.isEmpty())
             rowsInPages.remove(lastPage);
+
         DefaultTableModel model = (DefaultTableModel) this.getModel();
         List rowsAtPage = rowsInPages.get(currentPage);
 
-        for(int row =0; row<rowsAtPage.size(); row++){
-            Object dataVector = rowsAtPage.get(row);
-            model.addRow((Vector)dataVector);
+        for (Object dataVector : rowsAtPage) {
+            model.addRow((Vector) dataVector);
         }
         int pageToShow = currentPage+1;
         pagingStatus.setText(pageToShow + " из " + rowsInPages.size());
@@ -262,42 +252,26 @@ public class Paging extends TableView{
     }
    
     private void setButtonsListeners(){
-        nextPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(currentPage!= rowsInPages.size()-1) {
-                    currentPage++;
-                    showCurrentPage();
-                }
-            }
-        });
-        prevPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(currentPage!= 0) {
-                    currentPage--;
-                    showCurrentPage();
-                }
-            }
-        });
-        firstPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentPage=0;
+        nextPageButton.addActionListener(e -> {
+            if(currentPage!= rowsInPages.size()-1) {
+                currentPage++;
                 showCurrentPage();
             }
         });
-        lastPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentPage=rowsInPages.size()-1;
+        prevPageButton.addActionListener(e -> {
+            if(currentPage!= 0) {
+                currentPage--;
                 showCurrentPage();
             }
         });
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
+        firstPageButton.addActionListener(e -> {
+            currentPage=0;
+            showCurrentPage();
+        });
+        lastPageButton.addActionListener(e -> {
+            currentPage=rowsInPages.size()-1;
+            showCurrentPage();
+        });
     }
 
     public void setCurrentPage(int currentPage) {
@@ -307,7 +281,7 @@ public class Paging extends TableView{
         return rowsInPages.size();
     }
 
-    public void setRECORDS_ON_PAGE(int RECORDS_ON_PAGE) {
-        this.RECORDS_ON_PAGE = RECORDS_ON_PAGE;
+    public void setRECORDS_ON_PAGE() {
+        this.RECORDS_ON_PAGE = 3;
     }
 }

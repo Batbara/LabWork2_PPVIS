@@ -1,16 +1,15 @@
 package model;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 
 /**
  * Created by Batbara on 08.04.2017.
  */
 public class StudentDataBase extends Observable {
-    private List <Student> students;
+    private final List <Student> students;
     public StudentDataBase(){
-        this.students= new ArrayList<Student>();
+        this.students= new ArrayList<>();
     }
 
     public void addStudent(Student newStudent){
@@ -48,16 +47,16 @@ public class StudentDataBase extends Observable {
         students.clear();
         allStudentsRemoved();
     }
-    public void allStudentsRemoved(){
+    private void allStudentsRemoved(){
         setChanged();
         notifyObservers();
     }
-    public void studentRemoved(Map<String, Student> student){
+    private void studentRemoved(Map<String, Student> student){
         setChanged();
         notifyObservers(student);
     }
 
-    public void studentAdded(Student student){
+    private void studentAdded(Student student){
         setChanged();
         notifyObservers(student);
     }

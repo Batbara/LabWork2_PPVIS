@@ -5,18 +5,14 @@ import model.StudentDataBase;
 import model.Worker;
 import view.Paging;
 import view.TableRecord;
-import view.TableView;
-
 import java.util.*;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * Created by Batbara on 03.04.2017.
  */
 public class DataController implements Observer{
-    private Paging pagedView;
-    private StudentDataBase studentDataBase;
+    private final Paging pagedView;
+    private final StudentDataBase studentDataBase;
 
     public DataController(StudentDataBase model, Paging view) {
         this.studentDataBase = model;
@@ -29,7 +25,7 @@ public class DataController implements Observer{
         studentDataBase.addStudent(newStudent);
 
     }
-    public void removeStudentData (Student studentToRemove){
+    private void removeStudentData (Student studentToRemove){
         studentDataBase.removeStudent(studentToRemove);
     }
 
@@ -53,20 +49,21 @@ public class DataController implements Observer{
     }
     public void clearDataBase(){
         studentDataBase.removeAllStudents();
+        clearAllRows();
     }
     public void loadDataBase(List<Student> base){
         studentDataBase.reinitDataBase(base);
     }
-    public void clearAllRows(){
+    private void clearAllRows(){
         pagedView.clearAllRows();
     }
-    public int getNumberOfStudents(){
+    private int getNumberOfStudents(){
         return getDataBase().size();
     }
-    public void addRowToTable(TableRecord record){
+    private void addRowToTable(TableRecord record){
         pagedView.addRowToTable(record.getRecordData());
     }
-    public void deleteRowFromTable(TableRecord record){
+    private void deleteRowFromTable(TableRecord record){
         pagedView.deleteRowFromTable(record.getRecordData());
     }
     public List<Student> getDataBase(){

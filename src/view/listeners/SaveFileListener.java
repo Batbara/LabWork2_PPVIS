@@ -13,11 +13,11 @@ import java.awt.event.ActionListener;
  * Created by Batbara on 14.04.2017.
  */
 public class SaveFileListener implements ActionListener {
-    private JFileChooser fileChooser;
-    DataController dataController;
+    private final JFileChooser fileChooser;
+    private final DataController dataController;
     public SaveFileListener(DataController dataController) {
         fileChooser = new JFileChooser();
-        FileFilter filter = new ExtensionFileFilter("Student Data Base (*.sdb)", "SDB");
+        FileFilter filter = new ExtensionFileFilter();
         fileChooser.setFileFilter(filter);
         this.dataController = dataController;
     }

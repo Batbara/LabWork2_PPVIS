@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by Batbara on 14.04.2017.
  */
 public class XMLSaxParser extends DefaultHandler{
-    private List<Student> studentsList;
+    private final List<Student> studentsList;
     private String currentElement;
     private Student lastStudent;
     private Parent lastStudentParent;
@@ -19,7 +19,7 @@ public class XMLSaxParser extends DefaultHandler{
     private StringBuilder content;
     private boolean parentName;
     public XMLSaxParser(){
-        studentsList = new ArrayList<Student>();
+        studentsList = new ArrayList<>();
         currentElement = "";
         parentName = false;
     }
@@ -27,10 +27,7 @@ public class XMLSaxParser extends DefaultHandler{
        System.out.println("students num:"+ studentsList.size());
         return studentsList;
     }
-    private Student getCurrentStudent(){
-        Student lastStudent = studentsList.get(studentsList.size()-1);
-        return lastStudent;
-    }
+
     @Override
     public void startDocument() throws SAXException {
         System.out.println("Start parse XML...");

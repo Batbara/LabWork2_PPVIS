@@ -7,7 +7,7 @@ import java.util.Vector;
  * Created by Batbara on 25.03.2017.
  */
 public class TableRecord {
-    private Vector <String> tableRecord;
+    private final Vector <String> tableRecord;
 
 
 
