@@ -1,5 +1,7 @@
 package view;
 
+import model.Parent;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
