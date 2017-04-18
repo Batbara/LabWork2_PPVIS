@@ -304,9 +304,22 @@ public class SearchAndDeleteView extends JDialog {
         panelContainer.add(workExperienceField.get("toMonths"));
         return panelContainer;
     }
-    public void hideComponents(){
+    public void hideRadioButtons(){
         groupRadioButtons.clearSelection();
         buttonsPanel.setVisible(false);
+    }
+    public void hideComponents(){
+        hideRadioButtons();
+
+        Set<String> panelKeys = optionPanels.keySet();
+        Set<String> buttonsKeys = optionButtons.keySet();
+        for (String key : panelKeys){
+            optionPanels.get(key).setVisible(false);
+        }
+        for (String key : buttonsKeys){
+            optionButtons.get(key).setVisible(false);
+        }
+
     }
     public Map<String, String> studentNameSearchData(){
         Set<String> studentNameKeys = studentNameField.keySet();

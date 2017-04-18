@@ -22,6 +22,5 @@ public class NewFileListener  implements ActionListener{
         if (reply == JOptionPane.YES_OPTION){
             dataController.clearDataBase();
         }
-        //if (reply == JOptionPane.)
     }
 }

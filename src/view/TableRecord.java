@@ -2,12 +2,14 @@ package view;
 import model.Student;
 import model.Worker;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 /**
  * Created by Batbara on 25.03.2017.
  */
-public class TableRecord {
-    private final Vector <String> tableRecord;
+public class TableRecord extends Object{
+    private List <String> tableRecord;
 
 
 
@@ -29,8 +31,18 @@ public class TableRecord {
         tableRecord.add(workingYears);
     }
 
-    public Vector<String> getRecordData(){
+    public List<String> getRecordData(){
         return tableRecord;
+    }
+    public boolean equals(TableRecord recordToCompare){
+        List<String> recordData = this.getRecordData();
+        List<String> comparedData = recordToCompare.getRecordData();
+        for(String dataCell : recordData) {
+            if( !comparedData.get(recordData.indexOf(dataCell)).equals(dataCell) )
+                return false;
+        }
+        return true;
+
     }
 
 }

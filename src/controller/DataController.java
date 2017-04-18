@@ -61,10 +61,11 @@ public class DataController implements Observer{
         return getDataBase().size();
     }
     private void addRowToTable(TableRecord record){
-        pagedView.addRowToTable(record.getRecordData());
+       // pagedView.addRowToTable(record.getRecordData());
+        pagedView.addRecordToTable(record);
     }
     private void deleteRowFromTable(TableRecord record){
-        pagedView.deleteRowFromTable(record.getRecordData());
+        pagedView.deleteRecordFromTable(record);
     }
     public List<Student> getDataBase(){
         return studentDataBase.getStudents();
@@ -184,15 +185,5 @@ public class DataController implements Observer{
         }
 
         return result;
-    }
-
-    public List<Vector<String> > getListOfSearchedRows(List <Student> studentsResult){
-        List<Vector<String>> rowsResult = new ArrayList<>();
-        for (Student student : studentsResult){
-            Vector<String> studentAsRow = new TableRecord(student).getRecordData();
-            rowsResult.add(studentAsRow);
-        }
-        return rowsResult;
-
     }
 }

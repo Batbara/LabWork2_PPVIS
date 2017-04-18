@@ -17,16 +17,15 @@ public class Paging extends TableView{
     private final JButton lastPageButton;
     private final JButton firstPageButton;
     private final JLabel pagingStatus;
-    private int currentPage;
+    private int currentPageNum;
 
-    private final List<List<List<String>>> rowsInPages;
+    private List<Page> listOfPages;
 
     public Paging(){
         super();
         pagingStatus = new JLabel("1 из 1");
-        currentPage=0;
-        rowsInPages = new Vector<>();
-        rowsInPages.add(0,new Vector<>(10));
+        currentPageNum =0;
+        listOfPages = new ArrayList<>();
 
         nextPageButton = initButton("nextno","Вперед");
         prevPageButton = initButton("prevno","Назад");
@@ -34,7 +33,6 @@ public class Paging extends TableView{
         lastPageButton = initButton("forwardno","В конец");
 
         setButtonsState();
-        //splitInPages();
 
         setButtonsListeners();
     }
@@ -61,9 +59,9 @@ public class Paging extends TableView{
     private void setButtonsState(){
         nextPageButton.getModel().addChangeListener(e -> {
             ButtonModel model = (ButtonModel) e.getSource();
-            int lastPage = rowsInPages.size() - 1;
+            int lastPage = listOfPages.size() - 1;
 
-            if (currentPage == lastPage || rowsInPages.isEmpty()) {
+            if (currentPageNum == lastPage || listOfPages.isEmpty()) {
                 if (model.isRollover() || model.isPressed()) {
                     nextPageButton.setIcon(getImageIcon("nextno"));
                 }
@@ -80,9 +78,9 @@ public class Paging extends TableView{
         });
         lastPageButton.getModel().addChangeListener(e -> {
             ButtonModel model = (ButtonModel) e.getSource();
-            int lastPage = rowsInPages.size() - 1;
+            int lastPage = listOfPages.size() - 1;
 
-            if (currentPage == lastPage || rowsInPages.isEmpty()) {
+            if (currentPageNum == lastPage || listOfPages.isEmpty()) {
                 if (model.isRollover() || model.isPressed()) {
                     lastPageButton.setIcon(getImageIcon("forwardno"));
                 }
@@ -100,7 +98,7 @@ public class Paging extends TableView{
         prevPageButton.getModel().addChangeListener(e -> {
             ButtonModel model = (ButtonModel) e.getSource();
 
-            if (currentPage == 0 || rowsInPages.isEmpty()) {
+            if (currentPageNum == 0 || listOfPages.isEmpty()) {
                 if (model.isRollover() || model.isPressed()) {
                     prevPageButton.setIcon(getImageIcon("prevno"));
                 }
@@ -117,7 +115,7 @@ public class Paging extends TableView{
         firstPageButton.getModel().addChangeListener(e -> {
             ButtonModel model = (ButtonModel) e.getSource();
 
-            if (currentPage == 0 || rowsInPages.isEmpty()) {
+            if (currentPageNum == 0 || listOfPages.isEmpty()) {
                 if (model.isRollover() || model.isPressed()) {
                     firstPageButton.setIcon(getImageIcon("backwardno"));
                 }
@@ -142,10 +140,10 @@ public class Paging extends TableView{
         return holdingPanel;
     }
     public void clearAllRows(){
-        rowsInPages.clear();
-        currentPage=0;
-        //rowsInPages.add(0,new Vector<>(10));
+        listOfPages.clear();
+        currentPageNum =0;
         clearModel();
+
     }
     private void clearModel(){
         DefaultTableModel model = (DefaultTableModel) this.getModel();
@@ -154,64 +152,61 @@ public class Paging extends TableView{
             model.removeRow(iterator);
         }
     }
-    public void addRowToTable(Vector<String> rowToAdd){
-        if(rowsInPages.isEmpty())
-            rowsInPages.add(0,new Vector<>(10));
-        int lastPage = rowsInPages.size()-1;
-        int newPageIndex = lastPage;
-        //for (int pages = 0; pages<numberOfPages; pages++){
+    public void addRecordToTable(TableRecord recordToAdd){
+        if(listOfPages.isEmpty()){
+            listOfPages.add(new Page());
+        }
+        Page currentPage = listOfPages.get(listOfPages.size()-1);
 
-            List rowsAtPage = rowsInPages.get(lastPage);
-            //was: RECORDS_ON_PAGE - 1
-            if(rowsAtPage.size() == RECORDS_ON_PAGE) {
-
-                rowsInPages.add(new Vector<>());
-                newPageIndex = rowsInPages.size()-1;
-            }
-                rowsInPages.get(newPageIndex).add(rowToAdd);
+        boolean isRecordAdded = currentPage.add(recordToAdd);
+        if(!isRecordAdded){
+            Page newPage = new Page();
+            newPage.add(recordToAdd);
+            listOfPages.add(newPage);
+        }
         showCurrentPage();
     }
-    public void deleteRowFromTable(Vector<String> rowToDelete){
+    public void deleteRecordFromTable(TableRecord recordToDelete){
 
-        for(int pages =0; pages<rowsInPages.size()-1; pages++){
-            List<List<String>> rowsAtPage = rowsInPages.get(pages);
-            for(List<String> row : rowsAtPage)
-                if(Objects.equals(row, rowToDelete)){
-                    rowsAtPage.remove(row);
+        for(Page pages : listOfPages){
+            for (TableRecord record : pages.getPageContent()){
+                if(record.equals(recordToDelete)){
+                    pages.removeRecord(recordToDelete);
                     shiftPages();
                     showCurrentPage();
                     return;
                 }
+            }
         }
     }
 
     private void shiftPages(){
-        int capacity = rowsInPages.size()-1;
-        for(int pages =0; pages<capacity; pages++) {
-            List<List<String>> currentPage = rowsInPages.get(pages);
+        int capacity = listOfPages.size()-1;
+        for(int currentPageNum=0; currentPageNum<capacity; currentPageNum++) {
+            Page currentPage = listOfPages.get(currentPageNum);
+            Page nextPage;
 
-            List<List<String>> nextPage = rowsInPages.get(pages + 1);
-            int numOfRowsAtPage = currentPage.size();
+                nextPage = listOfPages.get(currentPageNum+1);
+
+            int numOfRowsAtPage = currentPage.getNumberOfPageRecords();
             if(currentPage.isEmpty()){
-                rowsInPages.remove(currentPage);
-                capacity--;
+                listOfPages.remove(currentPageNum);
                 continue;
             }
             if(nextPage.isEmpty()){
-                rowsInPages.remove(nextPage);
-                capacity--;
+                listOfPages.remove(nextPage);
                 continue;
             }
             if (numOfRowsAtPage < RECORDS_ON_PAGE) {
-                List<String> bitToFill = nextPage.get(0);
+                TableRecord bitToFill = nextPage.getPageContent().get(0);
                 currentPage.add(bitToFill);
-                nextPage.remove(bitToFill);
+                nextPage.removeRecord(bitToFill);
             }
         }
     }
     public void showCurrentPage(){
         clearModel();
-        if(rowsInPages.isEmpty()){
+        if(listOfPages.isEmpty()){
             pagingStatus.setText("1 из 1");
             nextPageButton.setIcon(getImageIcon("nextno"));
             lastPageButton.setIcon(getImageIcon("forwardno"));
@@ -220,65 +215,69 @@ public class Paging extends TableView{
             setButtonsState();
             return;
         }
-        List<List<String>> lastPage = rowsInPages.get(rowsInPages.size()-1);
+        
+        Page lastPage = listOfPages.get(listOfPages.size()-1);
+        Page currentPage = listOfPages.get(currentPageNum);
         if(lastPage.isEmpty())
-            rowsInPages.remove(lastPage);
+            listOfPages.remove(lastPage);
 
         DefaultTableModel model = (DefaultTableModel) this.getModel();
-        List rowsAtPage = rowsInPages.get(currentPage);
-
-        for (Object dataVector : rowsAtPage) {
-            model.addRow((Vector) dataVector);
+        List<List<String>> rowsAtPage = currentPage.getListOfRows();
+        
+        for (Object recordData : rowsAtPage) {
+            model.addRow((Vector) recordData);
         }
-        int pageToShow = currentPage+1;
-        pagingStatus.setText(pageToShow + " из " + rowsInPages.size());
-        if(currentPage!=rowsInPages.size()-1){
-            nextPageButton.setIcon(getImageIcon("next"));
-            lastPageButton.setIcon(getImageIcon("forward"));
-        }
-        else if(currentPage==rowsInPages.size()-1){
-            nextPageButton.setIcon(getImageIcon("nextno"));
-            lastPageButton.setIcon(getImageIcon("forwardno"));
-        }
-
-            if(currentPage==0){
-                prevPageButton.setIcon(getImageIcon("prevno"));
-                firstPageButton.setIcon(getImageIcon("backwardno"));
-            }
-            if(currentPage!=0){
-            prevPageButton.setIcon(getImageIcon("prev"));
-            firstPageButton.setIcon(getImageIcon("backward"));
-            }
+        int pageToShow = currentPageNum+1;
+        pagingStatus.setText(pageToShow + " из " + listOfPages.size());
+        calibrateControlButtons();
     }
-   
+   private void calibrateControlButtons(){
+       if(currentPageNum!=listOfPages.size()-1){
+           nextPageButton.setIcon(getImageIcon("next"));
+           lastPageButton.setIcon(getImageIcon("forward"));
+       }
+       else if(currentPageNum==listOfPages.size()-1){
+           nextPageButton.setIcon(getImageIcon("nextno"));
+           lastPageButton.setIcon(getImageIcon("forwardno"));
+       }
+
+       if(currentPageNum==0){
+           prevPageButton.setIcon(getImageIcon("prevno"));
+           firstPageButton.setIcon(getImageIcon("backwardno"));
+       }
+       if(currentPageNum!=0){
+           prevPageButton.setIcon(getImageIcon("prev"));
+           firstPageButton.setIcon(getImageIcon("backward"));
+       }
+   }
     private void setButtonsListeners(){
         nextPageButton.addActionListener(e -> {
-            if(currentPage!= rowsInPages.size()-1) {
-                currentPage++;
+            if(currentPageNum != listOfPages.size()-1) {
+                currentPageNum++;
                 showCurrentPage();
             }
         });
         prevPageButton.addActionListener(e -> {
-            if(currentPage!= 0) {
-                currentPage--;
+            if(currentPageNum != 0) {
+                currentPageNum--;
                 showCurrentPage();
             }
         });
         firstPageButton.addActionListener(e -> {
-            currentPage=0;
+            currentPageNum =0;
             showCurrentPage();
         });
         lastPageButton.addActionListener(e -> {
-            currentPage=rowsInPages.size()-1;
+            currentPageNum =listOfPages.size()-1;
             showCurrentPage();
         });
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
+    public void setCurrentPageNum(int currentPageNum) {
+        this.currentPageNum = currentPageNum;
     }
     public int getNumberOfPages(){
-        return rowsInPages.size();
+        return listOfPages.size();
     }
 
     public void setRECORDS_ON_PAGE() {

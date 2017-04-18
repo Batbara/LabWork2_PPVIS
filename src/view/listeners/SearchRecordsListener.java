@@ -23,7 +23,7 @@ public class SearchRecordsListener implements ActionListener {
         view.centerOnScreen();
         view.setVisible(true);
         view.clearAllPanelsTextFields();
-        view.hideComponents();
+        view.hideRadioButtons();
         view.setPanelsVisibility();
     }
 }

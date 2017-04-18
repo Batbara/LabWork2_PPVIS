@@ -3,6 +3,7 @@ package view.dialogs;
 import controller.DataController;
 import model.Student;
 import view.Paging;
+import view.TableRecord;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,7 +60,7 @@ public class SearchRecordDialog extends JDialog{
                             return;
                         }
                         JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                        createResultDialog(result).setVisible(true);
+                        showResult(result);
 
 
 
@@ -71,7 +72,7 @@ public class SearchRecordDialog extends JDialog{
                         return;
                     }
                     JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                    createResultDialog(result).setVisible(true);
+                    showResult(result);
                     break;
                 case "parentExpOrAddressOption":
                     result = dataController.parentExpOrAddressSearch(view.parentExpOrAddressSearchData());
@@ -80,7 +81,7 @@ public class SearchRecordDialog extends JDialog{
                         return;
                     }
                     JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                    createResultDialog(result).setVisible(true);
+                    showResult(result);
                     break;
                 case "studentNameOrAddressOption":
                     result = dataController.studentNameOrAddressSearch(view.studentNameOrAddressSearchData());
@@ -89,7 +90,7 @@ public class SearchRecordDialog extends JDialog{
                         return;
                     }
                     JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                    createResultDialog(result).setVisible(true);
+                    showResult(result);
                     break;
             }
         });
@@ -100,21 +101,30 @@ public class SearchRecordDialog extends JDialog{
         });
     }
 
-    private JDialog createResultDialog(List<Student> result){
-        JDialog resultDialog = new JDialog(this, "Результат поиска", ModalityType.DOCUMENT_MODAL);
-        resultDialog.setSize(new Dimension(750, 205));
-        resultDialog.setLayout(new BorderLayout());
+    private void showResult(List<Student> result){
+        //JDialog resultDialog = new JDialog(this, "Результат поиска", ModalityType.DOCUMENT_MODAL);;
         Paging resultTable = new Paging();
         JPanel holdingPanel = resultTable.getHoldingTable();
         resultTable.setRECORDS_ON_PAGE();
-        List<Vector<String>> resultedRows = dataController.getListOfSearchedRows(result);
+        List<TableRecord> resultedRecords = getListOfSearchedRows(result);
 
-        for (Vector<String> row : resultedRows)
-            resultTable.addRowToTable(row);
+        for (TableRecord record : resultedRecords)
+            resultTable.addRecordToTable(record);
         resultTable.showCurrentPage();
-        resultDialog.add(holdingPanel, BorderLayout.CENTER);
-        resultDialog.add(resultTable.makeControlButtonsPanel(), BorderLayout.PAGE_END);
-        return resultDialog;
+
+        view.hideComponents();
+        this.add(holdingPanel, BorderLayout.CENTER);
+        //okButton.
+
+    }
+    private List<TableRecord > getListOfSearchedRows(List <Student> studentsResult){
+        List<TableRecord> rowsResult = new ArrayList<>();
+        for (Student student : studentsResult){
+            TableRecord studentRecord = new TableRecord(student);
+            rowsResult.add(studentRecord);
+        }
+        return rowsResult;
+
     }
 
 

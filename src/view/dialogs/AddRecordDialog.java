@@ -218,7 +218,7 @@ public class AddRecordDialog extends JDialog{
             dataController.addStudentData(studentToAdd);
 
             Paging tableView = dataController.getPagedView();
-            tableView.setCurrentPage(tableView.getNumberOfPages()-1);
+            tableView.setCurrentPageNum(tableView.getNumberOfPages()-1);
             tableView.showCurrentPage();
 
             clearTextFields();
