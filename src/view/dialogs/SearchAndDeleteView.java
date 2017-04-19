@@ -1,6 +1,12 @@
 package view.dialogs;
 
+import model.Student;
+import view.Paging;
+import view.TableRecord;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.TabableView;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -23,12 +29,10 @@ public class SearchAndDeleteView extends JDialog {
     private JButton cancelButton;
     private JPanel buttonsPanel;
 
-    private String status;
-
     public SearchAndDeleteView(String dialogTitle, JFrame ownerFrame){
         super(ownerFrame, dialogTitle, Dialog.ModalityType.DOCUMENT_MODAL);
 
-        status = "";
+
         initDialogWindow();
         initOptionButtons();
         initTextFields();
@@ -41,7 +45,6 @@ public class SearchAndDeleteView extends JDialog {
         addPanelsToFrame();
         fillWindowWithButtons();
         firePressedButtonEvent();
-        addControlButtonsListeners();
 
     }
     private void initDialogWindow(){
@@ -74,14 +77,15 @@ public class SearchAndDeleteView extends JDialog {
         workingAddressField = new LinkedHashMap<>();
         workExperienceField = new LinkedHashMap<>();
 
-        String []nameKeys = {"Фамилия", "Имя", "Отчество"};
+        String []studentNameKeys = {"Фамилия", "Имя", "Отчество"};
+        String []parentNameKeys = {"Фамилия родителя", "Имя родителя", "Отчество родителя"};
         String []addressKeys = {"Город", "Улица", "Номер дома"};
         String []experienceKeys = {"fromYears", "fromMonths", "toYears", "toMonths"};
 
-        for (String nameKey1 : nameKeys) {
+        for (String nameKey1 : studentNameKeys) {
             studentNameField.put(nameKey1, new JTextField(10));
         }
-        for (String nameKey : nameKeys) {
+        for (String nameKey : parentNameKeys) {
             parentNameField.put(nameKey, new JTextField(10));
         }
         for (String addressKey : addressKeys) {
@@ -203,7 +207,12 @@ public class SearchAndDeleteView extends JDialog {
         }
 
     }
+    public void reAddComponents(){
 
+        addButtonsToDialogWindow();
+        addPanelsToFrame();
+        fillWindowWithButtons();
+    }
     private void firePressedButtonEvent(){
         Set<String> buttonKeys = optionButtons.keySet();
 
@@ -215,45 +224,6 @@ public class SearchAndDeleteView extends JDialog {
             });
         }
     }
-    private void addControlButtonsListeners (){
-        okButton.addActionListener(e -> {
-            String buttonKey="";
-            Set<String> allButtonsKeys = optionButtons.keySet();
-            JRadioButton selectedButton = new JRadioButton();
-            for (Enumeration<AbstractButton> buttons = groupRadioButtons.getElements(); buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
-                if (button.isSelected()) {
-                    selectedButton = (JRadioButton)button;
-                }
-            }
-            for(String checkingButtonKey : allButtonsKeys) {
-               if(Objects.equals(selectedButton, optionButtons.get(checkingButtonKey)))
-                   buttonKey = checkingButtonKey;
-            }
-            System.out.println("pressed button key is"+buttonKey);
-
-            switch (buttonKey){
-                case "studentNameOption":
-                    status = "studentNameOption";
-                    break;
-                case "parentNameOrAddressOption":
-                    status = "parentNameOrAddressOption";
-                    break;
-                case "parentExpOrAddressOption":
-                    status = "parentExpOrAddressOption";
-                    break;
-                case "studentNameOrAddressOption":
-                   status = "studentNameOrAddressOption";
-                    break;
-            }
-        });
-
-        cancelButton.addActionListener(e -> {
-            clearAllPanelsTextFields();
-            setVisible(false);
-        });
-    }
-
     public void setPanelsVisibility(){
         Collection<JPanel> panels = optionPanels.values();
         for (JPanel element : panels){
@@ -381,22 +351,27 @@ public class SearchAndDeleteView extends JDialog {
         dataToSearch.add(addressDataToSearch);
         return dataToSearch;
     }
-    public Map<String, JTextField> getStudentNameField() {
-        return studentNameField;
-    }
 
-    public Map<String, JTextField> getParentNameField() {
-        return parentNameField;
+    public Student searchData(Map <String, JTextField> fieldToRetrieveData){
+        Set<String> fieldKeys = fieldToRetrieveData.keySet();
+        Student studentToSearch = new Student();
+        for (String key : fieldKeys){
+            studentToSearch.setByKey(key, fieldToRetrieveData.get(key).getText());
+        }
+        return studentToSearch;
     }
-
-    public Map<String, JTextField> getWorkingAddressField() {
-        return workingAddressField;
+    public Student searchData(Map <String, JTextField> firstField, Map <String, JTextField> secondField){
+        Set<String> firstFieldKeys = firstField.keySet();
+        Set<String> secondFieldKeys = secondField.keySet();
+        Student studentToSearch = new Student();
+        for (String key : firstFieldKeys){
+            studentToSearch.setByKey(key, firstField.get(key).getText());
+        }
+        for (String key : secondFieldKeys){
+            studentToSearch.setByKey(key, secondField.get(key).getText());
+        }
+        return studentToSearch;
     }
-
-    public Map<String, JTextField> getWorkExperienceField() {
-        return workExperienceField;
-    }
-
     public JButton getOkButton() {
         return okButton;
     }
@@ -411,5 +386,21 @@ public class SearchAndDeleteView extends JDialog {
 
     public JButton getCancelButton() {
         return cancelButton;
+    }
+
+    public Map<String, JTextField> getStudentNameField() {
+        return studentNameField;
+    }
+
+    public Map<String, JTextField> getParentNameField() {
+        return parentNameField;
+    }
+
+    public Map<String, JTextField> getWorkingAddressField() {
+        return workingAddressField;
+    }
+
+    public Map<String, JTextField> getWorkExperienceField() {
+        return workExperienceField;
     }
 }

@@ -79,4 +79,7 @@ public class Worker {
         }
         this.workingMonths = workingMonths;
     }
+    public Double getWorkExperience(){
+        return workingYears + workingMonths/12.0;
+    }
 }

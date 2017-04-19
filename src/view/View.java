@@ -10,19 +10,19 @@ import java.awt.*;
  * Created by Batbara on 21.03.2017.
  */
 public class View {
-    
+
     private JFrame mainFrame;
     private final DataController dataController;
 
     public View() {
-        setUIFont (new javax.swing.plaf.FontUIResource("Helvetica",Font.PLAIN,12));
+        setUIFont(new javax.swing.plaf.FontUIResource("Helvetica", Font.PLAIN, 12));
 
-       // final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         initFrame();
 
         StudentDataBase studentDataBase = new StudentDataBase();
 
-        Paging mainPagedView = new Paging();
+        Paging mainPagedView = new Paging(10);
         dataController = new DataController(studentDataBase, mainPagedView);
 
         addControlItemsToFrame();
@@ -40,7 +40,7 @@ public class View {
         mainFrame.setSize(new Dimension(1050, 476));
         mainFrame.setMaximumSize(new Dimension(850, 700));
 
-       // mainFrame.getContentPane().setBackground(Color.BLUE);
+        // mainFrame.getContentPane().setBackground(Color.BLUE);
 
         mainFrame.setResizable(false);
         mainFrame.setVisible(true);
@@ -57,10 +57,36 @@ public class View {
     private MainMenu createMenu() {
         return new MainMenu(mainFrame, dataController);
     }
-    private JToolBar setJToolBar(){
-        Toolbar mainToolBar = new Toolbar(mainFrame, dataController);
-        return mainToolBar.getToolBarPanel();
+
+    private JToolBar setJToolBar() {
+
+        JToolBar toolBarPanel = new JToolBar();
+        toolBarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        toolBarPanel.setFloatable(false);
+        toolBarPanel.setRollover(true);
+        toolBarPanel.setBackground(null);
+        toolBarPanel.setOpaque(false);
+
+        FileButtons fileButtons = new FileButtons(dataController);
+        toolBarPanel.add(fileButtons.getNewFile());
+        toolBarPanel.add(fileButtons.getOpenFile());
+        toolBarPanel.add(fileButtons.getSaveFile());
+
+        toolBarPanel.addSeparator();
+        toolBarPanel.addSeparator();
+
+        EditButtons editButtons = new EditButtons(mainFrame, dataController);
+        toolBarPanel.add(editButtons.getAddRecord());
+        toolBarPanel.add(editButtons.getDeleteRecord());
+        toolBarPanel.add(editButtons.getSearchRecord());
+
+        toolBarPanel.setPreferredSize(new Dimension(mainFrame.getWidth(), 50));
+        toolBarPanel.setSize(new Dimension(mainFrame.getWidth(), 50));
+        toolBarPanel.setMaximumSize(new Dimension(mainFrame.getWidth(), 50));
+        return toolBarPanel;
     }
+
 
     private static void setUIFont (javax.swing.plaf.FontUIResource f){
         java.util.Enumeration keys = UIManager.getDefaults().keys();

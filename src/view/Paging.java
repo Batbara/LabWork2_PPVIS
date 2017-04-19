@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Paging extends TableView{
 
-    private int RECORDS_ON_PAGE = 10;
+    private int RECORDS_ON_PAGE;
     private final JButton nextPageButton;
     private final JButton prevPageButton;
     private final JButton lastPageButton;
@@ -21,10 +21,11 @@ public class Paging extends TableView{
 
     private List<Page> listOfPages;
 
-    public Paging(){
+    public Paging(int recordsOnPage){
         super();
         pagingStatus = new JLabel("1 из 1");
         currentPageNum =0;
+        RECORDS_ON_PAGE = recordsOnPage;
         listOfPages = new ArrayList<>();
 
         nextPageButton = initButton("nextno","Вперед");
@@ -154,13 +155,13 @@ public class Paging extends TableView{
     }
     public void addRecordToTable(TableRecord recordToAdd){
         if(listOfPages.isEmpty()){
-            listOfPages.add(new Page());
+            listOfPages.add(new Page(RECORDS_ON_PAGE));
         }
         Page currentPage = listOfPages.get(listOfPages.size()-1);
 
         boolean isRecordAdded = currentPage.add(recordToAdd);
         if(!isRecordAdded){
-            Page newPage = new Page();
+            Page newPage = new Page(RECORDS_ON_PAGE);
             newPage.add(recordToAdd);
             listOfPages.add(newPage);
         }
@@ -280,7 +281,7 @@ public class Paging extends TableView{
         return listOfPages.size();
     }
 
-    public void setRECORDS_ON_PAGE() {
-        this.RECORDS_ON_PAGE = 3;
+    public void setRECORDS_ON_PAGE(int num) {
+        this.RECORDS_ON_PAGE = num;
     }
 }

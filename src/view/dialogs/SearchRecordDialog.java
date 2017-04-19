@@ -25,14 +25,10 @@ public class SearchRecordDialog extends JDialog{
         view = new SearchAndDeleteView("Поиск записей", ownerFrame);
         okButton = view.getOkButton();
         buttonGroup = view.getGroupRadioButtons();
-        Map<String, JTextField> studentNameField = view.getStudentNameField();
-        Map<String, JTextField> parentNameField = view.getParentNameField();
-        Map<String, JTextField> workExperienceField = view.getWorkExperienceField();
-        Map<String, JTextField> workingAddressField = view.getWorkingAddressField();
         this.dataController = dataController;
         addControlButtonsListeners();
     }
-    private void addControlButtonsListeners (){
+    public void addControlButtonsListeners (){
         okButton.addActionListener(e -> {
             String buttonKey="";
             Set<String> allButtonsKeys = view.getOptionButtons().keySet();
@@ -49,73 +45,64 @@ public class SearchRecordDialog extends JDialog{
             }
             System.out.println("pressed button key is"+buttonKey);
 
+            List<Student> result = new ArrayList<>();
+            Student studentToSearch;
+            Map <String,JTextField> studentNameField = view.getStudentNameField();
+            Map <String,JTextField> parentNameField = view.getParentNameField();
+            Map <String,JTextField> addressField = view.getWorkingAddressField();
+            Set<String> allKeys;
             switch (buttonKey){
                 case "studentNameOption":
-                    List<Student> result;
-
-
-                        result = dataController.studentNameSearch(view.studentNameSearchData());
-                        if(result.isEmpty()) {
-                            JOptionPane.showMessageDialog(null, "Таких записей нет :(");
-                            return;
-                        }
-                        JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                        showResult(result);
-
-
-
+                    studentToSearch = view.searchData(studentNameField);
+                    result = dataController.studentsSearch(studentToSearch, studentNameField.keySet());
                     break;
                 case "parentNameOrAddressOption":
-                    result = dataController.parentNameOrAddressSearch(view.parentNameOrAddressSearchData());
-                    if(result.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Таких записей нет :(");
-                        return;
-                    }
-                    JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                    showResult(result);
+                    studentToSearch = view.searchData(parentNameField, addressField);
+                    Set<String> keys = parentNameField.keySet();
+                    allKeys = new HashSet<>();
+                    allKeys.addAll(keys);
+                    allKeys.addAll(addressField.keySet());
+                    result = dataController.studentsSearch(studentToSearch, allKeys);
                     break;
                 case "parentExpOrAddressOption":
                     result = dataController.parentExpOrAddressSearch(view.parentExpOrAddressSearchData());
-                    if(result.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Таких записей нет :(");
-                        return;
-                    }
-                    JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                    showResult(result);
                     break;
                 case "studentNameOrAddressOption":
-                    result = dataController.studentNameOrAddressSearch(view.studentNameOrAddressSearchData());
-                    if(result.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Таких записей нет :(");
-                        return;
-                    }
-                    JOptionPane.showMessageDialog(null, "Найдено записей: "+result.size());
-                    showResult(result);
+                    studentToSearch = view.searchData(studentNameField, addressField);
+                    allKeys = new HashSet<>();
+                    allKeys.addAll(studentNameField.keySet());
+                    allKeys.addAll(addressField.keySet());
+                    result = dataController.studentsSearch(studentToSearch, allKeys);
                     break;
             }
+            if(result.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Таких записей нет :(");
+                return;
+            }
+            view.getContentPane().removeAll();
+            Paging resultTable = searchTableResult(result);
+            JPanel buttonsPanel = resultTable.makeControlButtonsPanel();
+            view.add(resultTable.getHoldingTable(), BorderLayout.CENTER);
+            view.add(buttonsPanel, BorderLayout.PAGE_END);
+
+            resultTable.showCurrentPage();
+            view.revalidate();
         });
 
         view.getCancelButton().addActionListener(e -> {
-            view.clearAllPanelsTextFields();
             setVisible(false);
         });
     }
 
-    private void showResult(List<Student> result){
-        //JDialog resultDialog = new JDialog(this, "Результат поиска", ModalityType.DOCUMENT_MODAL);;
-        Paging resultTable = new Paging();
-        JPanel holdingPanel = resultTable.getHoldingTable();
-        resultTable.setRECORDS_ON_PAGE();
+    private Paging searchTableResult(List<Student> result){
+        Paging resultTable =  new Paging(3);
         List<TableRecord> resultedRecords = getListOfSearchedRows(result);
 
         for (TableRecord record : resultedRecords)
             resultTable.addRecordToTable(record);
-        resultTable.showCurrentPage();
+        resultTable.getHoldingTable().setVisible(true);
 
-        view.hideComponents();
-        this.add(holdingPanel, BorderLayout.CENTER);
-        //okButton.
-
+        return resultTable;
     }
     private List<TableRecord > getListOfSearchedRows(List <Student> studentsResult){
         List<TableRecord> rowsResult = new ArrayList<>();
@@ -126,7 +113,6 @@ public class SearchRecordDialog extends JDialog{
         return rowsResult;
 
     }
-
 
     public SearchAndDeleteView getView() {
         return view;

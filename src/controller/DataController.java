@@ -40,8 +40,8 @@ public class DataController implements Observer{
             if(data instanceof HashMap){
                 List<Student> base = getDataBase();
                 Student studentToRemove = (Student)((HashMap) data).get("remove");
-                TableRecord deleteRow = new TableRecord(studentToRemove);
-                deleteRowFromTable(deleteRow);
+                TableRecord deleteRecord = new TableRecord(studentToRemove);
+                deleteRecordFromTable(deleteRecord);
             }
             else
                 clearAllRows();
@@ -64,7 +64,7 @@ public class DataController implements Observer{
        // pagedView.addRowToTable(record.getRecordData());
         pagedView.addRecordToTable(record);
     }
-    private void deleteRowFromTable(TableRecord record){
+    private void deleteRecordFromTable(TableRecord record){
         pagedView.deleteRecordFromTable(record);
     }
     public List<Student> getDataBase(){
@@ -86,10 +86,11 @@ public class DataController implements Observer{
         List<Student> result = new ArrayList<>();
 
        for (Student student : getDataBase())
-           if (student.getStudentSurname().equals(data.get("Фамилия")))
-               if (student.getStudentName().equals(data.get("Имя")))
-                   if (student.getStudentFatherName().equals(data.get("Отчество")))
-                       result.add(student);
+           if ( (student.getStudentSurname().equals(data.get("Фамилия"))) ||
+                (student.getStudentName().equals(data.get("Имя"))) ||
+                    (student.getStudentFatherName().equals(data.get("Отчество"))))
+                       if (!result.contains(student))
+                           result.add(student);
 
         return result;
     }
@@ -100,17 +101,18 @@ public class DataController implements Observer{
 
         for (Student student : getDataBase()) {
             Parent parent = student.getStudentParent();
-            if (parent.getParentSurname().equals(parentNameData.get("Фамилия")))
-                if (parent.getParentName().equals(parentNameData.get("Имя")))
-                    if (parent.getParentFatherName().equals(parentNameData.get("Отчество")))
-                        result.add(student);
+            if ( parent.getParentSurname().equals(parentNameData.get("Фамилия")) ||
+            (parent.getParentName().equals(parentNameData.get("Имя"))) ||
+            (parent.getParentFatherName().equals(parentNameData.get("Отчество"))))
+                if (!result.contains(student))
+                    result.add(student);
         }
         try {
             for (Student student : getDataBase()) {
                 Worker worker = student.getStudentParent().getWorkerData();
-                if (worker.getCityOfWork().equals(addressData.get("Город")))
-                    if (worker.getStreetOfWork().equals(addressData.get("Улица")))
-                        if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
+                if ( (worker.getCityOfWork().equals(addressData.get("Город"))) ||
+                        (worker.getStreetOfWork().equals(addressData.get("Улица"))) ||
+                (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома")))))
                             if (!result.contains(student))
                                 result.add(student);
             }
@@ -133,7 +135,8 @@ public class DataController implements Observer{
                         && (worker.getWorkingMonths() >= Integer.parseInt(parentExpData.get("fromMonths"))))
                     if ((worker.getWorkingYears() <= Integer.parseInt(parentExpData.get("toYears")))
                             && (worker.getWorkingMonths() <= Integer.parseInt(parentExpData.get("toMonths"))))
-                        result.add(student);
+                        if (!result.contains(student))
+                            result.add(student);
             }
         }
         catch (NumberFormatException e){
@@ -143,9 +146,9 @@ public class DataController implements Observer{
         try {
             for (Student student : getDataBase()) {
                 Worker worker = student.getStudentParent().getWorkerData();
-                if (worker.getCityOfWork().equals(addressData.get("Город")))
-                    if (worker.getStreetOfWork().equals(addressData.get("Улица")))
-                        if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
+                if ( (worker.getCityOfWork().equals(addressData.get("Город")))||
+                        (worker.getStreetOfWork().equals(addressData.get("Улица"))) ||
+                (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома")))))
                             if (!result.contains(student))
                                 result.add(student);
             }
@@ -163,18 +166,19 @@ public class DataController implements Observer{
         Map<String, String> addressData = data.get(1);
 
         for (Student student : getDataBase()) {
-            if (student.getStudentSurname().equals(studentNameData.get("Фамилия")))
-                if (student.getStudentName().equals(studentNameData.get("Имя")))
-                    if (student.getStudentFatherName().equals(studentNameData.get("Отчество")))
-                        result.add(student);
+            if (student.getStudentSurname().equals(studentNameData.get("Фамилия")) ||
+            (student.getStudentName().equals(studentNameData.get("Имя"))) ||
+            (student.getStudentFatherName().equals(studentNameData.get("Отчество"))))
+                if (!result.contains(student))
+                    result.add(student);
         }
 
         try {
             for (Student student : getDataBase()) {
                 Worker worker = student.getStudentParent().getWorkerData();
-                if (worker.getCityOfWork().equals(addressData.get("Город")))
-                    if (worker.getStreetOfWork().equals(addressData.get("Улица")))
-                        if (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома"))))
+                if ( (worker.getCityOfWork().equals(addressData.get("Город"))) ||
+                (worker.getStreetOfWork().equals(addressData.get("Улица"))) ||
+                (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома")))))
                             if (!result.contains(student))
                                 result.add(student);
             }
@@ -186,4 +190,25 @@ public class DataController implements Observer{
 
         return result;
     }
+    public List<Student> studentsSearch(Student studentToSearch, Set<String> searchKeys){
+        List<Student> result = new ArrayList<>();
+        for (Student student : studentDataBase.getStudents()){
+            for (String key : searchKeys){
+//                if(key.equals("from")) {
+//                    if(student.getExpByKey(key))
+//                }
+                try {
+                    if (student.getByKey(key).equals(studentToSearch.getByKey(key))) {
+                        if (!result.contains(student))
+                            result.add(student);
+                    }
+                }catch (NumberFormatException e){
+                    System.err.println("Exception caught!");
+                    continue;
+                }
+            }
+        }
+        return result;
+    }
+
 }
