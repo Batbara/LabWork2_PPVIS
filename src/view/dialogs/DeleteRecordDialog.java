@@ -2,6 +2,7 @@ package view.dialogs;
 
 import controller.DataController;
 import model.Student;
+import view.Paging;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,20 +44,40 @@ public class DeleteRecordDialog extends JDialog{
             }
             System.out.println("pressed button key is"+buttonKey);
             List<Student> result = new ArrayList<>();
+            Student studentToSearch;
+            Map <String,JTextField> studentNameField = view.getStudentNameField();
+            Map <String,JTextField> parentNameField = view.getParentNameField();
+            Map <String,JTextField> addressField = view.getWorkingAddressField();
+            Set<String> allKeys;
             switch (buttonKey){
                 case "studentNameOption":
-                    result = dataController.studentNameSearch(view.studentNameSearchData());
+                    studentToSearch = view.searchData(studentNameField);
+                    result = dataController.studentsSearch(studentToSearch, studentNameField.keySet());
                     break;
                 case "parentNameOrAddressOption":
-                    result = dataController.parentNameOrAddressSearch(view.parentNameOrAddressSearchData());
+                    studentToSearch = view.searchData(parentNameField, addressField);
+                    Set<String> keys = parentNameField.keySet();
+                    allKeys = new HashSet<>();
+                    allKeys.addAll(keys);
+                    allKeys.addAll(addressField.keySet());
+                    result = dataController.studentsSearch(studentToSearch, allKeys);
                     break;
                 case "parentExpOrAddressOption":
-                    result = dataController.parentExpOrAddressSearch(view.parentExpOrAddressSearchData());
+                    studentToSearch = view.searchData(addressField);
+                    Set<String> addressKeys = addressField.keySet();
+                    Double minExp = view.calculateExp("fromYears", "fromMonths");
+                    Double maxExp = view.calculateExp("toYears", "toMonths");
+                    result = dataController.studentsSearch(studentToSearch, addressKeys, minExp, maxExp);
                     break;
                 case "studentNameOrAddressOption":
-                    result = dataController.studentNameOrAddressSearch(view.studentNameOrAddressSearchData());
+                    studentToSearch = view.searchData(studentNameField, addressField);
+                    allKeys = new HashSet<>();
+                    allKeys.addAll(studentNameField.keySet());
+                    allKeys.addAll(addressField.keySet());
+                    result = dataController.studentsSearch(studentToSearch, allKeys);
                     break;
             }
+
             int studentsRemoved = dataController.removeStudents(result);
             if(result.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "А таких записей нет :)");
@@ -67,7 +88,7 @@ public class DeleteRecordDialog extends JDialog{
         });
 
         view.getCancelButton().addActionListener(e -> {
-            view.clearAllPanelsTextFields();
+            //view.clearAllPanelsTextFields();
             setVisible(false);
         });
     }

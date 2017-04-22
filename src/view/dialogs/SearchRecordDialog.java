@@ -65,7 +65,11 @@ public class SearchRecordDialog extends JDialog{
                     result = dataController.studentsSearch(studentToSearch, allKeys);
                     break;
                 case "parentExpOrAddressOption":
-                    result = dataController.parentExpOrAddressSearch(view.parentExpOrAddressSearchData());
+                    studentToSearch = view.searchData(addressField);
+                    Set<String> addressKeys = addressField.keySet();
+                    Double minExp = view.calculateExp("fromYears", "fromMonths");
+                    Double maxExp = view.calculateExp("toYears", "toMonths");
+                    result = dataController.studentsSearch(studentToSearch, addressKeys, minExp, maxExp);
                     break;
                 case "studentNameOrAddressOption":
                     studentToSearch = view.searchData(studentNameField, addressField);
@@ -89,9 +93,6 @@ public class SearchRecordDialog extends JDialog{
             view.revalidate();
         });
 
-        view.getCancelButton().addActionListener(e -> {
-            setVisible(false);
-        });
     }
 
     private Paging searchTableResult(List<Student> result){

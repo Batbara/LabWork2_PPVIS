@@ -27,6 +27,6 @@ public class SearchRecordsListener implements ActionListener {
 //        view.setPanelsVisibility();
         view.getContentPane().removeAll();
         view.reAddComponents();
-        searchRecordDialog.addControlButtonsListeners();
+       // searchRecordDialog.addControlButtonsListeners();
     }
 }

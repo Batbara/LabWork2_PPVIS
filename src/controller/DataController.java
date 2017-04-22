@@ -82,122 +82,41 @@ public class DataController implements Observer{
         return numBeforeDeletion - getNumberOfStudents();
     }
 
-    public List<Student> studentNameSearch(Map<String, String> data){
-        List<Student> result = new ArrayList<>();
 
-       for (Student student : getDataBase())
-           if ( (student.getStudentSurname().equals(data.get("Фамилия"))) ||
-                (student.getStudentName().equals(data.get("Имя"))) ||
-                    (student.getStudentFatherName().equals(data.get("Отчество"))))
-                       if (!result.contains(student))
-                           result.add(student);
-
-        return result;
-    }
-    public List<Student> parentNameOrAddressSearch(List< Map<String, String> > data){
-        List<Student> result = new ArrayList<>();
-        Map<String, String> parentNameData = data.get(0);
-        Map<String, String> addressData = data.get(1);
-
-        for (Student student : getDataBase()) {
-            Parent parent = student.getStudentParent();
-            if ( parent.getParentSurname().equals(parentNameData.get("Фамилия")) ||
-            (parent.getParentName().equals(parentNameData.get("Имя"))) ||
-            (parent.getParentFatherName().equals(parentNameData.get("Отчество"))))
-                if (!result.contains(student))
-                    result.add(student);
-        }
-        try {
-            for (Student student : getDataBase()) {
-                Worker worker = student.getStudentParent().getWorkerData();
-                if ( (worker.getCityOfWork().equals(addressData.get("Город"))) ||
-                        (worker.getStreetOfWork().equals(addressData.get("Улица"))) ||
-                (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома")))))
-                            if (!result.contains(student))
-                                result.add(student);
-            }
-        }
-        catch (NumberFormatException e){
-
-            System.err.println("Caught NumberFormatException: "+e.getMessage());
-        }
-
-        return result;
-    }
-    public List<Student> parentExpOrAddressSearch(List< Map<String, String> > data){
-        List<Student> result = new ArrayList<>();
-        Map<String, String> parentExpData = data.get(0);
-        Map<String, String> addressData = data.get(1);
-        try {
-            for (Student student : getDataBase()) {
-                Worker worker = student.getStudentParent().getWorkerData();
-                if ((worker.getWorkingYears() >= Integer.parseInt(parentExpData.get("fromYears")))
-                        && (worker.getWorkingMonths() >= Integer.parseInt(parentExpData.get("fromMonths"))))
-                    if ((worker.getWorkingYears() <= Integer.parseInt(parentExpData.get("toYears")))
-                            && (worker.getWorkingMonths() <= Integer.parseInt(parentExpData.get("toMonths"))))
-                        if (!result.contains(student))
-                            result.add(student);
-            }
-        }
-        catch (NumberFormatException e){
-
-                System.err.println("Caught NumberFormatException: "+e.getMessage());
-        }
-        try {
-            for (Student student : getDataBase()) {
-                Worker worker = student.getStudentParent().getWorkerData();
-                if ( (worker.getCityOfWork().equals(addressData.get("Город")))||
-                        (worker.getStreetOfWork().equals(addressData.get("Улица"))) ||
-                (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома")))))
-                            if (!result.contains(student))
-                                result.add(student);
-            }
-        }
-        catch (NumberFormatException e){
-
-            System.err.println("Caught NumberFormatException: "+e.getMessage());
-        }
-
-        return result;
-    }
-    public List<Student> studentNameOrAddressSearch(List< Map<String, String> > data){
-        List<Student> result = new ArrayList<>();
-        Map<String, String> studentNameData = data.get(0);
-        Map<String, String> addressData = data.get(1);
-
-        for (Student student : getDataBase()) {
-            if (student.getStudentSurname().equals(studentNameData.get("Фамилия")) ||
-            (student.getStudentName().equals(studentNameData.get("Имя"))) ||
-            (student.getStudentFatherName().equals(studentNameData.get("Отчество"))))
-                if (!result.contains(student))
-                    result.add(student);
-        }
-
-        try {
-            for (Student student : getDataBase()) {
-                Worker worker = student.getStudentParent().getWorkerData();
-                if ( (worker.getCityOfWork().equals(addressData.get("Город"))) ||
-                (worker.getStreetOfWork().equals(addressData.get("Улица"))) ||
-                (worker.getBuildingNumberOfWork().equals(Integer.parseInt(addressData.get("Номер дома")))))
-                            if (!result.contains(student))
-                                result.add(student);
-            }
-        }
-        catch (NumberFormatException e){
-
-            System.err.println("Caught NumberFormatException: "+e.getMessage());
-        }
-
-        return result;
-    }
     public List<Student> studentsSearch(Student studentToSearch, Set<String> searchKeys){
+        boolean isStudentFullName = false;
+        boolean isParentFullName = false;
         List<Student> result = new ArrayList<>();
+        for (Student student : studentDataBase.getStudents()) {
+            if (searchKeys.contains("Фамилия") && searchKeys.contains("Имя")) {
+                if (student.getByKey("Фамилия").equals(studentToSearch.getByKey("Фамилия")) &&
+                        student.getByKey("Имя").equals(studentToSearch.getByKey("Имя"))) {
+                    if (!result.contains(student)) {
+                        result.add(student);
+                        isStudentFullName = true;
+                    }
+                }
+            } else if (searchKeys.contains("Фамилия родителя") && searchKeys.contains("Имя родителя")) {
+                if (student.getByKey("Фамилия родителя").equals(studentToSearch.getByKey("Фамилия родителя")) &&
+                        student.getByKey("Имя родителя").equals(studentToSearch.getByKey("Имя родителя"))) {
+                    if (!result.contains(student)) {
+                        result.add(student);
+                        isParentFullName = true;
+                    }
+                }
+            }
+        }
         for (Student student : studentDataBase.getStudents()){
             for (String key : searchKeys){
-//                if(key.equals("from")) {
-//                    if(student.getExpByKey(key))
-//                }
                 try {
+                    if (isStudentFullName){
+                        if(key.equals("Фамилия") || key.equals("Имя"))
+                            break;
+                    } else
+                    if (isParentFullName){
+                        if(key.equals("Фамилия родителя") || key.equals("Имя родителя"))
+                            break;
+                    }else
                     if (student.getByKey(key).equals(studentToSearch.getByKey(key))) {
                         if (!result.contains(student))
                             result.add(student);
@@ -210,5 +129,32 @@ public class DataController implements Observer{
         }
         return result;
     }
+    public List<Student> studentsSearch(Student studentToSearch, Set<String> searchKeys, Double minExp, Double maxExp){
+        List<Student> result = new ArrayList<>();
+
+        for (Student student : studentDataBase.getStudents()){
+            for (String key : searchKeys){
+                if(student.getByKey(key).isEmpty())
+                    continue;
+                try {
+
+                    if (student.getByKey(key).equals(studentToSearch.getByKey(key))) {
+                        if (!result.contains(student))
+                            result.add(student);
+                    }
+                    if(minExp != null && maxExp != null)
+                        if (student.getExpInDouble()>=minExp && student.getExpInDouble()<=maxExp)
+                            if (!result.contains(student))
+                                result.add(student);
+                }catch (NumberFormatException e){
+                    System.err.println("Exception caught!");
+                    continue;
+                }
+            }
+        }
+        return result;
+    }
+
+
 
 }

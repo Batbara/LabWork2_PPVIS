@@ -38,14 +38,8 @@ public class Student {
         }
         return "";
     }
-    public Double getExpByKey (String key){
-        switch (key) {
-            case "from":
-                return studentParent.getWorkerData().getWorkExperience();
-            case "to":
-                return studentParent.getWorkerData().getWorkExperience();
-        }
-        return null;
+    public Double getExpInDouble (){
+        return studentParent.getWorkerData().getWorkExperience();
     }
     public void setByKey(String key, String data){
         switch (key){
